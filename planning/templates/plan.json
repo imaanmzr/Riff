@@ -1,0 +1,27 @@
+{
+  "route": "standard",
+  "status": "DRAFT",
+  "revision": 1,
+  "source_revision": "REPLACE_WITH_ACTUAL_REVISION",
+  "requirements": [
+    "R1"
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "dependencies": [],
+      "requirements": [
+        "R1"
+      ],
+      "objective": "specified",
+      "inputs": "specified",
+      "scope": "specified",
+      "outputs": "specified",
+      "owner": "unassigned",
+      "capability": "specified",
+      "reviewer": "unassigned",
+      "verification": "specified"
+    }
+  ],
+  "reviews": []
+}

@@ -1,0 +1,30 @@
+{
+  "scenario": "REPLACE_WITH_TASK",
+  "source_revision": null,
+  "acceptance_criteria": [],
+  "baseline": {
+    "strategy": "sequential-single-model",
+    "actual_models": [],
+    "elapsed_seconds": null,
+    "tokens": null,
+    "usage_is_estimated": null,
+    "requirements_passed": null,
+    "post_completion_defects": null,
+    "rework_rounds": null,
+    "human_interventions": null,
+    "evidence": []
+  },
+  "routed": {
+    "strategy": "capability-and-conflict-aware",
+    "actual_models": [],
+    "elapsed_seconds": null,
+    "tokens": null,
+    "usage_is_estimated": null,
+    "requirements_passed": null,
+    "post_completion_defects": null,
+    "rework_rounds": null,
+    "human_interventions": null,
+    "evidence": []
+  },
+  "conclusion": "Not evaluated"
+}

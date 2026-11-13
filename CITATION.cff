@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use Riff, please cite it as software."
+title: "Riff"
+abstract: "A model-independent agent skill and CLI for planning, executing, reviewing, and resuming software engineering work."
+type: software
+version: 0.5.1
+date-released: 2026-11-13

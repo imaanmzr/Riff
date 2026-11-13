@@ -70,12 +70,66 @@ def configure(project, host):
     print('Configured. Use $riff in Codex or /riff in Cursor, VS Code Copilot and Claude Code.')
 
 
+def build_parser():
+    parser = argparse.ArgumentParser(
+        prog='riff',
+        description='Install Riff, prepare engineering tasks, and inspect workflow progress.',
+        epilog='Examples:\n  riff init --host cursor\n  riff new refunds --title "Partial refunds"\n  riff status\n  riff prompt refunds --host cursor\n  riff validate refunds\n\nRun riff COMMAND --help for command options.',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument('--version', action='version', version='Riff 0.7.0')
+    subparsers = parser.add_subparsers(dest='action', title='commands', metavar='COMMAND')
+    descriptions = {
+        'init': 'Install the project skill and open the setup wizard',
+        'configure': 'Edit project commands, model mappings and budgets',
+        'update': 'Update the project skill from this Riff installation',
+        'doctor': 'Check project configuration and installed skill locations',
+        'new': 'Create draft planning records for a task',
+        'status': 'Show saved plan and execution status',
+        'prompt': 'Print a task prompt to paste into your agent chat',
+        'validate': 'Check plan structure or execution evidence records',
+        'route': 'Propose assignments using saved tasks and host configuration',
+    }
+    for action, description in descriptions.items():
+        command = subparsers.add_parser(action, help=description, description=description)
+        command.add_argument('--project', help='Project directory (default: current directory)')
+        if action in ('init', 'configure', 'update', 'doctor', 'prompt', 'route'):
+            command.add_argument('--host', choices=sorted(HOSTS), required=action == 'route',
+                                 default='codex' if action == 'prompt' else None,
+                                 help='Agent app used by this project')
+        if action in ('new', 'prompt', 'validate', 'route'):
+            command.add_argument('task', help='Task ID, such as partial-refunds')
+        if action == 'new':
+            command.add_argument('--title', help='Human-readable task title')
+            command.add_argument('--route', choices=['small', 'standard', 'complex', 'critical'], default='standard')
+        if action == 'status':
+            command.add_argument('task', nargs='?', help='Task ID (default: all tasks)')
+            command.add_argument('--json', action='store_true', help='Emit machine-readable JSON')
+        if action == 'prompt':
+            command.add_argument('--action', dest='operation', choices=['plan', 'execute', 'resume', 'audit'], default='plan')
+        if action == 'validate':
+            command.add_argument('--execution', action='store_true', help='Validate plan.json and run.json together')
+    return parser
+
+
 def main():
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--version', action='version', version='Riff 0.6.0')
-    parser.add_argument('action',choices=['init','configure','update'])
-    parser.add_argument('--project'); parser.add_argument('--host',choices=sorted(HOSTS))
-    args=parser.parse_args()
+    parser = build_parser()
+    args = parser.parse_args()
+    if args.action is None:
+        parser.print_help()
+        return
+    if args.action not in ('init', 'configure', 'update'):
+        if __package__:
+            from . import commands
+        else:
+            import commands
+        project = Path(args.project or Path.cwd()).expanduser().resolve()
+        if not project.is_dir():
+            raise ValueError('Project directory does not exist')
+        handlers = {'new': commands.new_task, 'status': commands.status,
+                    'doctor': commands.doctor, 'prompt': commands.prompt,
+                    'validate': commands.run_utility, 'route': commands.run_utility}
+        raise SystemExit(handlers[args.action](project, args) or 0)
     project=Path(args.project or ask('Project directory',str(Path.cwd()))).expanduser().resolve()
     host=args.host or ask('Agent app','codex',sorted(HOSTS))
     if not project.is_dir(): raise ValueError('Project directory does not exist')

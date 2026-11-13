@@ -86,6 +86,21 @@ $riff Resume the task at docs/work/partial-refunds/.
 
 Use `/riff` in Cursor and Claude Code.
 
+## Everyday commands
+
+```bash
+riff --help
+riff doctor --host cursor
+riff new refunds --title "Partial refunds" --route critical
+riff prompt refunds --host cursor
+riff status
+riff validate refunds
+```
+
+Each command includes help through `riff COMMAND --help`. See the
+[command reference](docs/commands.md) for execution validation, routing, JSON
+status output, and prompts for resuming or reviewing work.
+
 ## Development
 
 Riff uses Python's standard library. Run its regression tests from the repository
@@ -97,6 +112,7 @@ python3 execution/tests/test_gates.py
 python3 recovery/tests/test_state.py
 python3 routing/tests/test_router.py
 python3 distribution/tests/test_install.py
+python3 distribution/tests/test_cli.py
 ```
 
 Read [Architecture](docs/architecture.md) for phase boundaries and current

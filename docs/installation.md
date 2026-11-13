@@ -114,3 +114,6 @@ here refers to GitHub Copilot's Agent Skills integration.
 `riff init`, `riff configure`, and `riff update` manage project setup.
 `$riff` in Codex and `/riff` in the other supported agent chats start the
 engineering workflow. Model access and subagents are supplied by the selected host.
+
+See the [command reference](commands.md) for task creation, progress, validation,
+and routing commands.

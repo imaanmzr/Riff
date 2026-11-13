@@ -1,5 +1,5 @@
 ---
-name: engineering-workflow
+name: riff
 description: Plan, execute, review, route agents, and resume software engineering tasks using explicit decisions, specifications, evidence, and recovery checkpoints. Use for feature planning, reviewed-plan implementation, independent audits, or interrupted engineering work. Scale process to task risk.
 ---
 # Engineering Workflow

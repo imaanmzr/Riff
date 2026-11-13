@@ -15,8 +15,8 @@ the same records.
 | Routing | Capability profiles, task conflict selection, concurrency and budgets | `routing/` |
 
 The installable skill bundles these references under
-`distribution/skills/engineering-workflow/`. `distribution/install.py` installs
-it into a host's repository skill directory. `distribution/riff.py` provides the
+`distribution/skills/riff/`. `distribution/install.py` installs
+it into a host's repository skill directory. root-level `riff` command provides the
 interactive CLI. The phase utilities perform structural checks and routing
 proposals. They do not start agents, authenticate to providers, or certify
 semantic correctness.

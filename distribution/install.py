@@ -7,7 +7,8 @@ from pathlib import Path
 import shutil
 import tempfile
 
-NAME='engineering-workflow'
+NAME = 'riff'
+LEGACY_NAME = 'engineering-workflow'
 HOSTS={'codex':'.agents','cursor':'.cursor','claude':'.claude'}
 
 def hashes(root):
@@ -20,31 +21,38 @@ def install(project, update=False, host="codex"):
     if not project.is_dir(): raise ValueError('Project directory does not exist')
     if host == 'cursor':
         for other in ('.agents', '.claude'):
-            existing=project/other/'skills'/NAME
-            if (existing/'SKILL.md').is_file():
-                raise ValueError('Cursor can already discover '+str(existing)+'; update that installation using --host '+('codex' if other == '.agents' else 'claude'))
+            for name in (NAME, LEGACY_NAME):
+                existing = project / other / 'skills' / name
+                if (existing / 'SKILL.md').is_file():
+                    native_host = 'codex' if other == '.agents' else 'claude'
+                    raise ValueError(f'Cursor can already discover {existing}. Update it using --host {native_host}.')
     settings=project/'.engineering-workflow'
     if settings.is_symlink(): raise ValueError('Refusing symlinked project settings')
     parent=project/HOSTS[host]/'skills'
-    for p in (project/HOSTS[host],parent,parent/NAME):
+    legacy = parent / LEGACY_NAME
+    for p in (project / HOSTS[host], parent, parent / NAME, legacy):
         if p.is_symlink(): raise ValueError('Refusing symlinked install path: '+str(p))
     destination=parent/NAME
     source=Path(__file__).resolve().parent/'skills'/NAME
-    if destination.exists():
-        if not update: raise ValueError('Already installed; use --update')
-        metadata=destination/'.installation.json'
-        if not metadata.exists() or json.loads(metadata.read_text()).get('hashes')!=hashes(destination):
-            raise ValueError('Installed files changed or are unmanaged; preserve your edits before updating')
+    if destination.exists() and legacy.exists():
+        raise ValueError('Both riff and engineering-workflow exist. Resolve the duplicate before updating.')
+    installed = legacy if legacy.exists() else destination
+    if installed.exists():
+        if not update:
+            raise ValueError('Already installed. Run the update command to upgrade it.')
+        metadata = installed / '.installation.json'
+        if not metadata.exists() or json.loads(metadata.read_text()).get('hashes') != hashes(installed):
+            raise ValueError('Installed files changed or are unmanaged. Preserve your edits before updating.')
     parent.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(dir=parent,prefix='.engineering-stage-') as temp:
         stage=Path(temp)/NAME
         shutil.copytree(source,stage)
         (stage/'.installation.json').write_text(json.dumps({'version':'0.4.2','host':host,'hashes':hashes(stage)},indent=2)+'\n')
         backup=Path(temp)/'previous'
-        if destination.exists(): destination.rename(backup)
+        if installed.exists(): installed.rename(backup)
         try: stage.rename(destination)
         except BaseException:
-            if backup.exists(): backup.rename(destination)
+            if backup.exists(): backup.rename(installed)
             raise
     settings=project/'.engineering-workflow'
     if settings.is_symlink(): raise ValueError('Refusing symlinked project settings')

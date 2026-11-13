@@ -1,7 +1,7 @@
 # Riff
 An engineering workflow for research, decide, plan, review,
 execute and recover. Name availability/trademark clearance has not been checked.
-The installed skill retains engineering-workflow for compatibility.
+Invoke the installed skill as `$riff` in Codex or `/riff` in Cursor and Claude Code.
 
 From this extracted directory:
 

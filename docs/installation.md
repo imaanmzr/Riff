@@ -10,7 +10,8 @@ support repository skills or allow an agent to read `SKILL.md` directly.
 Extract the Riff release archive, open a terminal in its directory, and run:
 
 ```bash
-python3 riff.py init
+./riff init
+# or: python3 riff.py init
 ```
 
 The CLI asks for a project path and one host: Codex, Cursor, or Claude Code. It
@@ -40,19 +41,26 @@ unmanaged installed skill files. Back up and reconcile local changes before
 updating. The installer does not alter `AGENTS.md`, `CLAUDE.md`, or Cursor rules.
 You can add a reference to the skill in the instruction file your team uses.
 
+If you already installed the skill as `engineering-workflow`, run the update
+command for that project. Riff replaces the previous installation if its files
+match the installer manifest. Update any project instructions that reference
+the old skill command or path. Project configuration still lives in
+`.engineering-workflow/`.
+
 ## Invoke
 
-In Codex, use `$engineering-workflow`. In Cursor or Claude Code, use
-`/engineering-workflow`. Example:
+Use `$riff` in Codex and `/riff` in Cursor or Claude Code.
 
 ```text
-$engineering-workflow Plan the new return flow. Stop after the plan review.
+$riff Plan the new return flow. Stop after the plan review.
+/riff Plan the new return flow. Stop after the plan review.
 ```
 
-After reviewing the plan, authorize execution explicitly:
+After reviewing the plan, authorize execution explicitly.
 
 ```text
-$engineering-workflow Execute the reviewed return-flow plan in docs/work/returns/.
+$riff Execute the reviewed return-flow plan in docs/work/returns/.
+/riff Execute the reviewed return-flow plan in docs/work/returns/.
 ```
 
 Resume from another app by asking it to resume the task record. Do not run two
@@ -67,6 +75,6 @@ These values do not grant provider access. Select the main model in the host UI.
 
 ## Uninstall
 
-Remove the installed `engineering-workflow` folder from the host's `.agents/skills`,
+Remove the installed `riff` folder from the host's `.agents/skills`,
 `.cursor/skills`, or `.claude/skills` directory. Keep `.engineering-workflow/`
 and task records if you want to retain configuration and history.

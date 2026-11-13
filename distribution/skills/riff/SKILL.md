@@ -4,7 +4,7 @@ description: Plan, execute, review, route agents, and resume software engineerin
 ---
 # Engineering Workflow
 
-Version 0.6.0. One skill coordinates four phases. Read only the needed phase.
+Version 0.7.0. One skill coordinates four phases. Read only the needed phase.
 
 ## Resolve paths first
 Treat the directory containing this SKILL.md as SKILL_ROOT and the user's target
@@ -51,3 +51,6 @@ Read references/hosts.md for invocation, model selection, and cross-host handoff
 The workflow is model-independent; its tools do not invoke provider APIs. Use
 only the active host's verified capabilities. A subscription or model visible
 in another app does not establish access in the current host.
+
+Use plan.json and plan.md for planning records and run.json for execution records
+in each task directory so riff status, validate and route can locate them.

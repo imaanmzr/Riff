@@ -12,6 +12,7 @@ python3 execution/tests/test_gates.py
 python3 recovery/tests/test_state.py
 python3 routing/tests/test_router.py
 python3 distribution/tests/test_install.py
+python3 distribution/tests/test_cli.py
 ```
 
 When changing workflow behavior, update the corresponding phase instructions and

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0 — 2026-11-13
+
+- Added descriptive command help and examples.
+- Added doctor, new, status, prompt, validate and route commands.
+- Added CLI regressions for task creation, error exits and record preservation.
+
 ## 0.6.0 — 2026-11-13
 
 - Added an installable terminal command through a Python package or direct user installer.

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Engineering Workflow"
-  short_description: "Plan, execute, review, and resume engineering work"
-  default_prompt: "Use $engineering-workflow to plan this feature and stop after plan review."

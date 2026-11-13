@@ -30,7 +30,8 @@ Download and extract a Riff release, then run the interactive setup from its
 folder:
 
 ```bash
-python3 riff.py init
+./riff init
+# or: python3 riff.py init
 ```
 
 The wizard asks which project and agent host to configure. It supports Codex,
@@ -59,13 +60,12 @@ updates, and troubleshooting.
 Invoke the skill in the target project:
 
 ```text
-$engineering-workflow Plan partial refunds. Stop after plan review.
-$engineering-workflow Execute the reviewed plan at docs/work/partial-refunds/.
-$engineering-workflow Resume the task at docs/work/partial-refunds/.
+$riff Plan partial refunds. Stop after plan review.
+$riff Execute the reviewed plan at docs/work/partial-refunds/.
+$riff Resume the task at docs/work/partial-refunds/.
 ```
 
-In Cursor and Claude Code, invoke `/engineering-workflow` instead of the Codex
-`$` syntax. The skill name stays `engineering-workflow` for compatibility.
+Use `/riff` in Cursor and Claude Code.
 
 ## Development
 

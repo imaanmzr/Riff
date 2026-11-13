@@ -6,9 +6,9 @@ review isolation and filesystem access. Never assume capabilities by brand name.
 
 | Host | Project skill location | Invocation |
 | --- | --- | --- |
-| Codex | .agents/skills/engineering-workflow | $engineering-workflow |
-| Cursor | .cursor/skills/engineering-workflow | /engineering-workflow |
-| Claude Code | .claude/skills/engineering-workflow | /engineering-workflow |
+| Codex | .agents/skills/riff | $riff |
+| Cursor | .cursor/skills/riff | /riff |
+| Claude Code | .claude/skills/riff | /riff |
 
 Cursor also discovers .agents/skills and .claude/skills. Reuse an existing copy
 rather than installing another for Cursor. If Codex and Claude Code both require

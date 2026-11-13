@@ -3,7 +3,10 @@
 import argparse
 import json
 from pathlib import Path
-from install import install, HOSTS
+if __package__:
+    from .install import HOSTS, LEGACY_NAME, NAME, install
+else:
+    from install import HOSTS, LEGACY_NAME, NAME, install
 
 
 def ask(label, default='', choices=None):
@@ -64,7 +67,7 @@ def configure(project, host):
         temp=path.with_suffix('.tmp')
         with temp.open('x') as stream: stream.write(json.dumps(value,indent=2)+'\n')
         temp.replace(path)
-    print('Configured. Invoke engineering-workflow in your agent app.')
+    print('Configured. Use $riff in Codex or /riff in Cursor and Claude Code.')
 
 
 def main():
@@ -80,9 +83,11 @@ def main():
         target=host
         if host=='cursor':
             for other in ('codex','claude'):
-                if (project/HOSTS[other]/'skills/engineering-workflow/SKILL.md').exists():
-                    target=other; break
-        dest=project/HOSTS[target]/'skills/engineering-workflow'
+                skills = project / HOSTS[other] / 'skills'
+                if any((skills / name / 'SKILL.md').is_file() for name in (NAME, LEGACY_NAME)):
+                    target = other
+                    break
+        dest = project / HOSTS[target] / 'skills' / NAME
         if args.action=='update' or not dest.exists(): install(project,args.action=='update',target)
         else: print('Using existing installation:',dest)
     elif not (project/'.engineering-workflow/project.json').exists():

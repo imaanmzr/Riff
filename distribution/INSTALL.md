@@ -6,11 +6,11 @@ phases, not four competing coordinators. No pip packages or API keys are require
 for installation. Provider access is supplied by your agent environment.
 
 ## Install
-From this extracted package directory:
+From the extracted Riff directory:
 
-    python3 install.py /absolute/path/to/your/project --host codex
-    python3 install.py /absolute/path/to/your/project --host cursor
-    python3 install.py /absolute/path/to/your/project --host claude
+    python3 riff.py init --project /absolute/path/to/your/project --host codex
+    python3 riff.py init --project /absolute/path/to/your/project --host cursor
+    python3 riff.py init --project /absolute/path/to/your/project --host claude
 
 Choose the host you use. It adds the skill under .agents/skills (Codex),
 .cursor/skills (Cursor), or .claude/skills (Claude Code), and initializes settings under
@@ -20,16 +20,16 @@ and shared settings in your project's version control if the team should use it;
 keep secrets out of host.json and task records.
 
 ## Use in your agent
-Open the target project and select engineering-workflow. Codex uses the examples
-below; Cursor and Claude Code use /engineering-workflow instead of the $ prefix:
+Open the target project and select riff. Codex uses the examples
+below; Cursor and Claude Code use /riff instead of the $ prefix:
 
-    $engineering-workflow Plan <feature>. Stop after the plan passes review.
-    $engineering-workflow Execute the reviewed plan at docs/work/<task-id>/.
-    $engineering-workflow Resume the task at docs/work/<task-id>/.
-    $engineering-workflow Audit this plan independently.
+    $riff Plan <feature>. Stop after the plan passes review.
+    $riff Execute the reviewed plan at docs/work/<task-id>/.
+    $riff Resume the task at docs/work/<task-id>/.
+    $riff Audit this plan independently.
 
 If discovery is unavailable, explicitly ask the agent to read
-.agents/skills/engineering-workflow/SKILL.md. A local repository install does not
+.agents/skills/riff/SKILL.md. A local repository install does not
 install a personal skill in ChatGPT's Skills directory. For manual loading in Cursor or Claude Code, substitute the installed host
 folder. Other applications can load SKILL.md explicitly; native support is not
 claimed. See references/hosts.md inside the installed skill for handoffs.
@@ -38,7 +38,7 @@ claimed. See references/hosts.md inside the installed skill for handoffs.
 Append this sentence to your existing AGENTS.md if desired:
 
 For feature planning, implementation, review, and recovery, follow
-`.agents/skills/engineering-workflow/SKILL.md`; scale process to task risk.
+`.agents/skills/riff/SKILL.md`; scale process to task risk.
 
 The installer deliberately does not change your project's instructions.
 
@@ -55,7 +55,7 @@ are unavailable; required independent review remains outstanding.
 
 ## Update
 
-    python3 install.py /absolute/path/to/your/project --host claude --update
+    python3 riff.py update --project /absolute/path/to/your/project --host claude
 
 Use the same --host as the original install.
 
@@ -64,7 +64,7 @@ those edits first. Existing project configuration is never overwritten. Do not
 run simultaneous installers against the same project.
 
 ## Remove
-Delete only .agents/skills/engineering-workflow from the target project. Retain
+Delete only .agents/skills/riff from the target project. Retain
 .engineering-workflow and docs/work if you want to keep configuration/history.
 Remove any optional AGENTS.md reference you added yourself.
 

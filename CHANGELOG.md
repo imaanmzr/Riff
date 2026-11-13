@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0 — 2026-11-13
+
+- Added an installable terminal command through a Python package or direct user installer.
+- Added VS Code GitHub Copilot project skill installation.
+- Renamed the installed skill command to riff with migration for managed legacy installations.
+
 ## 0.5.1 — 2026-11-13
 
 - Renamed the interactive installer command and package to Riff.

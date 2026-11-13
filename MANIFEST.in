@@ -1,0 +1,3 @@
+recursive-include distribution/skills *.md *.py *.json *.yaml
+global-exclude *.pyc
+prune distribution/skills/riff/references/planning/__pycache__

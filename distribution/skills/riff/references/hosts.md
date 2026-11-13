@@ -8,6 +8,7 @@ review isolation and filesystem access. Never assume capabilities by brand name.
 | --- | --- | --- |
 | Codex | .agents/skills/riff | $riff |
 | Cursor | .cursor/skills/riff | /riff |
+| VS Code Copilot | .github/skills/riff | /riff |
 | Claude Code | .claude/skills/riff | /riff |
 
 Cursor also discovers .agents/skills and .claude/skills. Reuse an existing copy

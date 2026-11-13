@@ -4,7 +4,7 @@ description: Plan, execute, review, route agents, and resume software engineerin
 ---
 # Engineering Workflow
 
-Version 0.4.2. One skill coordinates four phases. Read only the needed phase.
+Version 0.6.0. One skill coordinates four phases. Read only the needed phase.
 
 ## Resolve paths first
 Treat the directory containing this SKILL.md as SKILL_ROOT and the user's target

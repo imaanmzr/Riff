@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "riff-workflow"
+version = "0.6.0"
+description = "Plan, execute, review and resume engineering work across agent hosts"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.scripts]
+riff = "distribution.riff:cli"
+
+[tool.setuptools]
+packages = ["distribution"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+distribution = ["skills/**/*"]

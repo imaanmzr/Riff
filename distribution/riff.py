@@ -67,11 +67,12 @@ def configure(project, host):
         temp=path.with_suffix('.tmp')
         with temp.open('x') as stream: stream.write(json.dumps(value,indent=2)+'\n')
         temp.replace(path)
-    print('Configured. Use $riff in Codex or /riff in Cursor and Claude Code.')
+    print('Configured. Use $riff in Codex or /riff in Cursor, VS Code Copilot and Claude Code.')
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--version', action='version', version='Riff 0.6.0')
     parser.add_argument('action',choices=['init','configure','update'])
     parser.add_argument('--project'); parser.add_argument('--host',choices=sorted(HOSTS))
     args=parser.parse_args()
@@ -94,6 +95,11 @@ def main():
         raise ValueError('Run init before configure')
     configure(project,host)
 
-if __name__=='__main__':
-    try: main()
-    except (OSError,ValueError,EOFError,KeyboardInterrupt) as exc: raise SystemExit('Stopped: '+str(exc))
+def cli():
+    try:
+        main()
+    except (OSError, ValueError, EOFError, KeyboardInterrupt) as exc:
+        raise SystemExit('Stopped: ' + str(exc))
+
+if __name__ == '__main__':
+    cli()

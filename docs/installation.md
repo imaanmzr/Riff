@@ -2,19 +2,39 @@
 
 ## Requirements
 
-Python 3.9 or newer. Recovery uses Unix file locking. The host application must
+Python 3.10 or newer. Recovery uses Unix file locking. The host application must
 support repository skills or allow an agent to read `SKILL.md` directly.
+
+## Install the terminal utility
+
+From the repository root, install Riff into your user directory.
+
+```bash
+python3 install_cli.py
+export PATH="$HOME/.local/bin:$PATH"
+riff --version
+riff init
+```
+
+Add the PATH line to your shell configuration for future terminals. You can also
+install into a chosen prefix with `python3 install_cli.py --prefix /path/to/prefix`.
+Re-running this installer updates the managed terminal utility.
+
+With pipx available, the Python package can be installed directly from this checkout.
+
+```bash
+pipx install .
+```
 
 ## Interactive setup
 
-Extract the Riff release archive, open a terminal in its directory, and run:
+After installing the terminal utility, run:
 
 ```bash
-./riff init
-# or: python3 riff.py init
+riff init
 ```
 
-The CLI asks for a project path and one host: Codex, Cursor, or Claude Code. It
+The CLI asks for a project path and one host: Codex, Cursor, VS Code with GitHub Copilot, or Claude Code. It
 installs under `.agents/skills`, `.cursor/skills`, or `.claude/skills`. Cursor can
 read the Codex and Claude paths too, and Riff reuses an existing installation.
 
@@ -26,14 +46,14 @@ your active host. Leave mappings blank to disable routed dispatch.
 Use `--project` and `--host` to avoid the initial questions:
 
 ```bash
-python3 riff.py init --project /work/my-service --host claude
+riff init --project /work/my-service --host claude
 ```
 
 ## Configure and update
 
 ```bash
-python3 riff.py configure --project /work/my-service --host claude
-python3 riff.py update --project /work/my-service --host claude
+riff configure --project /work/my-service --host claude
+riff update --project /work/my-service --host claude
 ```
 
 Riff preserves project settings and refuses to overwrite locally edited or
@@ -49,7 +69,7 @@ the old skill command or path. Project configuration still lives in
 
 ## Invoke
 
-Use `$riff` in Codex and `/riff` in Cursor or Claude Code.
+Use `$riff` in Codex and `/riff` in Cursor, VS Code Copilot, or Claude Code.
 
 ```text
 $riff Plan the new return flow. Stop after the plan review.
@@ -78,3 +98,19 @@ These values do not grant provider access. Select the main model in the host UI.
 Remove the installed `riff` folder from the host's `.agents/skills`,
 `.cursor/skills`, or `.claude/skills` directory. Keep `.engineering-workflow/`
 and task records if you want to retain configuration and history.
+
+## VS Code with GitHub Copilot
+
+```bash
+riff init --project /path/to/project --host vscode
+```
+
+The installer adds `.github/skills/riff/SKILL.md`. Invoke `/riff` in Copilot
+Chat and include the operation, such as `/riff Plan this feature`. VS Code support
+here refers to GitHub Copilot's Agent Skills integration.
+
+## Terminal commands and agent commands
+
+`riff init`, `riff configure`, and `riff update` manage project setup.
+`$riff` in Codex and `/riff` in the other supported agent chats start the
+engineering workflow. Model access and subagents are supplied by the selected host.

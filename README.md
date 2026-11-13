@@ -3,7 +3,7 @@
 Riff is a small, model-independent workflow for taking software changes from
 uncertain idea to reviewed implementation. It guides an agent through discovery,
 research, decisions, specifications, task planning, implementation, verification,
-and recovery across Codex, Cursor, and Claude Code.
+and recovery across Codex, Cursor, VS Code with GitHub Copilot, and Claude Code.
 
 The workflow is delivered as a repository skill and installed with a short CLI.
 Plans, decisions, execution state, and evidence live with the project so another
@@ -24,14 +24,33 @@ Riff provides instructions and local validation utilities. The active agent host
 provides model access, tools, and any subagent execution. Riff does not itself
 call provider APIs or launch models.
 
-## Install
+## Install the terminal utility
 
-Download and extract a Riff release, then run the interactive setup from its
-folder:
+From the repository root, install Riff into your user directory.
 
 ```bash
-./riff init
-# or: python3 riff.py init
+python3 install_cli.py
+export PATH="$HOME/.local/bin:$PATH"
+riff --version
+riff init
+```
+
+Add the PATH line to your shell configuration for future terminals. You can also
+install into a chosen prefix with `python3 install_cli.py --prefix /path/to/prefix`.
+Re-running this installer updates the managed terminal utility.
+
+With pipx available, the Python package can be installed directly from this checkout.
+
+```bash
+pipx install .
+```
+
+## Install
+
+After installing the terminal utility, start the interactive setup:
+
+```bash
+riff init
 ```
 
 The wizard asks which project and agent host to configure. It supports Codex,
@@ -42,14 +61,14 @@ project instructions and configuration.
 You can provide values without prompts:
 
 ```bash
-python3 riff.py init --project /path/to/project --host codex
-python3 riff.py init --project /path/to/project --host cursor
-python3 riff.py init --project /path/to/project --host claude
+riff init --project /path/to/project --host codex
+riff init --project /path/to/project --host cursor
+riff init --project /path/to/project --host claude
 ```
 
 For Cursor, Riff reuses an existing Codex or Claude skill installation when
-available. To edit settings later, run `python3 riff.py configure`. To update the
-installed skill, run `python3 riff.py update --host codex` with the project path
+available. To edit settings later, run `riff configure`. To update the
+installed skill, run `riff update --host codex` with the project path
 as prompted, or pass `--project /path/to/project`.
 
 See [Installation and use](docs/installation.md) for setup, model configuration,

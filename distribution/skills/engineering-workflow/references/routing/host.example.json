@@ -1,0 +1,6 @@
+{
+  "parallel_agents": false,
+  "isolated_workspaces": false,
+  "available_slots": 1,
+  "models": {}
+}

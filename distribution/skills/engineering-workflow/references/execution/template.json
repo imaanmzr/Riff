@@ -1,0 +1,12 @@
+{
+  "workflow_version": "0.2",
+  "authorized": false,
+  "plan_revision": null,
+  "base_revision": null,
+  "head_revision": null,
+  "integration_owner": null,
+  "status": "blocked",
+  "blockers": ["Bind a reviewed plan and record actual execution authorization"],
+  "tasks": {},
+  "final": {"requirements": [], "checks": [], "reviews": []}
+}

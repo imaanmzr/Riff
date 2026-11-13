@@ -1,0 +1,10 @@
+{
+  "workflow_version": "0.1",
+  "artifacts_directory": "docs/work",
+  "build_command": null,
+  "test_command": null,
+  "architecture_constraints": [],
+  "domain_invariants": [],
+  "model_profiles": {"fast": null, "coding": null, "deep_reasoning": null},
+  "max_review_rounds_before_escalation": 2
+}

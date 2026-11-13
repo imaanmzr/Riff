@@ -1,0 +1,8 @@
+{
+  "workflow_version": "0.4",
+  "profiles": {"fast": null, "coding": null, "deep_reasoning": null},
+  "max_parallel": 2,
+  "token_budget": 100000,
+  "task_token_budget": 10000,
+  "max_attempts": 2
+}

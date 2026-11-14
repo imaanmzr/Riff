@@ -74,6 +74,7 @@ and dispatch using host tools. Missing input or failed gates prevent dispatch.
 
 ## Update the utility
 
-To install a newer checkout of the terminal utility, run `python3 install_cli.py`
+To install a newer checkout of the terminal utility, run the
+[installer for your platform](installation.md#install-the-terminal-utility)
 from that checkout, or reinstall it with your Python package manager. Then use
 `riff update` to update the skill in each project.

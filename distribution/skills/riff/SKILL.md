@@ -11,7 +11,8 @@ Treat the directory containing this SKILL.md as SKILL_ROOT and the user's target
 repository as PROJECT_ROOT. Every `planning/`, `execution/`, `recovery/` or
 `routing/` path in bundled instructions means SKILL_ROOT/references/<path>.
 Run Python utilities by their absolute paths; pass project artifacts as absolute
-paths. Do not change working directory to the skill and accidentally inspect it
+paths. On Windows, use `py -3` or `python` for examples that use `python3`.
+Do not change working directory to the skill and accidentally inspect it
 as the target project. Never write task state or configuration inside this skill.
 
 Read the target project's applicable instructions (AGENTS.md, CLAUDE.md, Cursor

@@ -1,12 +1,16 @@
 """Local atomic checkpoints and conservative recovery; never replays side effects."""
 import argparse
 import copy
-import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path
 import tempfile
+
+if os.name == 'nt':
+    import msvcrt
+else:
+    import fcntl
 
 
 def digest(value):
@@ -42,8 +46,13 @@ def save(path, payload, expected_generation):
     """CAS under a local advisory lock; no silent last-writer-wins updates."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(str(path) + '.lock', 'a') as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+    with open(str(path) + '.lock', 'a+b') as lock:
+        if os.name == 'nt':
+            # Windows can lock a byte beyond EOF, so existing empty lock files work.
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
+        else:
+            fcntl.flock(lock, fcntl.LOCK_EX)
         current = load(path)['generation'] if path.exists() else 0
         if current != expected_generation:
             raise ValueError('Stale checkpoint generation')
@@ -57,9 +66,10 @@ def save(path, payload, expected_generation):
                 out.flush()
                 os.fsync(out.fileno())
             os.replace(temp, path)
-            directory = os.open(path.parent, os.O_RDONLY)
-            try: os.fsync(directory)
-            finally: os.close(directory)
+            if os.name != 'nt':
+                directory = os.open(path.parent, os.O_RDONLY)
+                try: os.fsync(directory)
+                finally: os.close(directory)
         finally:
             if os.path.exists(temp): os.unlink(temp)
         return data

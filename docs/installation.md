@@ -2,12 +2,53 @@
 
 ## Requirements
 
-Python 3.10 or newer. Recovery uses Unix file locking. The host application must
-support repository skills or allow an agent to read `SKILL.md` directly.
+Python 3.10 or newer. The host application must support repository skills or
+allow an agent to read `SKILL.md` directly.
 
 ## Install the terminal utility
 
-From the repository root, install Riff into your user directory.
+### Windows
+
+Run from the repository root in Windows PowerShell 5.1 or newer. If your
+Python command is `python3` or `python`, use it in place of `py -3` on
+the first line.
+
+```powershell
+$riffBin = py -3 .\install_cli.py --print-bin-path
+if ($LASTEXITCODE -ne 0) { throw 'Riff installation failed' }
+
+$userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+if (($userPath -split ';') -notcontains $riffBin) {
+    $newPath = if ($userPath) { "$riffBin;$userPath" } else { $riffBin }
+    [Environment]::SetEnvironmentVariable('Path', $newPath, 'User')
+}
+if (($env:Path -split ';') -notcontains $riffBin) {
+    $env:Path = "$riffBin;$env:Path"
+}
+
+riff --version
+riff init
+```
+
+The script adds the installed `riff.cmd` directory to your user PATH for
+future terminals and to the current PowerShell session. Microsoft Store
+Python may redirect the installation into its package directory, so use
+the directory reported by `--print-bin-path`.
+
+If you already ran the installer and see “The term 'riff' is not recognized,”
+run the block above to register the actual install directory. If you installed
+with a custom `--prefix`, pass the same prefix on the first line. Rerun the
+installer with that prefix to upgrade the CLI.
+
+If Windows reports that a filename is too long, choose a shorter
+`--prefix` or move the project closer to the drive root.
+
+To remove the CLI, delete its install directory and remove its `bin` entry
+from your user **Path**.
+
+### Linux and macOS
+
+Run from the repository root.
 
 ```bash
 python3 install_cli.py

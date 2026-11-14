@@ -26,7 +26,28 @@ call provider APIs or launch models.
 
 ## Install the terminal utility
 
-From the repository root, install Riff into your user directory.
+### Windows
+
+From the repository root, run this in PowerShell with Python 3.10 or newer.
+The installer prints the actual launcher directory, including when Microsoft
+Store Python redirects the installation.
+
+```powershell
+$riffBin = py -3 .\install_cli.py --print-bin-path
+if ($LASTEXITCODE -ne 0) { throw 'Riff installation failed' }
+$env:Path = "$riffBin;$env:Path"
+riff --version
+riff init
+```
+
+If Python is installed through the Microsoft Store, use `python3` or
+`python` in place of `py -3`. The example enables `riff` for this terminal.
+Follow the [Windows installation guide](docs/installation.md#windows) to
+save the directory to your user PATH for future terminals.
+
+### Linux and macOS
+
+Run these commands from the repository root.
 
 ```bash
 python3 install_cli.py

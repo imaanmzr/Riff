@@ -30,7 +30,12 @@ class InstallTests(unittest.TestCase):
             with self.assertRaises(ValueError): install(d)
     def test_symlink_refusal(self):
         with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as other:
-            (Path(d)/'.agents').symlink_to(other)
+            try:
+                (Path(d)/'.agents').symlink_to(other, target_is_directory=True)
+            except OSError as exc:
+                if getattr(exc, 'winerror', None) == 1314:
+                    self.skipTest('Creating a Windows symlink requires additional privileges')
+                raise
             with self.assertRaises(ValueError): install(d)
     def test_skill_frontmatter_and_links(self):
         root=Path(__file__).resolve().parents[1]/'skills/riff'
@@ -44,7 +49,8 @@ class InstallTests(unittest.TestCase):
 
 class MultiHostTests(unittest.TestCase):
     def test_host_paths(self):
-        for host,folder in [('codex','.agents'),('cursor','.cursor'),('claude','.claude')]:
+        for host,folder in [('codex','.agents'),('cursor','.cursor'),('claude','.claude'),
+                            ('vscode','.github')]:
             with self.subTest(host=host), tempfile.TemporaryDirectory() as d:
                 install(d,host=host)
                 self.assertTrue((Path(d)/folder/'skills/riff/SKILL.md').exists())

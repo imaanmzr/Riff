@@ -59,7 +59,15 @@ class RecoveryTests(unittest.TestCase):
             p=Path(d)/'src'; p.write_text('old'); a=fingerprint(d,['src','absent'])
             p.write_text('new'); self.assertNotEqual(a,fingerprint(d,['src','absent']))
             with self.assertRaises(ValueError): fingerprint(d,['../outside'])
-            (Path(d)/'link').symlink_to(p)
+    def test_refuses_symlink(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)/'src'; p.touch()
+            try:
+                (Path(d)/'link').symlink_to(p)
+            except OSError as exc:
+                if getattr(exc, 'winerror', None) == 1314:
+                    self.skipTest('Creating a Windows symlink requires additional privileges')
+                raise
             with self.assertRaises(ValueError): fingerprint(d,['link'])
 
 if __name__=='__main__': unittest.main()

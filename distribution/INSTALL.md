@@ -1,7 +1,7 @@
 # Engineering Workflow — project installation
 
-Requires Python 3.9+ for installation; recovery uses Linux/Unix file locking.
-This package supports Codex, Cursor and Claude Code repository skill discovery. It is one skill with four
+Requires Python 3.10 or newer on Windows, Linux, or macOS.
+This package supports Codex, Cursor, VS Code with GitHub Copilot, and Claude Code repository skill discovery. It is one skill with four
 phases, not four competing coordinators. No pip packages or API keys are required
 for installation. Provider access is supplied by your agent environment.
 
@@ -11,6 +11,13 @@ From the extracted Riff directory:
     python3 riff.py init --project /absolute/path/to/your/project --host codex
     python3 riff.py init --project /absolute/path/to/your/project --host cursor
     python3 riff.py init --project /absolute/path/to/your/project --host claude
+
+On Windows, run `py -3 .\riff.py init --project C:\work\my-service --host vscode`
+from this directory. Use `python` if the Python launcher is unavailable.
+For a `riff` command available across projects, run the top-level
+`install_cli.py` from the full repository checkout. See the
+[Windows installation guide](../docs/installation.md#windows) for the
+PowerShell commands that install the CLI and update your PATH.
 
 Choose the host you use. It adds the skill under .agents/skills (Codex),
 .cursor/skills (Cursor), or .claude/skills (Claude Code), and initializes settings under

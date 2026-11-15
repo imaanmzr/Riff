@@ -4,8 +4,10 @@ import argparse
 import json
 from pathlib import Path
 if __package__:
+    from . import commands
     from .install import HOSTS, LEGACY_NAME, NAME, install
 else:
+    import commands
     from install import HOSTS, LEGACY_NAME, NAME, install
 
 
@@ -73,8 +75,8 @@ def configure(project, host):
 def build_parser():
     parser = argparse.ArgumentParser(
         prog='riff',
-        description='Install Riff, prepare engineering tasks, and inspect workflow progress.',
-        epilog='Examples:\n  riff init --host cursor\n  riff new refunds --title "Partial refunds"\n  riff status\n  riff prompt refunds --host cursor\n  riff validate refunds\n\nRun riff COMMAND --help for command options.',
+        description='Install Riff, prepare agent workflow prompts, and inspect saved tasks.',
+        epilog='Examples:\n  riff init --host cursor\n  riff plan "Add partial refunds" --host cursor\n  riff design "Compare retry interfaces"\n  riff review --task refunds\n  riff status\n\nRun riff COMMAND --help for command options.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument('--version', action='version', version='Riff 0.7.0')
@@ -109,6 +111,22 @@ def build_parser():
             command.add_argument('--action', dest='operation', choices=['plan', 'execute', 'resume', 'audit'], default='plan')
         if action == 'validate':
             command.add_argument('--execution', action='store_true', help='Validate plan.json and run.json together')
+    for operation, (description, _) in commands.WORKFLOW_COMMANDS.items():
+        aliases = ['docs'] if operation == 'documentation' else []
+        command = subparsers.add_parser(
+            operation, aliases=aliases, help=f'{description} (prints an agent prompt)',
+            description=f'{description}. Paste the resulting prompt into your agent chat.',
+        )
+        command.set_defaults(operation=operation, handler=commands.workflow_prompt)
+        command.add_argument('--project', help='Project directory (default: current directory)')
+        command.add_argument('--host', choices=sorted(HOSTS), default='codex',
+                             help='Agent app (default: codex)')
+        if operation in commands.SAVED_TASK_COMMANDS:
+            command.add_argument('task', help='Saved task ID')
+        else:
+            target = command.add_mutually_exclusive_group(required=True)
+            target.add_argument('subject', nargs='?', help='Request to send to the agent')
+            target.add_argument('--task', help='Use an existing task ID')
     return parser
 
 
@@ -119,17 +137,14 @@ def main():
         parser.print_help()
         return
     if args.action not in ('init', 'configure', 'update'):
-        if __package__:
-            from . import commands
-        else:
-            import commands
         project = Path(args.project or Path.cwd()).expanduser().resolve()
         if not project.is_dir():
             raise ValueError('Project directory does not exist')
         handlers = {'new': commands.new_task, 'status': commands.status,
                     'doctor': commands.doctor, 'prompt': commands.prompt,
                     'validate': commands.run_utility, 'route': commands.run_utility}
-        raise SystemExit(handlers[args.action](project, args) or 0)
+        handler = getattr(args, 'handler', None) or handlers[args.action]
+        raise SystemExit(handler(project, args) or 0)
     project=Path(args.project or ask('Project directory',str(Path.cwd()))).expanduser().resolve()
     host=args.host or ask('Agent app','codex',sorted(HOSTS))
     if not project.is_dir(): raise ValueError('Project directory does not exist')

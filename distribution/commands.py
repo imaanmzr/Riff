@@ -37,7 +37,11 @@ def load(path):
 def records_directory(project):
     settings = project / '.engineering-workflow' / 'project.json'
     config = load(settings)
-    relative = Path(config.get('artifacts_directory', 'docs/work'))
+    return resolve_records_directory(project, config.get('artifacts_directory', 'docs/work'))
+
+
+def resolve_records_directory(project, value):
+    relative = Path(value)
     directory = (project / relative).resolve()
     if relative.is_absolute() or not directory.is_relative_to(project) or directory == project:
         raise ValueError('Task records directory must be a subdirectory of the project')

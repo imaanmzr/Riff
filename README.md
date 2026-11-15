@@ -90,6 +90,10 @@ riff init --project /path/to/project --host vscode
 riff init --project /path/to/project --host claude
 ```
 
+In a Git project, choose whether to keep Riff files local during setup. Use
+`riff init --host codex --git local` to select local mode, or switch an existing
+project with `riff configure --git local` or `riff configure --git track`.
+
 For Cursor, Riff reuses an existing Codex or Claude skill installation when
 available. To edit settings later, run `riff configure`. To update the
 installed skill, run `riff update --host codex` with the project path

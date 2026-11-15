@@ -5,9 +5,11 @@ import json
 from pathlib import Path
 if __package__:
     from . import commands
+    from .git_visibility import GitVisibility
     from .install import HOSTS, LEGACY_NAME, NAME, install
 else:
     import commands
+    from git_visibility import GitVisibility
     from install import HOSTS, LEGACY_NAME, NAME, install
 
 
@@ -32,7 +34,7 @@ def read(path, fallback):
     return json.loads(path.read_text()) if path.exists() else fallback.copy()
 
 
-def configure(project, host):
+def configure(project, host, git, git_mode=None):
     settings=project/'.engineering-workflow'
     config=read(settings/'project.json',{})
     print('Commands are saved as text, never executed by this wizard. Enter - for unknown.')
@@ -40,8 +42,7 @@ def configure(project, host):
         value=ask(label,config.get(key) or '-')
         config[key]=None if value=='-' else value
     config['artifacts_directory']=ask('Task records directory',config.get('artifacts_directory','docs/work'))
-    path=Path(config['artifacts_directory'])
-    if path.is_absolute() or '..' in path.parts: raise ValueError('Task directory must be inside the project')
+    records = commands.resolve_records_directory(project, config['artifacts_directory'])
     routing_path=settings/f'routing-{host}.json'
     host_path=settings/'hosts'/f'{host}.json'
     route=read(routing_path,read(settings/'routing.json',{}))
@@ -61,6 +62,9 @@ def configure(project, host):
         capability['parallel_agents']=ask('Does this host support parallel agents?','no',['yes','no'])=='yes'
         capability['isolated_workspaces']=ask('Will agents have isolated workspaces?','no',['yes','no'])=='yes'
         capability['available_slots']=number('Total agent slots for this workflow',1,0)
+    if git and git_mode is None:
+        git_mode = ask('Git visibility for the Riff skill, settings and task records (local/track/unchanged)',
+                       'unchanged', ['local', 'track', 'unchanged'])
     print('\nProject:',project,'\nApp:',host,'\nRecords:',config['artifacts_directory'])
     if ask('Save configuration?','yes',['yes','no'])=='no': return
     for path,value in [(settings/'project.json',config),(routing_path,route),(host_path,capability)]:
@@ -69,6 +73,10 @@ def configure(project, host):
         temp=path.with_suffix('.tmp')
         with temp.open('x') as stream: stream.write(json.dumps(value,indent=2)+'\n')
         temp.replace(path)
+    if git and git_mode in ('local', 'track'):
+        git.apply(git_mode, records)
+    elif git and git.is_local():
+        git.apply('local', records)
     print('Configured. Use $riff in Codex or /riff in Cursor, VS Code Copilot and Claude Code.')
 
 
@@ -95,6 +103,12 @@ def build_parser():
     for action, description in descriptions.items():
         command = subparsers.add_parser(action, help=description, description=description)
         command.add_argument('--project', help='Project directory (default: current directory)')
+        if action in ('init', 'configure'):
+            command.add_argument('--git', choices=('local', 'track'),
+                                 help='Keep Riff files local or make them eligible for Git tracking')
+        if action == 'configure':
+            command.add_argument('--untrack', action='store_true',
+                                 help='With --git local, stage removal of tracked Riff files and keep local copies')
         if action in ('init', 'configure', 'update', 'doctor', 'prompt', 'route'):
             command.add_argument('--host', choices=sorted(HOSTS), required=action == 'route',
                                  default='codex' if action == 'prompt' else None,
@@ -145,9 +159,24 @@ def main():
                     'validate': commands.run_utility, 'route': commands.run_utility}
         handler = getattr(args, 'handler', None) or handlers[args.action]
         raise SystemExit(handler(project, args) or 0)
-    project=Path(args.project or ask('Project directory',str(Path.cwd()))).expanduser().resolve()
-    host=args.host or ask('Agent app','codex',sorted(HOSTS))
+    git_mode = getattr(args, 'git', None)
+    untrack = getattr(args, 'untrack', False)
+    if untrack and git_mode != 'local':
+        parser.error('--untrack requires --git local')
+    project_choice = args.project
+    if project_choice is None:
+        project_choice = str(Path.cwd()) if git_mode else ask('Project directory', str(Path.cwd()))
+    project=Path(project_choice).expanduser().resolve()
     if not project.is_dir(): raise ValueError('Project directory does not exist')
+    git = GitVisibility.discover(project)
+    if git_mode and git is None:
+        raise ValueError('Git visibility requires a Git working tree')
+    if args.action == 'configure' and git_mode:
+        if not (project / '.engineering-workflow/project.json').is_file():
+            raise ValueError('Run init before configure')
+        git.apply(git_mode, commands.records_directory(project), untrack=untrack)
+        return
+    host=args.host or ask('Agent app','codex',sorted(HOSTS))
     if args.action in ('init','update'):
         # Cursor can reuse native Codex/Claude copies without duplicate skills.
         target=host
@@ -162,7 +191,9 @@ def main():
         else: print('Using existing installation:',dest)
     elif not (project/'.engineering-workflow/project.json').exists():
         raise ValueError('Run init before configure')
-    configure(project,host)
+    if args.action == 'init' and git_mode:
+        git.apply(git_mode, commands.records_directory(project))
+    configure(project,host,git,git_mode)
 
 def cli():
     try:

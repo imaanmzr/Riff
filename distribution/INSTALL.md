@@ -28,6 +28,15 @@ folder can be moved or deleted after installation. Include the installed skill
 and shared settings in your project's version control if the team should use it;
 keep secrets out of host.json and task records.
 
+For a Git project, pick Git visibility during setup or pass `--git local`
+or `--git track` to `riff init`. To switch an existing project, use
+`riff configure --git local` or `riff configure --git track`. Local mode
+uses Git's clone-local exclusions for the Riff skill folders, settings, and
+configured task-record directory. Use a dedicated task-record directory.
+To keep already tracked Riff files local, run
+`riff configure --git local --untrack`. Review the staged removals before
+committing. The working copies stay on disk.
+
 ## Use in your agent
 Open the target project and select riff. Use $riff in Codex or /riff in
 Cursor, VS Code Copilot, and Claude Code.

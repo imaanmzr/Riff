@@ -7,6 +7,8 @@ help, such as `riff new --help`. Running `riff` without arguments displays help.
 | --- | --- |
 | `riff init` | Install the project skill and configure the project |
 | `riff configure` | Edit build/test commands, model mappings and budgets |
+| `riff configure --git local\|track` | Change Git visibility for an existing project without opening the wizard |
+| `riff configure --git local --untrack` | Stage removal of tracked Riff files and retain local copies |
 | `riff update` | Update a project's skill using the installed Riff version |
 | `riff doctor` | Inspect project settings and discover installed skill files |
 | `riff new TASK` | Create draft planning records for a new task |
@@ -18,6 +20,9 @@ help, such as `riff new --help`. Running `riff` without arguments displays help.
 Commands accept `--project /path/to/project`. Setup commands prompt for a project
 when it is omitted. Task and inspection commands use the current directory.
 Supported hosts are `codex`, `cursor`, `claude`, and `vscode`.
+Use `riff init --git local` or `riff init --git track` to select a mode
+during setup. See [Git visibility](installation.md#git-visibility) for
+which paths are affected.
 
 ## Workflow commands
 

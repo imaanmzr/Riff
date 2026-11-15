@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import unittest
 
@@ -88,6 +89,29 @@ class CliTests(unittest.TestCase):
         for arguments in ((), ('Examine refunds', '--task', 'refunds')):
             with self.subTest(arguments=arguments):
                 self.assertEqual(2, self.run_cli('design', *arguments).returncode)
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_git_archive_keeps_shell_launchers_executable_with_autocrlf(self):
+        self.git('init', '--quiet')
+        self.git('config', 'core.autocrlf', 'true')
+        launchers = ('riff', 'distribution/riff')
+        for name in ('.gitattributes', *launchers):
+            target = self.project / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / name, target)
+        self.git('add', '--', '.gitattributes', *launchers)
+        self.git('update-index', '--chmod=+x', '--', *launchers)
+        self.git('-c', 'user.name=Riff Test', '-c', 'user.email=riff@example.invalid',
+                 '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Track shell launchers')
+        archive = self.project / 'source.tar'
+        self.git('archive', '--format=tar', f'--output={archive}', 'HEAD')
+        with tarfile.open(archive) as exported:
+            for name in launchers:
+                with self.subTest(launcher=name):
+                    self.assertTrue(exported.getmember(name).mode & 0o111)
+                    data = exported.extractfile(name).read()
+                    self.assertTrue(data.startswith(b'#!/bin/sh\n'))
+                    self.assertNotIn(b'\r', data)
 
     def test_repeated_creation_preserves_task(self):
         self.run_cli('new', 'refunds')

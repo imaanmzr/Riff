@@ -1,0 +1,5 @@
+/.gitattributes text eol=lf
+
+# POSIX launchers need LF in checkouts and Git archives.
+/riff text eol=lf
+/distribution/riff text eol=lf

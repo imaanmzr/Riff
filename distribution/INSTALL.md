@@ -1,15 +1,16 @@
 # Engineering Workflow — project installation
 
 Requires Python 3.10 or newer on Windows, Linux, or macOS.
-This package supports Codex, Cursor, VS Code with GitHub Copilot, and Claude Code repository skill discovery. It is one skill with four
-phases, not four competing coordinators. No pip packages or API keys are required
-for installation. Provider access is supplied by your agent environment.
+This package supplies one repository skill for Codex, Cursor, VS Code with
+GitHub Copilot, and Claude Code. It can be installed with standard Python.
+Provider access is supplied by your agent environment.
 
 ## Install
 From the extracted Riff directory:
 
     python3 riff.py init --project /absolute/path/to/your/project --host codex
     python3 riff.py init --project /absolute/path/to/your/project --host cursor
+    python3 riff.py init --project /absolute/path/to/your/project --host vscode
     python3 riff.py init --project /absolute/path/to/your/project --host claude
 
 On Windows, run `py -3 .\riff.py init --project C:\work\my-service --host vscode`
@@ -20,16 +21,20 @@ For a `riff` command available across projects, run the top-level
 PowerShell commands that install the CLI and update your PATH.
 
 Choose the host you use. It adds the skill under .agents/skills (Codex),
-.cursor/skills (Cursor), or .claude/skills (Claude Code), and initializes settings under
+.cursor/skills (Cursor), .github/skills (VS Code Copilot), or .claude/skills
+(Claude Code), and initializes settings under
 .engineering-workflow/. Existing AGENTS.md and settings are preserved. The source
 folder can be moved or deleted after installation. Include the installed skill
 and shared settings in your project's version control if the team should use it;
 keep secrets out of host.json and task records.
 
 ## Use in your agent
-Open the target project and select riff. Codex uses the examples
-below; Cursor and Claude Code use /riff instead of the $ prefix:
+Open the target project and select riff. Use $riff in Codex or /riff in
+Cursor, VS Code Copilot, and Claude Code.
 
+    $riff Design the retry interface.
+    $riff Audit architecture in the installer.
+    $riff Update the setup docs.
     $riff Plan <feature>. Stop after the plan passes review.
     $riff Execute the reviewed plan at docs/work/<task-id>/.
     $riff Resume the task at docs/work/<task-id>/.
@@ -76,11 +81,9 @@ Delete only .agents/skills/riff from the target project. Retain
 Remove any optional AGENTS.md reference you added yourself.
 
 ## Validation and limitations
-Nine installer/structure checks and fifty workflow regressions pass. The bundled
-skill validator was attempted but requires PyYAML, unavailable in this environment;
-frontmatter and reference integrity were checked by the installer test suite.
-Discovery in your live Codex session has not been observed. Utilities validate
-records and propose routing; they do not launch models or guarantee correctness.
+The installer test suite covers frontmatter, bundled references, and host
+installation paths. Utilities validate records and propose routing. The
+selected agent host supplies live discovery and model execution.
 
 ## Cursor compatibility and multiple hosts
 Cursor also discovers .agents/skills and .claude/skills. If either copy already

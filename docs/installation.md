@@ -76,8 +76,9 @@ riff init
 ```
 
 The CLI asks for a project path and one host: Codex, Cursor, VS Code with GitHub Copilot, or Claude Code. It
-installs under `.agents/skills`, `.cursor/skills`, or `.claude/skills`. Cursor can
-read the Codex and Claude paths too, and Riff reuses an existing installation.
+installs under `.agents/skills`, `.cursor/skills`, `.github/skills`, or
+`.claude/skills`. Cursor can read the Codex and Claude paths too, and Riff
+reuses an existing installation.
 
 The wizard asks for build/test commands and a task-record directory. It treats
 commands as documentation and never executes them. Model IDs and concurrency
@@ -113,6 +114,16 @@ the old skill command or path. Project configuration still lives in
 Use `$riff` in Codex and `/riff` in Cursor, VS Code Copilot, or Claude Code.
 
 ```text
+$riff Design the return policy interface.
+$riff Audit architecture in the installer.
+$riff Update the VS Code setup docs.
+```
+
+Design and architecture audits are read-only by default. Ask for a docs edit
+explicitly when you want one. Riff keeps small tasks compact and adds planning,
+verification, and review as the task's uncertainty or risk increases.
+
+```text
 $riff Plan the new return flow. Stop after the plan review.
 /riff Plan the new return flow. Stop after the plan review.
 ```
@@ -137,8 +148,9 @@ These values do not grant provider access. Select the main model in the host UI.
 ## Uninstall
 
 Remove the installed `riff` folder from the host's `.agents/skills`,
-`.cursor/skills`, or `.claude/skills` directory. Keep `.engineering-workflow/`
-and task records if you want to retain configuration and history.
+`.cursor/skills`, `.github/skills`, or `.claude/skills` directory. Keep
+`.engineering-workflow/` and task records if you want to retain configuration
+and history.
 
 ## VS Code with GitHub Copilot
 

@@ -28,10 +28,11 @@ riff prompt refunds --host cursor
 ```
 
 `new` creates `plan.md` and a DRAFT `plan.json` in the configured task-record
-folder. A Git HEAD value is recorded if available. The planning agent still needs
-to inspect uncommitted changes and define requirements. Task creation refuses to
-overwrite an existing task. IDs may contain letters, digits, underscores and
-hyphens, up to 80 characters.
+folder. The initial route is provisional until the planning agent inspects
+the task. A Git HEAD value is recorded if available. The planning agent still
+needs to inspect uncommitted changes and define requirements. Task creation
+refuses to overwrite an existing task. IDs may contain letters, digits,
+underscores and hyphens, up to 80 characters.
 
 Paste the prompt into your agent chat to start planning. Choose another operation
 with `--action execute`, `--action resume`, or `--action audit`.

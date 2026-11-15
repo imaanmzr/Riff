@@ -11,6 +11,8 @@ agent session can resume the work.
 
 ## What it does
 
+- **Design & Architecture** — compare interfaces and prioritize architecture improvements.
+- **Documentation** — review or update project docs based on what readers need to do.
 - **Plan** — classify risk, inspect the codebase, gather evidence, record
   decisions, write acceptance criteria, and build a reviewed task plan.
 - **Execute** — dispatch dependency-ready tasks, verify changes, review them, and
@@ -75,15 +77,16 @@ riff init
 ```
 
 The wizard asks which project and agent host to configure. It supports Codex,
-Cursor, and Claude Code. It adds the skill to the host's project skill directory
-and initializes `.engineering-workflow/` settings while preserving existing
-project instructions and configuration.
+Cursor, VS Code with GitHub Copilot, and Claude Code. It adds the skill to the
+host's project skill directory and initializes `.engineering-workflow/` settings
+while preserving existing project instructions and configuration.
 
 You can provide values without prompts:
 
 ```bash
 riff init --project /path/to/project --host codex
 riff init --project /path/to/project --host cursor
+riff init --project /path/to/project --host vscode
 riff init --project /path/to/project --host claude
 ```
 
@@ -100,12 +103,17 @@ updates, and troubleshooting.
 Invoke the skill in the target project:
 
 ```text
+$riff Design the refund retry interface.
+$riff Audit architecture in the installer.
+$riff Update the VS Code setup docs.
 $riff Plan partial refunds. Stop after plan review.
 $riff Execute the reviewed plan at docs/work/partial-refunds/.
 $riff Resume the task at docs/work/partial-refunds/.
 ```
 
-Use `/riff` in Cursor and Claude Code.
+Use `/riff` in Cursor, VS Code Copilot, and Claude Code. Riff scales the
+workflow from one compact task for a local fix to deeper verification and
+review when uncertainty or consequences warrant it.
 
 ## Everyday commands
 

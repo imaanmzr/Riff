@@ -1,10 +1,10 @@
 ---
 name: riff
-description: Plan, execute, review, route agents, and resume software engineering tasks using explicit decisions, specifications, evidence, and recovery checkpoints. Use for feature planning, reviewed-plan implementation, independent audits, or interrupted engineering work. Scale process to task risk.
+description: Design, document, plan, execute, review, and resume software engineering work. Use for interface design, architecture audits, project documentation, reviewed implementation, and recovery. Scale effort to task risk.
 ---
 # Engineering Workflow
 
-Version 0.7.0. One skill coordinates four phases. Read only the needed phase.
+Version 0.7.0. Read the references relevant to the requested operation.
 
 ## Resolve paths first
 Treat the directory containing this SKILL.md as SKILL_ROOT and the user's target
@@ -22,17 +22,23 @@ and host.json in that same directory supply routing settings. Task records belon
 in PROJECT_ROOT/docs/work/<task-id>/ unless project settings override that path.
 
 ## Choose operation
-- Plan: read references/planning/WORKFLOW.md. Stop after a reviewed plan.
-- Execute: read references/planning/WORKFLOW.md and references/execution/WORKFLOW.md.
+- Plan: read [Planning](references/planning/WORKFLOW.md). Stop after a reviewed plan.
+- Design or audit architecture: use [Design & Architecture](references/planning/DESIGN.md).
+  Analyze and recommend within the requested scope.
+- Advise on or update project docs: use [Documentation](references/planning/DOCUMENTATION.md).
+  Edit only when the request authorizes the documentation change.
+- Execute: read [Planning](references/planning/WORKFLOW.md) and
+  [Execution](references/execution/WORKFLOW.md), including its implementation guide.
   Require user authorization to execute, not merely a READY plan.
-- Audit: inspect the supplied spec/plan/code independently using the review rules
+- Audit a spec, plan, or code change: inspect it independently using the review rules
   in references/planning/WORKFLOW.md and references/execution/WORKFLOW.md.
 - Resume/checkpoint: also read references/recovery/WORKFLOW.md.
 - Delegate/select models: also read references/routing/WORKFLOW.md.
 
 Preserve scope and prior authorization. If a planning request is ambiguous,
 start with discovery and planning; do not silently begin product implementation.
-Use brief records for small tasks and full templates only where useful.
+Use the [route rubric](references/planning/WORKFLOW.md#route-rubric) to match
+effort to the task and reassess when material evidence changes.
 
 ## Host capabilities
 Use real tools for subagents and model selection when available. Explicitly

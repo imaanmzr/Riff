@@ -1,9 +1,18 @@
+import json
 import sys
 import tempfile
 from pathlib import Path
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from install import install
+from install import hashes, install
+
+REPO = Path(__file__).resolve().parents[2]
+BUNDLE = REPO / 'distribution/skills/riff/references'
+GUIDES = (
+    'planning/DESIGN.md',
+    'planning/DOCUMENTATION.md',
+    'execution/IMPLEMENTATION.md',
+)
 
 class InstallTests(unittest.TestCase):
     def test_install_preserves_project_and_updates(self):
@@ -47,14 +56,48 @@ class InstallTests(unittest.TestCase):
         for phase in ('planning','execution','recovery','routing'):
             self.assertTrue((root/'references'/phase/'WORKFLOW.md').exists())
 
+    def test_bundled_workflow_references_match_source(self):
+        for path in (*GUIDES, 'planning/WORKFLOW.md', 'execution/WORKFLOW.md',
+                     'planning/tests/scenarios.md'):
+            with self.subTest(path=path):
+                self.assertEqual((REPO / path).read_bytes(), (BUNDLE / path).read_bytes())
+
+    def test_update_preserves_locally_edited_guide(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            guide = root / '.agents/skills/riff/references' / GUIDES[0]
+            guide.write_text('local design instructions')
+            with self.assertRaisesRegex(ValueError, 'Installed files changed'):
+                install(root, update=True)
+            self.assertEqual(guide.read_text(), 'local design instructions')
+
 class MultiHostTests(unittest.TestCase):
     def test_host_paths(self):
         for host,folder in [('codex','.agents'),('cursor','.cursor'),('claude','.claude'),
                             ('vscode','.github')]:
             with self.subTest(host=host), tempfile.TemporaryDirectory() as d:
-                install(d,host=host)
-                self.assertTrue((Path(d)/folder/'skills/riff/SKILL.md').exists())
-                install(d,True,host)
+                project = Path(d)
+                skill = project / folder / 'skills/riff'
+                install(project, host=host)
+                self.assertTrue((skill / 'SKILL.md').exists())
+                for path in GUIDES:
+                    guide = skill / 'references' / path
+                    self.assertEqual(guide.read_bytes(), (BUNDLE / path).read_bytes())
+                    guide.unlink()
+
+                # Model an older managed bundle whose manifest predates the guides.
+                metadata_file = skill / '.installation.json'
+                metadata = json.loads(metadata_file.read_text())
+                metadata['hashes'] = hashes(skill)
+                metadata_file.write_text(json.dumps(metadata))
+                settings = project / '.engineering-workflow/project.json'
+                settings.write_text('{"custom": true}')
+                install(project, update=True, host=host)
+                self.assertEqual(settings.read_text(), '{"custom": true}')
+                for path in GUIDES:
+                    self.assertEqual((skill / 'references' / path).read_bytes(),
+                                     (BUNDLE / path).read_bytes())
     def test_cursor_reuses_discoverable_copy(self):
         with tempfile.TemporaryDirectory() as d:
             install(d,host='claude')

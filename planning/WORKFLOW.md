@@ -16,11 +16,9 @@ within the user's authorization; label speculative conclusions explicitly.
 2. Write a brief: objective, observable acceptance criteria, exclusions,
    constraints, known facts, assumptions, and open questions. Ask only questions
    that block a meaningful decision; investigate discoverable facts yourself.
-3. Select a route by uncertainty, coupling, impact, and reversibility. Small:
-   local and clear; standard: understood feature boundary; complex: uncertain
-   or cross-service; critical: money, authorization, or irreversible data.
-   Explain the selection. Escalate when evidence changes it. Small tasks use
-   one compact record; complex tasks use the full template.
+3. Use the [route rubric](#route-rubric) to select the effort for this task.
+   Consult [Design & Architecture](DESIGN.md) for consequential design choices
+   and [Documentation](DOCUMENTATION.md) when a change needs durable docs.
 4. Inspect existing behavior before proposing new architecture. Record evidence
    with source paths/revisions or external primary-source URLs and access dates.
    Distinguish observations, inferences, assumptions, and unresolved questions.
@@ -38,29 +36,62 @@ within the user's authorization; label speculative conclusions explicitly.
    Mark non-applicable sections with rationale. Do not invent repository paths.
 8. Audit the specification against requirements and domain invariants. Every
    finding needs an ID, severity, evidence, consequence, and resolution test.
-9. Produce a dependency graph of tasks. Each has ID, objective, inputs and
-   revisions, dependencies, scope, outputs, acceptance checks, capability
-   profile, reviewer, and integration order. Assign one owner per shared
-   contract/file set. Do not parallelize conflicting changes. Unresolved
+9. Plan the smallest end-to-end behavior each task can demonstrate. A small
+   change normally needs one task entry with no dependencies. Each entry has
+   ID, objective, inputs and revisions, dependencies, scope, outputs, acceptance
+   checks, capability profile, reviewer, and integration order. Assign one owner
+   per shared contract/file set. Do not parallelize conflicting changes. Unresolved
    experiments block dependent implementation; conditional tasks are explicit.
-10. Request independent plan review with the brief, evidence, specification,
-    plan, and repository context, without the author's persuasive rationale.
+10. Use labeled self-review for small plans unless independent review is needed.
+    For all other routes, request independent plan review with the brief,
+    evidence, specification, plan, and repository context. Provide the artifacts
+    without the author's persuasive rationale.
     Review requirement coverage, feasibility, dependency cycles, verification,
-    failure cases, scope, and integration. Reviewer must be a separate session
-    when available. Otherwise label self-review and leave independent review
-    outstanding for standard/complex/critical work.
-11. Resolve findings and re-review affected sections. After two unsuccessful
-    rounds, escalate with options or propose a bounded experiment. Never
+    failure cases, scope, and integration. When the route requires independent
+    review, use a separate session. If none is available, label any self-review
+    and leave independent review outstanding.
+11. Reassess the route before marking the plan READY. Resolve findings and
+    re-review affected sections. After two unsuccessful rounds, escalate
+    with options or propose a bounded experiment. Never
     interpret the round limit as permission to ignore blockers.
 12. Stop at planning completion. Report artifacts, route, decisions, remaining
     blockers, and next executable task. Do not begin implementation.
 
+## Route rubric
+
+After initial discovery, choose the highest route supported by the evidence.
+Consider uncertainty, coupling, consequences of failure, and reversibility.
+Assess the behavior affected by the change, regardless of the size of the diff.
+Treat the route from `riff new` as provisional until discovery confirms it.
+
+| Route | When it fits | Effort |
+| --- | --- | --- |
+| Small | Clear, local, reversible change within an existing contract, such as a copy fix | One compact plan and one task. Inspect the affected behavior, run a focused check and required project checks, and record labeled self-review. |
+| Standard | Understood change to a feature contract, such as adding an optional API filter, even if the edit is local | Describe affected contracts and acceptance examples. Deliver in testable slices and obtain independent review. |
+| Complex | Material uncertainty or tightly coupled changes | Use the full plan. Compare viable designs, resolve blocking unknowns, and verify interactions across affected boundaries. Run a bounded experiment when it can settle a decision and is authorized. |
+| Critical | Failure could cause serious harm, such as duplicate charges, unauthorized access, or irreversible data loss | Specify invariants, failure modes, and recovery. Verify those paths and obtain independent plan and execution reviews, including an invariant audit. |
+
+Record the route and a brief rationale in `plan.md` and the same route in
+`plan.json`. For a standalone design, architecture audit, or docs request,
+state the route and rationale in the response and consult the existing task
+record if supplied. Preserve read-only scope when the user asks for advice
+or an audit.
+
+For small plans, keep the Markdown brief and fill the existing machine record.
+Include the expected result, evidence, verification, and labeled self-review.
+Add detailed sections only where the task calls for them. If new evidence
+changes the route, explain what changed and re-review the affected plan.
+
 ## Readiness
 READY requires every acceptance criterion mapped to tasks and checks, no
-unresolved blocking questions/findings, acyclic dependencies, and reviews of
-current revisions. Standard/complex/critical routes require independent review.
-Small routes may use an explicitly labeled self-review. Use BLOCKED for missing
-product decisions, CONDITIONAL for unresolved experiments, and DRAFT otherwise.
+unresolved blocking questions/findings, acyclic dependencies, an actual source
+baseline (revision or content fingerprints), and reviews of current revisions.
+Standard/complex/critical routes require independent review.
+Small routes may use an explicitly labeled self-review. Use BLOCKED when a
+missing decision or external fact prevents a safe plan, CONDITIONAL when a
+bounded experiment can resolve the remaining uncertainty, and DRAFT otherwise.
+In `plan.json`, bind each qualifying review to the plan's `revision` and
+`source_revision`. Use the structural validator to check the record.
 A structural validator cannot establish semantic correctness or real review.
 
 ## Capability routing

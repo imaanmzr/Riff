@@ -1,4 +1,4 @@
 interface:
   display_name: "Riff"
-  short_description: "Plan, execute, review, and resume engineering work"
+  short_description: "Design, document, plan, and execute engineering work"
   default_prompt: "Use $riff to plan this feature and stop after plan review."

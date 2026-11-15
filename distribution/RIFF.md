@@ -1,7 +1,7 @@
 # Riff
-An engineering workflow for research, decide, plan, review,
-execute and recover. Name availability/trademark clearance has not been checked.
-Invoke the installed skill as `$riff` in Codex or `/riff` in Cursor and Claude Code.
+An engineering workflow for design, documentation, planning, execution,
+review, and recovery. Invoke the installed skill as `$riff` in Codex or
+`/riff` in Cursor, VS Code Copilot, and Claude Code.
 
 From this extracted directory:
 

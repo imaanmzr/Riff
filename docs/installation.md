@@ -91,6 +91,41 @@ Use `--project` and `--host` to avoid the initial questions:
 riff init --project /work/my-service --host claude
 ```
 
+## Git visibility
+
+In a Git working tree, the wizard lets you keep Riff files local, make them
+eligible for tracking, or leave the current behavior unchanged. You can also
+select a mode explicitly.
+
+```bash
+riff init --host codex --git local
+riff configure --git local
+riff configure --git track
+```
+
+`local` adds repository-local Git exclusions for the Riff skill folders,
+`.engineering-workflow/`, and the entire configured task-record folder
+(`docs/work/` by default). Choose a dedicated folder for task records.
+The rules live in Git's `info/exclude` file. They stay in this clone and
+also apply to linked worktrees of the same clone. Changing the task-record
+folder keeps earlier local exclusions so old records stay local.
+
+`track` removes Riff's exclusion rules. Other Git ignore rules still apply.
+By default, switching modes preserves the Git index. To stop tracking files
+that are already in Git, run this from the target project:
+
+```bash
+riff configure --git local --untrack
+git diff --cached --name-status
+```
+
+This stages removals of the Riff skill, settings, and files belonging to tasks
+in the current records folder. A task directory must contain a `plan.json`
+or `plan.md`. The working copies stay on disk. Review and commit the staged
+removals when you want the repository to stop tracking those files. Git can
+refuse the operation if it would discard content that exists only in the
+index.
+
 ## Configure and update
 
 ```bash

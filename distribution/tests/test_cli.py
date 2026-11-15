@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -22,10 +23,14 @@ class CliTests(unittest.TestCase):
         settings.mkdir()
         (settings / 'project.json').write_text('{"artifacts_directory":"docs/work"}')
 
-    def run_cli(self, *arguments):
+    def run_cli(self, *arguments, project=None, answers=None):
         return subprocess.run([sys.executable, str(CLI), *arguments,
-                               '--project', str(self.project)],
-                              capture_output=True, text=True, cwd=self.cwd)
+                               '--project', str(project or self.project)],
+                              input=answers, capture_output=True, text=True, cwd=self.cwd)
+
+    def git(self, *arguments, project=None, check=True):
+        return subprocess.run(['git', '-C', str(project or self.project), *arguments],
+                              capture_output=True, text=True, check=check)
 
     def test_new_status_prompt_and_plan_validation(self):
         result = self.run_cli('new', 'refunds', '--title', 'Partial refunds')
@@ -114,6 +119,182 @@ class CliTests(unittest.TestCase):
         result = self.run_cli('status', '--json')
         self.assertNotEqual(0, result.returncode)
         self.assertIn('error', json.loads(result.stdout)[0])
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_git_visibility_round_trip_preserves_files_and_index(self):
+        self.git('init', '--quiet')
+        exclude = self.project / '.git/info/exclude'
+        original = b'# Local rules\r\n/manual-only/'
+        exclude.write_bytes(original)
+        gitignore = self.project / '.gitignore'
+        gitignore.write_bytes(b'/other-ignore/\n')
+        records = self.project / 'docs/work/refunds'
+        records.mkdir(parents=True)
+        plan = records / 'plan.json'
+        plan.write_text('{}')
+        self.git('add', '-f', '--', 'docs/work/refunds/plan.json')
+        before = self.git('ls-files', '--stage').stdout
+
+        local = self.run_cli('configure', '--git', 'local')
+        self.assertEqual(0, local.returncode, local.stderr)
+        self.assertIn('already tracked', local.stdout)
+        local_rules = exclude.read_bytes()
+        self.assertEqual(0, self.run_cli('configure', '--git', 'local').returncode)
+        self.assertEqual(local_rules, exclude.read_bytes())
+        for path in ('.agents/skills/riff/SKILL.md', '.github/skills/riff/SKILL.md',
+                     '.claude/skills/engineering-workflow/SKILL.md',
+                     '.engineering-workflow/project.json', 'docs/work/refunds/run.json'):
+            with self.subTest(path=path):
+                self.assertEqual(0, self.git('check-ignore', '--', path, check=False).returncode)
+        for path in ('.agents/skills/other/SKILL.md', '.github/workflows/ci.yml', 'docs/guide.md'):
+            self.assertEqual(1, self.git('check-ignore', '--', path, check=False).returncode)
+        self.assertEqual(before, self.git('ls-files', '--stage').stdout)
+
+        track = self.run_cli('configure', '--git', 'track')
+        self.assertEqual(0, track.returncode, track.stderr)
+        self.assertEqual(original, exclude.read_bytes())
+        self.assertEqual(b'/other-ignore/\n', gitignore.read_bytes())
+        self.assertEqual('{}', plan.read_text())
+        self.assertEqual(before, self.git('ls-files', '--stage').stdout)
+        self.assertEqual(1, self.git('check-ignore', '--', 'docs/work/refunds/run.json', check=False).returncode)
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_untrack_stages_only_riff_removals_and_preserves_local_files(self):
+        self.git('init', '--quiet')
+        riff_paths = (
+            '.engineering-workflow/project.json',
+            '.agents/skills/riff/SKILL.md',
+            'docs/work/refunds/plan.json',
+            'docs/work/refunds/evidence/check [initial].txt',
+        )
+        other_paths = ('.agents/skills/other/SKILL.md', 'docs/work/team-notes/notes.md')
+        for path in (*riff_paths[1:], *other_paths):
+            file = self.project / path
+            file.parent.mkdir(parents=True, exist_ok=True)
+            file.write_text('Original content')
+        self.git('add', '-f', '--', *riff_paths, *other_paths)
+        self.git('-c', 'user.name=Riff Test', '-c', 'user.email=riff@example.invalid',
+                 '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Track test files')
+        unrelated = self.project / other_paths[0]
+        unrelated.write_text('Changes already staged')
+        self.git('add', '--', other_paths[0])
+        local_draft = self.project / riff_paths[-1]
+        local_draft.write_text('Local edits to keep')
+        originals = {path: (self.project / path).read_bytes() for path in (*riff_paths, *other_paths)}
+
+        result = self.run_cli('configure', '--git', 'local', '--untrack')
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn('Staged removal of 4', result.stdout)
+        self.assertEqual(set(riff_paths), set(self.git(
+            'diff', '--cached', '--diff-filter=D', '--name-only').stdout.splitlines()))
+        self.assertEqual(other_paths[0], self.git(
+            'diff', '--cached', '--diff-filter=M', '--name-only').stdout.strip())
+        self.assertEqual(set(other_paths), set(self.git('ls-files').stdout.splitlines()))
+        for path, original in originals.items():
+            self.assertEqual(original, (self.project / path).read_bytes())
+        for path in riff_paths:
+            self.assertEqual(0, self.git('check-ignore', '--', path, check=False).returncode)
+        result = self.run_cli('configure', '--git', 'local', '--untrack')
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn('No tracked Riff files found', result.stdout)
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_untrack_protects_content_only_in_the_git_index(self):
+        self.git('init', '--quiet')
+        path = '.engineering-workflow/project.json'
+        self.git('add', '-f', '--', path)
+        self.git('-c', 'user.name=Riff Test', '-c', 'user.email=riff@example.invalid',
+                 '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Track Riff settings')
+        settings = self.project / path
+        settings.write_text('{"artifacts_directory":"docs/work","example":"staged"}')
+        self.git('add', '--', path)
+        settings.write_text('{"artifacts_directory":"docs/work","example":"working copy"}')
+        before = self.git('ls-files', '--stage').stdout
+        result = self.run_cli('configure', '--git', 'local', '--untrack')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('staged content', result.stderr)
+        self.assertEqual(before, self.git('ls-files', '--stage').stdout)
+        self.assertIn('working copy', settings.read_text())
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_untrack_requires_local_mode_and_effective_exclusions(self):
+        rejected = self.run_cli('configure', '--git', 'track', '--untrack')
+        self.assertEqual(2, rejected.returncode)
+        self.assertIn('--untrack requires --git local', rejected.stderr)
+        self.git('init', '--quiet')
+        (self.project / '.gitignore').write_text('!/.engineering-workflow/\n')
+        self.git('add', '--', '.engineering-workflow/project.json')
+        before = self.git('ls-files', '--stage').stdout
+        result = self.run_cli('configure', '--git', 'local', '--untrack')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('Review existing ignore rules', result.stderr)
+        self.assertEqual(before, self.git('ls-files', '--stage').stdout)
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_git_visibility_scopes_nested_projects_and_escapes_record_paths(self):
+        self.git('init', '--quiet')
+        nested = self.project / 'apps/site app'
+        settings = nested / '.engineering-workflow'
+        settings.mkdir(parents=True)
+        (settings / 'project.json').write_text('{"artifacts_directory":"notes/Riff [drafts]"}')
+        local = self.run_cli('configure', '--git', 'local', project=nested)
+        self.assertEqual(0, local.returncode, local.stderr)
+        for path in ('apps/site app/notes/Riff [drafts]/test/run.json',
+                     'apps/site app/.agents/skills/riff/SKILL.md'):
+            self.assertEqual(0, self.git('check-ignore', '--', path, check=False).returncode)
+        for path in ('apps/site app/notes/Riff d/test/run.json', 'notes/Riff [drafts]/test/run.json',
+                     '.agents/skills/riff/SKILL.md'):
+            self.assertEqual(1, self.git('check-ignore', '--', path, check=False).returncode)
+        plan = nested / 'notes/Riff [drafts]/test/plan.md'
+        plan.parent.mkdir(parents=True)
+        plan.write_text('# Test plan')
+        self.git('add', '-f', '--', 'apps/site app/notes/Riff [drafts]/test/plan.md')
+        untrack = self.run_cli('configure', '--git', 'local', '--untrack', project=nested)
+        self.assertEqual(0, untrack.returncode, untrack.stderr)
+        self.assertIn('Staged removal of 1', untrack.stdout)
+        self.assertEqual('', self.git('ls-files').stdout)
+        self.assertEqual('# Test plan', plan.read_text())
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_init_wizard_and_configuration_changes_keep_git_visibility(self):
+        self.git('init', '--quiet')
+        result = self.run_cli('init', '--host', 'codex', answers='\n' * 6 + 'local\n\n')
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn('Git visibility', result.stdout)
+        self.assertEqual(0, self.git('check-ignore', '--', '.agents/skills/riff/SKILL.md', check=False).returncode)
+        answers = '\n'.join(['', '', 'task history', '', '', '', '', '', ''])
+        result = self.run_cli('configure', '--host', 'codex', answers=answers)
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(0, self.git('check-ignore', '--', 'task history/refunds/run.json', check=False).returncode)
+        self.assertEqual(0, self.git('check-ignore', '--', 'docs/work/refunds/run.json', check=False).returncode)
+        result = self.run_cli('configure', '--git', 'track')
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(1, self.git('check-ignore', '--', 'task history/refunds/run.json', check=False).returncode)
+        self.assertEqual(1, self.git('check-ignore', '--', 'docs/work/refunds/run.json', check=False).returncode)
+
+    def test_explicit_git_visibility_requires_a_repository(self):
+        result = self.run_cli('init', '--host', 'codex', '--git', 'local')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('requires a Git working tree', result.stderr)
+        self.assertFalse((self.project / '.agents').exists())
+
+    @unittest.skipUnless(shutil.which('git'), 'Git executable required')
+    def test_git_visibility_from_linked_worktree(self):
+        self.git('init', '--quiet')
+        self.git('-c', 'user.name=Riff Test', '-c', 'user.email=riff@example.invalid',
+                 '-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-qm', 'Baseline')
+        linked = self.cwd / 'linked'
+        self.git('worktree', 'add', '--quiet', '--detach', str(linked))
+        result = self.run_cli('init', '--host', 'codex', '--git', 'local', project=linked, answers='\n' * 7)
+        self.assertEqual(0, result.returncode, result.stderr)
+        check = self.git('check-ignore', '--', '.agents/skills/riff/SKILL.md', project=linked, check=False)
+        self.assertEqual(0, check.returncode, check.stderr)
+        self.assertIn('Riff local files', (self.project / '.git/info/exclude').read_text())
+        self.assertEqual(0, self.git('check-ignore', '--', '.agents/skills/riff/SKILL.md', check=False).returncode)
+        result = self.run_cli('configure', '--git', 'track', project=linked)
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertTrue((linked / '.agents/skills/riff/SKILL.md').is_file())
+        self.assertNotIn('Riff local files', (self.project / '.git/info/exclude').read_text())
 
 
     @unittest.skipUnless(os.name == 'nt', 'Windows command launcher')

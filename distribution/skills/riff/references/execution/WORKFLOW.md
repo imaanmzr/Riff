@@ -17,6 +17,10 @@ isolation is unavailable, work sequentially in nonconflicting scope. Never reset
 or overwrite user changes. No automatic installation of external workflow packs.
 
 ## Dispatch
+If new evidence has surfaced, reassess the plan using the
+[route rubric](../planning/WORKFLOW.md#route-rubric) before dispatch. If the
+route changes, follow the replan procedure below.
+
 Select tasks whose dependencies are integrated, not merely implemented. Dispatch
 only nonoverlapping scopes from the ready frontier, within project concurrency
 limits. Treat path prefixes as overlapping. Shared contracts have one owner.
@@ -26,9 +30,10 @@ Record actual agent/model separately from requested capability; unavailable
 models do not justify invented routing. Run sequentially if agents unavailable.
 
 ## Implement and verify
-Work in small coherent changes. Use regression tests for behavioral bugs and
-meaningful tests for new behavior; avoid tests that merely mirror code. Run
-required project checks. Record command, exit code, output/evidence reference,
+Use the [implementation guide](IMPLEMENTATION.md) to choose a first working
+slice and build a focused feedback loop. Use regression tests for behavioral
+bugs and meaningful tests for new behavior. Choose tests that exercise the
+behavior. Run required project checks. Record command, exit code, evidence reference,
 and exact candidate revision or content fingerprint. Never mark skipped,
 timed-out, failed or unavailable checks as passed. Baseline failures require
 explicit evidence that changed behavior is unaffected; unresolved required
@@ -53,8 +58,13 @@ An empty or undocumented check/review record never counts as passing.
 
 ## Replan, stop, and resume
 Contract/scope/invariant changes return affected work to planning; pause dependent
-tasks and invalidate their approvals. After two failed review rounds, escalate
-with evidence and options; do not bypass blockers. Cancel outstanding agents
+tasks and invalidate their approvals. Reassess the route when new evidence changes
+scope, contracts, or risk. If an accepted plan needs a different route, pause
+affected work, update the rationale and route in the plan records, and
+increment the plan revision. Obtain the review required by the updated route
+and reconcile the execution baseline and evidence using recovery before
+resuming. After two failed review rounds, escalate with evidence and options;
+do not bypass blockers. Cancel outstanding agents
 before stopping or changing shared contracts. Record unfinished work and next
 step. On resume verify source, plan and candidates rather than trusting stale
 status. Save records after every meaningful transition. Full crash-safe scheduling

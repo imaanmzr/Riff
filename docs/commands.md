@@ -19,12 +19,33 @@ Commands accept `--project /path/to/project`. Setup commands prompt for a projec
 when it is omitted. Task and inspection commands use the current directory.
 Supported hosts are `codex`, `cursor`, `claude`, and `vscode`.
 
+## Workflow commands
+
+These commands print a prompt to paste into the agent chat open on the
+target project. They use `$riff` by default. Pass `--host cursor`,
+`--host claude`, or `--host vscode` to use `/riff`.
+
+| Command | Purpose |
+| --- | --- |
+| `riff plan "REQUEST"` | Plan a change and stop after plan review |
+| `riff design "REQUEST"` | Compare designs and recommend an approach |
+| `riff documentation "REQUEST"` or `riff docs "REQUEST"` | Request documentation advice or a scoped edit |
+| `riff architecture "AREA"` | Audit existing architecture and recommend improvements |
+| `riff review "TARGET"` | Review a change or plan against requirements and evidence |
+| `riff audit "TARGET"` | Independently audit a spec, plan, or code change |
+| `riff execute TASK` | Request execution of a reviewed plan for a saved task |
+| `riff resume TASK` | Resume a saved task and reconcile its state |
+
+Use `--task TASK` in place of a quoted request to refer to an existing task,
+such as `riff review --task refunds`. The execution and resume commands
+take the saved task ID directly.
+
 ## Start a task
 
 ```bash
 riff init --host cursor
 riff new refunds --title "Partial refunds" --route critical
-riff prompt refunds --host cursor
+riff plan --task refunds --host cursor
 ```
 
 `new` creates `plan.md` and a DRAFT `plan.json` in the configured task-record
@@ -34,16 +55,16 @@ needs to inspect uncommitted changes and define requirements. Task creation
 refuses to overwrite an existing task. IDs may contain letters, digits,
 underscores and hyphens, up to 80 characters.
 
-Paste the prompt into your agent chat to start planning. Choose another operation
-with `--action execute`, `--action resume`, or `--action audit`.
+Paste the prompt into your agent chat to start planning. Once the plan is
+reviewed, use the execution or resume command as appropriate.
 
 ```bash
-riff prompt refunds --host cursor --action execute
-riff prompt refunds --host claude --action resume
+riff execute refunds --host cursor
+riff resume refunds --host claude
 ```
 
-`prompt` prints instructions for the host agent. Execution begins when you send
-those instructions in the host.
+`riff prompt TASK --action plan|execute|resume|audit` remains available.
+Execution begins when you send the execution prompt in the host.
 
 ## Inspect and validate
 

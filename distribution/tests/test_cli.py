@@ -38,6 +38,52 @@ class CliTests(unittest.TestCase):
         self.assertIn('/riff Plan', prompt.stdout)
         self.assertEqual(0, self.run_cli('validate', 'refunds').returncode)
 
+    def test_workflow_commands_print_host_requests(self):
+        operations = {
+            'plan': 'Plan this task',
+            'design': 'Design an approach',
+            'docs': 'Handle this documentation request',
+            'documentation': 'Handle this documentation request',
+            'architecture': 'Audit the architecture',
+            'review': 'Review this task',
+            'audit': 'Audit this task independently',
+        }
+        for operation, instruction in operations.items():
+            with self.subTest(operation=operation):
+                result = self.run_cli(operation, 'Examine refund handling', '--host', 'vscode')
+                self.assertEqual(0, result.returncode, result.stderr)
+                self.assertIn(f'/riff {instruction}', result.stdout)
+                self.assertIn(self.project.resolve().as_posix(), result.stdout)
+                self.assertIn('Examine refund handling', result.stdout)
+        self.assertFalse((self.project / 'docs/work').exists())
+
+    def test_workflow_commands_reuse_saved_tasks(self):
+        self.assertEqual(0, self.run_cli('new', 'refunds').returncode)
+        plan = self.project / 'docs/work/refunds/plan.json'
+        original = plan.read_bytes()
+        for operation, arguments in {
+            'plan': ('--task', 'refunds'),
+            'execute': ('refunds',),
+            'resume': ('refunds',),
+            'audit': ('--task', 'refunds'),
+        }.items():
+            with self.subTest(operation=operation):
+                direct = self.run_cli(operation, *arguments)
+                legacy = self.run_cli('prompt', 'refunds', '--action', operation)
+                self.assertEqual(0, direct.returncode, direct.stderr)
+                self.assertEqual(legacy.stdout, direct.stdout)
+        review = self.run_cli('review', '--task', 'refunds')
+        self.assertEqual(0, review.returncode, review.stderr)
+        self.assertIn('$riff Review this task', review.stdout)
+        self.assertEqual(original, plan.read_bytes())
+        self.assertFalse(plan.with_name('run.json').exists())
+        self.assertIn('Unknown task: missing', self.run_cli('execute', 'missing').stderr)
+
+    def test_workflow_commands_reject_missing_or_conflicting_targets(self):
+        for arguments in ((), ('Examine refunds', '--task', 'refunds')):
+            with self.subTest(arguments=arguments):
+                self.assertEqual(2, self.run_cli('design', *arguments).returncode)
+
     def test_repeated_creation_preserves_task(self):
         self.run_cli('new', 'refunds')
         plan = self.project / 'docs/work/refunds/plan.json'
@@ -95,6 +141,15 @@ class CliTests(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         plan = json.loads((self.project / 'docs/work/refunds/plan.json').read_text())
         self.assertEqual('Partial refunds', plan['title'])
+
+        result = subprocess.run(
+            ['cmd.exe', '/d', '/c', 'riff', 'design', 'Compare refund interfaces',
+             '--project', str(self.project)],
+            capture_output=True, text=True, cwd=self.cwd, env=env,
+        )
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn('$riff Design', result.stdout)
+        self.assertIn('Compare refund interfaces', result.stdout)
 
         result = subprocess.run(
             ['cmd.exe', '/d', '/c', 'riff', '--invalid-option'],

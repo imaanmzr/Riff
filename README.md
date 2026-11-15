@@ -120,8 +120,10 @@ review when uncertainty or consequences warrant it.
 ```bash
 riff --help
 riff doctor --host cursor
+riff design "Compare retry interfaces" --host cursor
+riff docs "Update the setup guide"
 riff new refunds --title "Partial refunds" --route critical
-riff prompt refunds --host cursor
+riff plan --task refunds --host cursor
 riff status
 riff validate refunds
 ```

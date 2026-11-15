@@ -14,6 +14,18 @@ else:
 
 REFERENCES = Path(__file__).resolve().parent / 'skills' / NAME / 'references'
 
+WORKFLOW_COMMANDS = {
+    'plan': ('Plan a change', 'Plan this task and stop after plan review'),
+    'design': ('Design an interface or change', 'Design an approach for this task'),
+    'documentation': ('Advise on or update project docs', 'Handle this documentation request'),
+    'architecture': ('Audit existing architecture', 'Audit the architecture for this task'),
+    'review': ('Review a change or plan', 'Review this task against its requirements and evidence'),
+    'audit': ('Audit a spec, plan, or code change', 'Audit this task independently against its requirements'),
+    'execute': ('Execute a reviewed plan', 'Execute the reviewed plan'),
+    'resume': ('Resume a saved task', 'Resume this task and reconcile saved state with the working tree'),
+}
+SAVED_TASK_COMMANDS = ('execute', 'resume')
+
 
 def load(path):
     value = json.loads(path.read_text())
@@ -157,14 +169,29 @@ def run_utility(project, args):
 
 
 def prompt(project, args):
+    return task_prompt(project, args, args.operation)
+
+
+def task_prompt(project, args, operation):
     directory = task_directory(project, args.task)
     if not (directory / 'plan.json').is_file():
         raise ValueError(f'Unknown task: {args.task}')
-    invocation = '$riff' if args.host == 'codex' else '/riff'
-    operations = {'plan': 'Plan this task and stop after plan review',
-                  'execute': 'Execute the reviewed plan',
-                  'resume': 'Resume this task and reconcile saved state with the working tree',
-                  'audit': 'Audit this task independently against its requirements'}
+    _, instruction = WORKFLOW_COMMANDS[operation]
+    return print_prompt(args.host, f'{instruction} at {json.dumps(str(directory))}.')
+
+
+def workflow_prompt(project, args):
+    if args.task is not None:
+        return task_prompt(project, args, args.operation)
+    _, instruction = WORKFLOW_COMMANDS[args.operation]
+    if not args.subject.strip():
+        raise ValueError('Provide a nonempty request')
+    location = json.dumps(project.as_posix(), ensure_ascii=False)
+    return print_prompt(args.host, f'{instruction} in {location}.\n\n{args.subject}')
+
+
+def print_prompt(host, instruction):
+    invocation = '$riff' if host == 'codex' else '/riff'
     print('Paste this into your agent chat:')
-    print(f'{invocation} {operations[args.operation]} at {json.dumps(str(directory))}.')
+    print(f'{invocation} {instruction}')
     return 0

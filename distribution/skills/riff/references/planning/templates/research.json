@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "RESEARCH1",
+  "kind": "research",
+  "status": "draft",
+  "question": "",
+  "scope": "",
+  "success_criteria": "",
+  "limits": "",
+  "requirements": [],
+  "decisions": [],
+  "sources": [],
+  "claims": [],
+  "alternatives": [],
+  "counterevidence": [],
+  "uncertainty": [],
+  "conclusion": "",
+  "next_action": ""
+}

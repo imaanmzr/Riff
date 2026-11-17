@@ -6,6 +6,7 @@ from pathlib import Path, PurePosixPath
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'execution'))
 from gates import validate, ready
+from riff_core.config import context as live_context
 
 PROFILES = ('fast', 'coding', 'deep_reasoning')
 
@@ -35,8 +36,8 @@ def overlaps(left, right):
                for a in left for b in right)
 
 
-def propose(plan, run, config, host):
-    errors = validate(plan, run)
+def propose(plan, run, config, host, context=None):
+    errors = validate(plan, run, context)
     if errors: return {'errors': errors, 'assignments': [], 'deferred': {}}
     cap = integer(config['max_parallel'], 'max_parallel', 1)
     if host.get('parallel_agents') is not True: cap = 1
@@ -58,7 +59,7 @@ def propose(plan, run, config, host):
     remaining = max(0, limit - spent - reserved)
     slots = max(0, cap - len(active))
     output = {'errors': [], 'assignments': [], 'deferred': {}, 'remaining_tokens': remaining}
-    eligible = ready(plan, run)
+    eligible = ready(plan, run, context)
     for tid in eligible:
         task, record = tasks[tid], records[tid]
         attempt = integer(record.get('routing', {}).get('attempts', 0), 'attempts')
@@ -95,9 +96,12 @@ def propose(plan, run, config, host):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('plan','run','config','host'): parser.add_argument('--'+name,required=True)
+    parser.add_argument('--project')
     args = parser.parse_args()
     try:
-        result = propose(*(json.loads(Path(getattr(args,n)).read_text()) for n in ('plan','run','config','host')))
+        inputs = [json.loads(Path(getattr(args,n)).read_text(encoding='utf-8')) for n in ('plan','run','config','host')]
+        ctx = live_context(args.plan, args.project) if inputs[0].get('schema_version') == 2 else None
+        result = propose(*inputs, context=ctx)
         print(json.dumps(result,indent=2)); sys.exit(bool(result['errors']))
     except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
         raise SystemExit('Routing refused: ' + str(exc))

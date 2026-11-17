@@ -23,12 +23,15 @@ WORKFLOW_COMMANDS = {
     'audit': ('Audit a spec, plan, or code change', 'Audit this task independently against its requirements'),
     'execute': ('Execute a reviewed plan', 'Execute the reviewed plan'),
     'resume': ('Resume a saved task', 'Resume this task and reconcile saved state with the working tree'),
+    'research': ('Research a bounded question', 'Research this question using the research workflow; distinguish evidence from inference and do not implement changes'),
+    'debug': ('Diagnose and reproduce a symptom', 'Diagnose and reproduce this symptom using the debug workflow; do not edit product code or implement a fix'),
+    'replan': ('Revise a saved plan', 'Replan this task; preserve prior decisions and snapshots, invalidate affected reviews and do not resume execution'),
 }
-SAVED_TASK_COMMANDS = ('execute', 'resume')
+SAVED_TASK_COMMANDS = ('execute', 'resume', 'replan')
 
 
 def load(path):
-    value = json.loads(path.read_text())
+    value = json.loads(path.read_text(encoding='utf-8'))
     if not isinstance(value, dict):
         raise ValueError(f'Expected a JSON object in {path}')
     return value
@@ -59,6 +62,10 @@ def task_directory(project, task):
 
 
 def new_task(project, args):
+    if __package__:
+        from . import core
+    else:
+        import core
     destination = task_directory(project, args.task)
     if destination.exists():
         raise ValueError(f'Task already exists: {args.task}')
@@ -72,13 +79,22 @@ def new_task(project, args):
                 status='DRAFT', revision=1, source_revision=source_revision,
                 requirements=[], tasks=[], reviews=[],
                 unresolved_questions=['Inspect the working tree and define acceptance criteria'])
+    plan.update(core.records.new_fields())
+    overrides = {key: getattr(args, key, None) for key in ('profile', 'detail', 'diagrams') if getattr(args, key, None) is not None}
+    resolved = core.config.resolve(project, overrides=overrides)
+    # Keep presentation provenance outside the reviewed behavioral contract.
+    provenance = {key: resolved['provenance'][key] for key in resolved['behavior']}
+    plan.update(profile=resolved['profile'], behavior_config=resolved['behavior'], behavior_provenance=provenance,
+                config_digest=resolved['digest'], presentation={key: overrides[key] for key in core.config.PRESENTATION if key in overrides})
     destination.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=destination.parent, prefix='.riff-new-') as temporary:
         stage = Path(temporary) / args.task
         stage.mkdir()
         (stage / 'plan.json').write_text(json.dumps(plan, indent=2) + '\n')
         template = (REFERENCES / 'planning/templates/plan.md').read_text()
-        (stage / 'plan.md').write_text(template.replace('# Planning record', '# ' + plan['title'], 1))
+        (stage / 'plan.md').write_text(template.replace('# Planning record', '# ' + plan['title'], 1), encoding='utf-8')
+        plan['authored_digest'] = core.records.authored_digest(stage, plan)
+        (stage / 'plan.json').write_text(json.dumps(plan, indent=2) + '\n', encoding='utf-8')
         # mkdir exclusively claims the destination so concurrent creation cannot overwrite it.
         destination.mkdir()
         try:
@@ -107,10 +123,17 @@ def status(project, args):
             plan = load(directory / 'plan.json')
             run_path = directory / 'run.json'
             run = load(run_path) if run_path.exists() else {}
-            results.append(dict(task=directory.name, plan_status=plan.get('status', 'unknown'),
-                                execution_status=run.get('status', 'not started'),
-                                blockers=run.get('blockers', []) + plan.get('blockers', [])))
-        except (OSError, ValueError) as exc:
+            item = dict(task=directory.name, plan_status=plan.get('status', 'unknown'),
+                        execution_status=run.get('status', 'not started'),
+                        blockers=run.get('blockers', []) + plan.get('blockers', []))
+            if getattr(args, 'details', False):
+                if __package__:
+                    from . import core
+                else:
+                    import core
+                item['evaluation'] = core.inspect(directory, project)[2]
+            results.append(item)
+        except (OSError, ValueError, TypeError, AttributeError) as exc:
             results.append(dict(task=directory.name, error=str(exc)))
     if args.json:
         print(json.dumps(results, indent=2))
@@ -122,6 +145,9 @@ def status(project, args):
                 print(f"{result['task']}: unreadable record — {result['error']}")
             else:
                 print(f"{result['task']}: plan={result['plan_status']}, execution={result['execution_status']}, blockers={len(result['blockers'])}")
+                if 'evaluation' in result:
+                    print('  Evaluated: ' + result['evaluation']['evaluated_status'])
+                    for issue in result['evaluation']['issues']: print('  - ' + issue['message'])
     return int(any('error' in result for result in results))
 
 
@@ -169,7 +195,7 @@ def run_utility(project, args):
         if not host.exists():
             host = settings / 'host.json'
         arguments = ['--plan', str(plan), '--run', str(run), '--config', str(config), '--host', str(host)]
-    return subprocess.run([sys.executable, str(script), *arguments], cwd=project).returncode
+    return subprocess.run([sys.executable, str(script), *arguments, '--project', str(project)], cwd=project).returncode
 
 
 def prompt(project, args):
@@ -181,7 +207,7 @@ def task_prompt(project, args, operation):
     if not (directory / 'plan.json').is_file():
         raise ValueError(f'Unknown task: {args.task}')
     _, instruction = WORKFLOW_COMMANDS[operation]
-    return print_prompt(args.host, f'{instruction} at {json.dumps(str(directory))}.')
+    return print_prompt(args.host, f'{instruction} at {json.dumps(str(directory))}.' + workflow_options(args, project, load(directory / 'plan.json')))
 
 
 def workflow_prompt(project, args):
@@ -191,7 +217,35 @@ def workflow_prompt(project, args):
     if not args.subject.strip():
         raise ValueError('Provide a nonempty request')
     location = json.dumps(project.as_posix(), ensure_ascii=False)
-    return print_prompt(args.host, f'{instruction} in {location}.\n\n{args.subject}')
+    return print_prompt(args.host, f'{instruction} in {location}.\n\n{args.subject}' + workflow_options(args, project))
+
+
+def workflow_options(args, project, plan=None):
+    operation = getattr(args, 'operation', None)
+    if operation in ('plan', 'replan', 'debug'):
+        if __package__:
+            from . import core
+        else:
+            import core
+        resolved = core.config.resolve(project, plan)
+        settings = resolved['behavior']
+    if operation == 'replan':
+        if not args.reason.strip(): raise ValueError('Provide a nonempty replan reason')
+        guidance = '\nReason: ' + args.reason
+    else:
+        guidance = ''
+    if operation in ('plan', 'replan'):
+        sections = ', '.join(settings['sections']) or 'standard plan sections'
+        checks = ', '.join(settings['required_checks']) or 'project-required checks'
+        return (guidance + f"\nWorkflow profile: {resolved['profile']}. Emphasize {sections}. "
+                f"Cover these verification obligations: {checks}. Assess risk independently.")
+    if operation == 'debug':
+        command_timeout = args.command_timeout or settings['debug_command_timeout']
+        total_timeout = args.total_timeout or settings['debug_total_timeout']
+        return f'\nDiagnostic limits: {command_timeout} seconds per command, {total_timeout} seconds total. Use isolated fixtures, record actual results, and stop all processes you start.'
+    if operation == 'research':
+        return '\nCreate or reuse a task record before durable reporting. Save structured and narrative reports with stable IDs.'
+    return ''
 
 
 def print_prompt(host, instruction):

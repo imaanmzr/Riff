@@ -1,0 +1,141 @@
+{
+  "wheel": "riff_workflow-0.8.0-py3-none-any.whl",
+  "sdist": "riff_workflow-0.8.0.tar.gz",
+  "required_members": [
+    "distribution/assets/mermaid.min.js",
+    "distribution/assets/markdown-it.min.js",
+    "distribution/skills/riff/references/planning/riff_core/records.py",
+    "distribution/skills/riff/references/planning/riff_core/reports.py",
+    "distribution/skills/riff/references/routing/adapters.py",
+    "distribution/task_commands.py"
+  ],
+  "sha256": {
+    "riff_workflow-0.8.0-py3-none-any.whl": "eaa549c88b6d9c5b6e3008a09cd25f67327bb55100c2c92d9ce09cf47d41c92a",
+    "riff_workflow-0.8.0.tar.gz": "aac207c340c7c5f74bdb1e3778ee7eb727154c300a17a6fefc211356b766f6f8"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--target",
+        "<temporary>\\wheel",
+        "<checkout>\\dist\\riff_workflow-0.8.0-py3-none-any.whl"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-c",
+        "from distribution.riff import cli; cli()",
+        "new",
+        "wheel-task",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-c",
+        "from distribution.riff import cli; cli()",
+        "show",
+        "wheel-task",
+        "--json",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-c",
+        "from distribution.riff import cli; cli()",
+        "research",
+        "Inspect the installed workflow",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-c",
+        "from distribution.riff import cli; cli()",
+        "render",
+        "wheel-task",
+        "--format",
+        "html",
+        "--output",
+        "<temporary>\\wheel.html",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "<checkout>\\install_cli.py",
+        "--prefix",
+        "<temporary>\\standalone"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+        "new",
+        "standalone-task",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+        "render",
+        "standalone-task",
+        "--format",
+        "html",
+        "--output",
+        "<temporary>\\standalone.html",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+        "<temporary>\\project",
+        "--host",
+        "codex"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "<temporary>\\project\\.agents\\skills\\riff\\references\\planning\\validate.py",
+        "<temporary>\\project\\docs\\work\\standalone-task\\plan.json",
+        "--project",
+        "<temporary>\\project"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "status": "passed",
+  "scope": "isolated wheel, standalone CLI and skill utility; no live host dispatch"
+}

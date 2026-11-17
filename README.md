@@ -121,6 +121,10 @@ review when uncertainty or consequences warrant it.
 
 ## Everyday commands
 
+Riff 0.8 adds readable plans, offline HTML/Mermaid exports, explainable checks,
+research/debug/replan workflows, profiles and explicit migration/recovery commands.
+See [Readable plans and investigation workflows](docs/features.md) for examples.
+
 ```bash
 riff --help
 riff doctor --host cursor
@@ -148,6 +152,12 @@ python3 recovery/tests/test_state.py
 python3 routing/tests/test_router.py
 python3 distribution/tests/test_install.py
 python3 distribution/tests/test_cli.py
+python3 planning/tests/test_records.py
+python3 planning/tests/test_reports.py
+python3 planning/tests/test_presentation.py
+python3 distribution/tests/test_features.py
+python3 routing/tests/test_adapters.py
+python3 tools/sync_references.py --check
 ```
 
 Read [Architecture](docs/architecture.md) for phase boundaries and current

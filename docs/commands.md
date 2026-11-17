@@ -1,5 +1,10 @@
 # Riff commands
 
+For v2 `show`, `explain`, `check`, `graph`, `render`/`export`, `diff`, `checkpoint`,
+`reconcile`, `migrate`, `config`, `profile`, `research`, `debug`, and `replan`, see
+[Readable plans and investigation workflows](features.md). Existing commands
+below retain their meanings; workflow commands still print prompts.
+
 Run `riff --help` for the command list and examples. Every command has its own
 help, such as `riff new --help`. Running `riff` without arguments displays help.
 

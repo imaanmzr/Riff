@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "REPLAN1",
+  "kind": "replan",
+  "status": "draft",
+  "reason": "",
+  "baseline_revision": 1,
+  "target_revision": 2,
+  "source_revision": "",
+  "snapshot": "",
+  "requirements": [],
+  "decisions": [],
+  "superseded_decisions": [],
+  "affected_tasks": [],
+  "invalidated_reviews": [],
+  "changes": [],
+  "reconciliation": "",
+  "next_action": ""
+}

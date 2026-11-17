@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0 — 2026-11-16
+
+- Add v2 structured plans, live prose/config/source review bindings, explicit
+  migration with backups and content compare-and-swap, and legacy reads.
+- Add readable Markdown/offline HTML exports, Mermaid dependency graphs,
+  show/explain/check, snapshot diff, checkpoint and reconciliation commands.
+- Add research/debug/replan workflows, validated reports, bounded diagnostic
+  process cleanup, profiles and noninteractive configuration.
+- Add simulated host-adapter contracts without live dispatch, shared core parity
+  checks and pinned offline rendering assets.
+
 ## 0.7.0 — 2026-11-13
 
 - Added descriptive command help and examples.

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "DEBUG1",
+  "kind": "debug",
+  "status": "draft",
+  "expected": "",
+  "actual": "",
+  "environment": {},
+  "requirements": [],
+  "decisions": [],
+  "reproductions": [],
+  "evidence": [],
+  "hypotheses": [],
+  "causal_evidence": [],
+  "proposed_fix": null,
+  "regression_checks": [],
+  "next_action": ""
+}

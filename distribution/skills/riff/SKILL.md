@@ -4,7 +4,7 @@ description: Design, document, plan, execute, review, and resume software engine
 ---
 # Engineering Workflow
 
-Version 0.7.0. Read the references relevant to the requested operation.
+Version 0.8.0. Read the references relevant to the requested operation.
 
 ## Resolve paths first
 Treat the directory containing this SKILL.md as SKILL_ROOT and the user's target
@@ -22,6 +22,12 @@ and host.json in that same directory supply routing settings. Task records belon
 in PROJECT_ROOT/docs/work/<task-id>/ unless project settings override that path.
 
 ## Choose operation
+- Research: read [Research](references/planning/RESEARCH.md). Produce bounded,
+  sourced investigation reports; distinguish facts, inference and uncertainty.
+- Debug: read [Debug](references/planning/DEBUG.md). Diagnose and reproduce with
+  bounded isolated diagnostics; do not edit product code merely to diagnose.
+- Replan: read [Replan](references/planning/REPLAN.md). Preserve snapshots and
+  superseded decisions, invalidate stale reviews, and stop before execution.
 - Plan: read [Planning](references/planning/WORKFLOW.md). Stop after a reviewed plan.
 - Design or audit architecture: use [Design & Architecture](references/planning/DESIGN.md).
   Analyze and recommend within the requested scope.
@@ -61,3 +67,6 @@ in another app does not establish access in the current host.
 
 Use plan.json and plan.md for planning records and run.json for execution records
 in each task directory so riff status, validate and route can locate them.
+For v2 shapes, live binding and migration, read [Records](references/planning/RECORDS.md).
+Use `riff show`, `explain`, `check`, `graph`, `render`, and `diff` to inspect work.
+Explain recorded versus evaluated status; unknown freshness is not a pass.

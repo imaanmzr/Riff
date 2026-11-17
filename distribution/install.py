@@ -47,7 +47,7 @@ def install(project, update=False, host="codex"):
     with tempfile.TemporaryDirectory(dir=parent,prefix='.engineering-stage-') as temp:
         stage=Path(temp)/NAME
         shutil.copytree(source,stage)
-        (stage/'.installation.json').write_text(json.dumps({'version':'0.7.0','host':host,'hashes':hashes(stage)},indent=2)+'\n')
+        (stage/'.installation.json').write_text(json.dumps({'version':'0.8.0','host':host,'hashes':hashes(stage)},indent=2)+'\n')
         backup=Path(temp)/'previous'
         if installed.exists(): installed.rename(backup)
         try: stage.rename(destination)

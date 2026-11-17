@@ -3,3 +3,7 @@
 # POSIX launchers need LF in checkouts and Git archives.
 /riff text eol=lf
 /distribution/riff text eol=lf
+
+# Offline renderer verifies the exact upstream bytes, including line endings.
+/distribution/assets/*.js -text
+/distribution/assets/*.LICENSE -text

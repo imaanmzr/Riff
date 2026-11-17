@@ -1,3 +1,11 @@
 recursive-include distribution/skills *.md *.py *.json *.yaml
+recursive-include distribution/assets *.js *.json *.md *.LICENSE
+include install_cli.py riff.py riff AGENTS.md CONTRIBUTING.md CHANGELOG.md
+recursive-include planning *.py *.md *.json
+recursive-include execution *.py *.md *.json
+recursive-include recovery *.py *.md *.json
+recursive-include routing *.py *.md *.json
+recursive-include tools *.py
+recursive-include docs *.md *.json
 global-exclude *.pyc
 prune distribution/skills/riff/references/planning/__pycache__

@@ -1,0 +1,419 @@
+{
+  "workflow_version": "0.2",
+  "authorized": true,
+  "authorization_evidence": "User explicit implementation request in active chat",
+  "plan_revision": 1,
+  "base_revision": "ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+  "head_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+  "integration_owner": "root",
+  "status": "complete",
+  "blockers": [],
+  "tasks": {
+    "T1": {
+      "state": "integrated",
+      "agent": "/root/records_core",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python planning/tests/test_records.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python planning/tests/test_validate.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/integration_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/integration_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T2": {
+      "state": "integrated",
+      "agent": "root",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python distribution/tests/test_features.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python execution/tests/test_gates.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T3": {
+      "state": "integrated",
+      "agent": "/root/presentation",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python planning/tests/test_presentation.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python distribution/tests/test_features.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T4": {
+      "state": "integrated",
+      "agent": "root",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python distribution/tests/test_features.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python distribution/tests/test_cli.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T5": {
+      "state": "integrated",
+      "agent": "/root/records_core",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python planning/tests/test_reports.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python distribution/tests/test_features.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/render_workflow_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/render_workflow_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T6": {
+      "state": "integrated",
+      "agent": "root",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python recovery/tests/test_state.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python distribution/tests/test_features.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T7": {
+      "state": "integrated",
+      "agent": "/root/adapters",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python routing/tests/test_adapters.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python routing/tests/test_router.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/integration_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/integration_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    },
+    "T8": {
+      "state": "integrated",
+      "agent": "root",
+      "candidate_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "integration_revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+      "checks": [
+        {
+          "command": "python distribution/tests/test_install.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        },
+        {
+          "command": "python distribution/tests/test_cli.py",
+          "exit_code": 0,
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "evidence": "regression-results.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+          "verdict": "pass",
+          "reviewer": "/root/final_review",
+          "independent": true,
+          "evidence": "execution-log.md#independent-review-and-fixes"
+        }
+      ]
+    }
+  },
+  "final": {
+    "requirements": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7",
+      "R8"
+    ],
+    "checks": [
+      {
+        "command": "python planning/tests/test_validate.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python execution/tests/test_gates.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python recovery/tests/test_state.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python routing/tests/test_router.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python distribution/tests/test_install.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python distribution/tests/test_cli.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python planning/tests/test_records.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python planning/tests/test_reports.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python planning/tests/test_presentation.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python distribution/tests/test_features.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python routing/tests/test_adapters.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "regression-results.json"
+      },
+      {
+        "command": "python tools/verify_release.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "package-verification.json"
+      },
+      {
+        "command": "python tools/pilot_features.py",
+        "exit_code": 0,
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "evidence": "pilots.json"
+      }
+    ],
+    "reviews": [
+      {
+        "kind": "integration",
+        "revision": "sha256:d04fd90ef70ca01f25de2d962ae7556d03106387c5b2084c1e801f456c9eb2fc",
+        "verdict": "pass",
+        "reviewer": "/root/final_review",
+        "independent": true,
+        "evidence": "execution-log.md#independent-review-and-fixes"
+      }
+    ]
+  }
+}

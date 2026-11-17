@@ -21,6 +21,14 @@ reviews, unsafe redispatch, overwritten user settings, or incorrect task routing
 
 ## Release checklist
 
+- Run `python tools/sync_references.py` after canonical workflow/core edits, and
+  `python tools/sync_references.py --check` before release. New tests must run
+  against installed references as well as source helpers.
+- Run records, reports, presentation, features and adapter tests in addition to
+  the original six suites. For browser verification set RIFF_BROWSER to a Chromium
+  binary and provide Node 22+; Windows Chrome/Edge are discovered automatically.
+- Inspect asset checksums/licenses and the built wheel/sdist for core and assets.
+
 - Update the bundled skill from the canonical phase sources.
 - Run the local checks above.
 - Test CLI init, configure, update, and each supported host path.

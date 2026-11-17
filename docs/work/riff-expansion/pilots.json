@@ -1,0 +1,126 @@
+{
+  "scenarios": [
+    {
+      "scenario": "small documentation plan",
+      "kind": "controlled local fixture",
+      "accepted_requirements": [
+        "concise summary",
+        "explicit omitted-detail notice"
+      ],
+      "seconds": 2.1778527999995276,
+      "status": "passed"
+    },
+    {
+      "scenario": "feature plan with dependencies and sequence",
+      "kind": "controlled local fixture",
+      "accepted_requirements": [
+        "full narrative",
+        "dependency graph",
+        "self-contained HTML"
+      ],
+      "seconds": 1.7229666000057478,
+      "status": "passed"
+    },
+    {
+      "scenario": "inconclusive research",
+      "kind": "repository-limited investigation",
+      "accepted_requirements": [
+        "explicit uncertainty",
+        "no fabricated ranking"
+      ],
+      "seconds": 0.4813962999978685,
+      "status": "passed"
+    },
+    {
+      "scenario": "reproduced bug",
+      "kind": "controlled isolated defect, not a production claim",
+      "accepted_requirements": [
+        "actual failing reproduction",
+        "process cleanup",
+        "no product edits"
+      ],
+      "seconds": 0.7785948000018834,
+      "status": "passed"
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "new",
+        "small",
+        "--route",
+        "small",
+        "--profile",
+        "documentation",
+        "--detail",
+        "concise"
+      ],
+      "exit_code": 0,
+      "seconds": 1.0426567000031355
+    },
+    {
+      "argv": [
+        "show",
+        "small"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7080783999990672
+    },
+    {
+      "argv": [
+        "render",
+        "small",
+        "--output",
+        "C:\\repos\\Personals\\Riff\\build\\pilots\\small.md",
+        "--overwrite"
+      ],
+      "exit_code": 0,
+      "seconds": 0.4077850000030594
+    },
+    {
+      "argv": [
+        "new",
+        "feature",
+        "--title",
+        "Explain task readiness"
+      ],
+      "exit_code": 0,
+      "seconds": 0.4735466999991331
+    },
+    {
+      "argv": [
+        "render",
+        "feature",
+        "--format",
+        "html",
+        "--output",
+        "C:\\repos\\Personals\\Riff\\build\\pilots\\feature.html",
+        "--overwrite"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7966677000003983
+    },
+    {
+      "argv": [
+        "graph",
+        "feature"
+      ],
+      "exit_code": 0,
+      "seconds": 0.37948730000061914
+    },
+    {
+      "argv": [
+        "research",
+        "Compare hosts without inventing costs"
+      ],
+      "exit_code": 0,
+      "seconds": 0.4348916000017198
+    }
+  ],
+  "defects_after_completion": null,
+  "rework": "See execution-log.md for defects found and fixed during review.",
+  "readability_feedback": "Independent agent review of the small pilot found an unclear outcome fallback and excessive diagnostics. The pilot now has a structured outcome and concise views show the first three findings. Human feedback was not collected.",
+  "model_usage": "Unavailable; no usage or cost improvement claimed.",
+  "live_host_pilots": "Not performed; live adapters are outside this release.",
+  "outputs": "build/pilots (regenerate with tools/pilot_features.py)"
+}

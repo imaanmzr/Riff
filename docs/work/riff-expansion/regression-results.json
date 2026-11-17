@@ -1,0 +1,79 @@
+[
+  {
+    "command": "python planning/tests/test_validate.py",
+    "exit_code": 0,
+    "tests": 8,
+    "skipped": 0,
+    "seconds": 0.215
+  },
+  {
+    "command": "python execution/tests/test_gates.py",
+    "exit_code": 0,
+    "tests": 12,
+    "skipped": 0,
+    "seconds": 0.217
+  },
+  {
+    "command": "python recovery/tests/test_state.py",
+    "exit_code": 0,
+    "tests": 13,
+    "skipped": 1,
+    "seconds": 0.361
+  },
+  {
+    "command": "python routing/tests/test_router.py",
+    "exit_code": 0,
+    "tests": 18,
+    "skipped": 0,
+    "seconds": 0.237
+  },
+  {
+    "command": "python distribution/tests/test_install.py",
+    "exit_code": 0,
+    "tests": 12,
+    "skipped": 1,
+    "seconds": 36.448
+  },
+  {
+    "command": "python distribution/tests/test_cli.py",
+    "exit_code": 0,
+    "tests": 19,
+    "skipped": 0,
+    "seconds": 34.149
+  },
+  {
+    "command": "python planning/tests/test_records.py",
+    "exit_code": 0,
+    "tests": 16,
+    "skipped": 0,
+    "seconds": 0.855
+  },
+  {
+    "command": "python planning/tests/test_reports.py",
+    "exit_code": 0,
+    "tests": 7,
+    "skipped": 0,
+    "seconds": 3.155
+  },
+  {
+    "command": "python planning/tests/test_presentation.py",
+    "exit_code": 0,
+    "tests": 7,
+    "skipped": 0,
+    "seconds": 55.51
+  },
+  {
+    "command": "python distribution/tests/test_features.py",
+    "exit_code": 0,
+    "tests": 11,
+    "skipped": 0,
+    "seconds": 21.387
+  },
+  {
+    "command": "python routing/tests/test_adapters.py",
+    "exit_code": 0,
+    "tests": 10,
+    "skipped": 0,
+    "seconds": 0.273
+  }
+]

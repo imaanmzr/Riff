@@ -23,6 +23,17 @@ semantic correctness.
 
 ## Persistent state
 
+Schema v2 preserves structured task/requirement IDs while adding requirement
+descriptions, acceptance checks, decisions, evidence and task-linked reports.
+Authored Markdown remains separate from generated views. Live authored/config
+digests and source manifests bind review evidence. Legacy reads remain compatible;
+migration is explicit and only atomically replaces plan.json.
+
+The canonical Python core is planning/riff_core. Its bundled copy is shared by
+installed CLI and standalone utilities; tools/sync_references.py verifies parity.
+Browser assets are pinned under distribution/assets and embedded into HTML.
+The Python runtime remains standard-library only. No rendering server is started.
+
 The plan records requirements, decisions, and task dependencies. Execution
 records actual agents, checks, reviews, and integrated revisions. Recovery stores
 checksummed, generation-numbered checkpoints and compares a listed file manifest

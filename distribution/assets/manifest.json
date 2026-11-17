@@ -1,0 +1,34 @@
+[
+  {
+    "file": "mermaid.min.js",
+    "package": "mermaid",
+    "version": "11.12.0",
+    "source": "https://registry.npmjs.org/mermaid/-/mermaid-11.12.0.tgz",
+    "member": "package/dist/mermaid.min.js",
+    "sha256": "07e37dfa97b337ccc85365d57eddf99b9706f09db3b59b260d0333b23b343c4b"
+  },
+  {
+    "file": "mermaid.LICENSE",
+    "package": "mermaid",
+    "version": "11.12.0",
+    "source": "https://registry.npmjs.org/mermaid/-/mermaid-11.12.0.tgz",
+    "member": "package/LICENSE",
+    "sha256": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80"
+  },
+  {
+    "file": "markdown-it.min.js",
+    "package": "markdown-it",
+    "version": "14.1.0",
+    "source": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.1.0.tgz",
+    "member": "package/dist/markdown-it.min.js",
+    "sha256": "38c70a1e7ca91ab40e2d9e6e60129851a717ed1c7d4acbbdd41bf9503791cf68"
+  },
+  {
+    "file": "markdown-it.LICENSE",
+    "package": "markdown-it",
+    "version": "14.1.0",
+    "source": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.1.0.tgz",
+    "member": "package/LICENSE",
+    "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
+  }
+]

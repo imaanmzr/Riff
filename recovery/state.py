@@ -6,6 +6,10 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'planning'))
+from riff_core import records
+from riff_core.config import context as live_context
 
 if os.name == 'nt':
     import msvcrt
@@ -36,7 +40,7 @@ def fingerprint(root, paths):
 
 
 def load(path):
-    value = json.loads(Path(path).read_text())
+    value = json.loads(Path(path).read_text(encoding='utf-8'))
     if value.get('schema') != 1 or value.get('checksum') != digest(value.get('payload')):
         raise ValueError('Invalid or corrupt checkpoint')
     return value['payload']
@@ -80,14 +84,40 @@ def checkpoint(plan, run, manifest):
                 manifest=manifest, history=[])
 
 
-def reconcile(saved, plan, observed):
+def reconcile(saved, plan, observed, context=None):
     """Return a proposal. Preserve original evidence in history; never mutate source."""
     result = copy.deepcopy(saved)
     run = result['run']
     changed = sorted(k for k in set(saved['manifest']) | set(observed)
                      if saved['manifest'].get(k) != observed.get(k)
                      or (k in saved['manifest']) != (k in observed))
-    plan_changed = digest(saved['plan']) != digest(plan)
+    def recovery_plan(value):
+        if value.get('schema_version') == 2:
+            return {key: item for key, item in value.items() if key != 'presentation'}
+        return value
+
+    # Presentation preferences cannot invalidate reviewed work. Keep status and
+    # reviews in the comparison so an approval change still requires inspection.
+    plan_changed = digest(recovery_plan(saved['plan'])) != digest(recovery_plan(plan))
+    binding_errors = []
+    if plan.get('schema_version') == 2:
+        if context is None:
+            binding_errors = ['Live authored/configuration inputs unavailable']
+        else:
+            # Source drift is compared against the saved manifest below. Binding
+            # checks use observed hashes so approved execution edits do not revert
+            # freshness to the original planning baseline.
+            live = dict(context, source_manifest=observed)
+            binding_errors = records.live_errors(plan, live)
+            try:
+                actual = records.authored_digest(context['task_dir'], plan)
+                if saved.get('authored_digest', plan.get('authored_digest')) != actual:
+                    binding_errors.append('Authored checkpoint evidence changed')
+                if saved.get('config_digest', plan.get('config_digest')) != records.digest(context['effective_behavior']):
+                    binding_errors.append('Checkpoint behavioral configuration changed')
+            except (OSError, ValueError, KeyError) as exc:
+                binding_errors.append(str(exc))
+        plan_changed = plan_changed or bool(binding_errors)
     tasks = {t['id']: t for t in plan.get('tasks', [])}
     reasons = {}
     for tid, record in run.get('tasks', {}).items():
@@ -114,6 +144,7 @@ def reconcile(saved, plan, observed):
         run['blockers'] = list(dict.fromkeys(run.get('blockers', []) + [issue]))
     # Preserve old baseline and plan binding until a reviewed replan is accepted.
     result['recovery'] = dict(changed_files=changed, plan_changed=plan_changed,
+        binding_errors=binding_errors,
         blocked_tasks=sorted(reasons), added_tasks=sorted(set(tasks)-set(run.get('tasks', {}))),
         removed_tasks=sorted(set(run.get('tasks', {}))-set(tasks)),
         next_action='Inspect changes, reconcile side effects and revalidate before clearing blockers'
@@ -134,18 +165,23 @@ def main():
             cmd.add_argument('--run', required=True)
             cmd.add_argument('--expected-generation', required=True, type=int)
     args = parser.parse_args()
-    plan = json.loads(Path(args.plan).read_text())
-    manifest = fingerprint(args.root, json.loads(Path(args.manifest).read_text()))
+    plan = records.load(args.plan)
+    manifest = fingerprint(args.root, json.loads(Path(args.manifest).read_text(encoding='utf-8')))
     if args.command == 'checkpoint':
-        run = json.loads(Path(args.run).read_text())
+        run = records.load(args.run)
         data = checkpoint(plan, run, manifest)
+        if plan.get('schema_version') == 2:
+            ctx = live_context(args.plan, args.root)
+            data['authored_digest'] = records.authored_digest(ctx['task_dir'], plan)
+            data['config_digest'] = records.digest(ctx['effective_behavior'])
         if Path(args.state).exists():
             old = load(args.state)
             data['history'] = old.get('history', []) + [dict(previous_run=old['run'], previous_plan=old['plan'], previous_manifest=old['manifest'])]
         data = save(args.state, data, args.expected_generation)
         print(json.dumps({'generation': data['generation']}))
     else:
-        print(json.dumps(reconcile(load(args.state), plan, manifest), indent=2))
+        ctx = live_context(args.plan, args.root) if plan.get('schema_version') == 2 else None
+        print(json.dumps(reconcile(load(args.state), plan, manifest, context=ctx), indent=2))
 
 
 if __name__ == '__main__':

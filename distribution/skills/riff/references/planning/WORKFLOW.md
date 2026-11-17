@@ -101,6 +101,16 @@ critical audits. Record requested and actual capabilities. Host support governs
 model selection; never fabricate model switches or independent reviews.
 
 ## Project adaptation and state
+For v2 records and live review binding, read [Record contracts](RECORDS.md).
+Use [Research](RESEARCH.md), [Debug](DEBUG.md), and [Replan](REPLAN.md) for those
+operations. Research/debug reports do not independently authorize implementation.
+Write human-readable plans using the layered template: outcome and next action
+first, then behavior/diagrams, decisions, delivery and detailed evidence. Keep
+small plans compact. Diagrams supplement acceptance criteria, never replace them.
+Resolve the effective profile for the task. Use its `sections` as authoring
+emphasis and map its `required_checks` to tracked verification. The route and
+review requirements still follow the risk rubric and target project instructions.
+
 Read `project.json` when supplied; missing settings remain unknown until
 inspected. Use existing repository conventions and merge instructions rather
 than replacing them. Store task records in the configured directory. Use

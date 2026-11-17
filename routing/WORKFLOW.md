@@ -54,6 +54,11 @@ After repeated failures, investigate the cause and replan rather than escalating
 models indefinitely. Recovery drift blocks routing through execution gates.
 
 ## Evaluate
+See [Adapter contracts](ADAPTERS.md) for the fake-host integration boundary.
+Simulation is never evidence that a model launched or work was verified. v2
+routing uses the same live record context and gates as execution; unavailable
+context blocks routing. No live adapter is shipped.
+
 Compare the same representative tasks against sequential single-model execution.
 Record accepted requirements, defects found after completion, rework, elapsed
 time, actual/estimated tokens, selected/actual models, and human interventions.

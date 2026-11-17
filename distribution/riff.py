@@ -4,11 +4,11 @@ import argparse
 import json
 from pathlib import Path
 if __package__:
-    from . import commands
+    from . import commands, task_commands
     from .git_visibility import GitVisibility
     from .install import HOSTS, LEGACY_NAME, NAME, install
 else:
-    import commands
+    import commands, task_commands
     from git_visibility import GitVisibility
     from install import HOSTS, LEGACY_NAME, NAME, install
 
@@ -31,7 +31,7 @@ def number(label, default, minimum):
 
 
 def read(path, fallback):
-    return json.loads(path.read_text()) if path.exists() else fallback.copy()
+    return json.loads(path.read_text(encoding='utf-8')) if path.exists() else fallback.copy()
 
 
 def configure(project, host, git, git_mode=None):
@@ -87,7 +87,7 @@ def build_parser():
         epilog='Examples:\n  riff init --host cursor\n  riff plan "Add partial refunds" --host cursor\n  riff design "Compare retry interfaces"\n  riff review --task refunds\n  riff status\n\nRun riff COMMAND --help for command options.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument('--version', action='version', version='Riff 0.7.0')
+    parser.add_argument('--version', action='version', version='Riff 0.8.0')
     subparsers = parser.add_subparsers(dest='action', title='commands', metavar='COMMAND')
     descriptions = {
         'init': 'Install the project skill and open the setup wizard',
@@ -118,9 +118,13 @@ def build_parser():
         if action == 'new':
             command.add_argument('--title', help='Human-readable task title')
             command.add_argument('--route', choices=['small', 'standard', 'complex', 'critical'], default='standard')
+            command.add_argument('--profile', help='Workflow profile (default: project setting or feature)')
+            command.add_argument('--detail', choices=['concise', 'full'])
+            command.add_argument('--diagrams', choices=['auto', 'none'])
         if action == 'status':
             command.add_argument('task', nargs='?', help='Task ID (default: all tasks)')
             command.add_argument('--json', action='store_true', help='Emit machine-readable JSON')
+            command.add_argument('--details', action='store_true', help='Evaluate current readiness and explain blockers')
         if action == 'prompt':
             command.add_argument('--action', dest='operation', choices=['plan', 'execute', 'resume', 'audit'], default='plan')
         if action == 'validate':
@@ -135,13 +139,74 @@ def build_parser():
         command.add_argument('--project', help='Project directory (default: current directory)')
         command.add_argument('--host', choices=sorted(HOSTS), default='codex',
                              help='Agent app (default: codex)')
+        if operation == 'replan':
+            command.add_argument('--reason', required=True, help='Reason to revise the saved plan')
+        if operation == 'debug':
+            command.add_argument('--command-timeout', type=positive)
+            command.add_argument('--total-timeout', type=positive)
         if operation in commands.SAVED_TASK_COMMANDS:
             command.add_argument('task', help='Saved task ID')
         else:
             target = command.add_mutually_exclusive_group(required=True)
             target.add_argument('subject', nargs='?', help='Request to send to the agent')
             target.add_argument('--task', help='Use an existing task ID')
+    for action in ('show', 'explain', 'check', 'graph', 'render', 'diff', 'checkpoint', 'reconcile', 'migrate'):
+        aliases = ['export'] if action == 'render' else []
+        command = subparsers.add_parser(action, aliases=aliases, help={
+            'show': 'Read a plan', 'explain': 'Explain current blockers', 'check': 'Check records and live evidence',
+            'graph': 'Export task dependencies', 'render': 'Export Markdown or offline HTML',
+            'diff': 'Compare an explicit snapshot', 'checkpoint': 'Save a generation-checked checkpoint',
+            'reconcile': 'Inspect a recovery proposal', 'migrate': 'Preview or apply schema migration'}[action])
+        command.set_defaults(handler=task_commands.task_operation)
+        command.add_argument('task')
+        command.add_argument('--project')
+        command.add_argument('--json', action='store_true')
+        if action in ('show', 'render'):
+            command.add_argument('--detail', choices=['concise', 'full'])
+            command.add_argument('--diagrams', choices=['auto', 'none'])
+        if action in ('graph', 'render'):
+            command.add_argument('--output', required=action == 'render')
+            command.add_argument('--overwrite', action='store_true')
+        if action == 'render': command.add_argument('--format', choices=['markdown', 'html'], default='markdown')
+        if action == 'diff': command.add_argument('--against', required=True)
+        if action == 'migrate': command.add_argument('--apply', action='store_true')
+        if action in ('checkpoint', 'reconcile'): command.add_argument('--manifest', required=True)
+        if action == 'checkpoint': command.add_argument('--expected-generation', required=True, type=nonnegative)
+    config = subparsers.add_parser('config', help='Inspect or set validated project settings')
+    subs = config.add_subparsers(dest='config_action', required=True)
+    for operation in ('show', 'set'):
+        command = subs.add_parser(operation)
+        command.set_defaults(handler=task_commands.configuration)
+        command.add_argument('--project')
+        command.add_argument('--json', action='store_true')
+        if operation == 'show':
+            command.add_argument('--effective', action='store_true')
+            command.add_argument('--task')
+        else:
+            command.add_argument('key')
+            command.add_argument('value')
+    profiles = subparsers.add_parser('profile', help='Inspect workflow profiles')
+    subs = profiles.add_subparsers(dest='profile_action', required=True)
+    for operation in ('list', 'show'):
+        command = subs.add_parser(operation)
+        command.set_defaults(handler=task_commands.profile)
+        command.add_argument('--project')
+        command.add_argument('--json', action='store_true')
+        if operation == 'show': command.add_argument('name')
     return parser
+
+
+def nonnegative(value):
+    try: number = int(value)
+    except ValueError: raise argparse.ArgumentTypeError('Expected an integer')
+    if number < 0: raise argparse.ArgumentTypeError('Must be nonnegative')
+    return number
+
+
+def positive(value):
+    result = nonnegative(value)
+    if result == 0: raise argparse.ArgumentTypeError('Must be positive')
+    return result
 
 
 def main():
@@ -198,7 +263,7 @@ def main():
 def cli():
     try:
         main()
-    except (OSError, ValueError, EOFError, KeyboardInterrupt) as exc:
+    except (OSError, ValueError, TypeError, KeyError, EOFError, KeyboardInterrupt) as exc:
         raise SystemExit('Stopped: ' + str(exc))
 
 if __name__ == '__main__':

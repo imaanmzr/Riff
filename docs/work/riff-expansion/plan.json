@@ -1,0 +1,162 @@
+{
+  "route": "complex",
+  "status": "READY",
+  "revision": 1,
+  "source_revision": "ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+  "requirements": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8"
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "dependencies": [],
+      "requirements": [
+        "R1"
+      ],
+      "objective": "Shared records and migration",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Shared records and migration",
+      "outputs": "Shared records and migration",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T2",
+      "dependencies": [
+        "T1"
+      ],
+      "requirements": [
+        "R2"
+      ],
+      "objective": "Unified diagnostics and bindings",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Unified diagnostics and bindings",
+      "outputs": "Unified diagnostics and bindings",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T3",
+      "dependencies": [
+        "T2"
+      ],
+      "requirements": [
+        "R3"
+      ],
+      "objective": "Readable exports and diagrams",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Readable exports and diagrams",
+      "outputs": "Readable exports and diagrams",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T4",
+      "dependencies": [
+        "T3"
+      ],
+      "requirements": [
+        "R4"
+      ],
+      "objective": "Profiles and configuration",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Profiles and configuration",
+      "outputs": "Profiles and configuration",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T5",
+      "dependencies": [
+        "T4"
+      ],
+      "requirements": [
+        "R5"
+      ],
+      "objective": "Research/debug/replan",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Research/debug/replan",
+      "outputs": "Research/debug/replan",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T6",
+      "dependencies": [
+        "T5"
+      ],
+      "requirements": [
+        "R6"
+      ],
+      "objective": "Diff and recovery",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Diff and recovery",
+      "outputs": "Diff and recovery",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T7",
+      "dependencies": [
+        "T6"
+      ],
+      "requirements": [
+        "R7"
+      ],
+      "objective": "Adapter contracts",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Adapter contracts",
+      "outputs": "Adapter contracts",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    },
+    {
+      "id": "T8",
+      "dependencies": [
+        "T7"
+      ],
+      "requirements": [
+        "R8"
+      ],
+      "objective": "Release validation and pilots",
+      "inputs": "Accepted user plan at baseline ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "scope": "Release validation and pilots",
+      "outputs": "Release validation and pilots",
+      "owner": "root",
+      "capability": "coding",
+      "reviewer": "/root/implementation_review",
+      "verification": "Focused tests, existing six regression suites and independent spec/quality review"
+    }
+  ],
+  "reviews": [
+    {
+      "revision": 1,
+      "source_revision": "ad7c4af88879efe1b7d7e5485e7c9391fa4f4298",
+      "verdict": "pass",
+      "reviewer": "/root/implementation_review",
+      "independent": true,
+      "evidence": "plan.md#plan-review"
+    }
+  ]
+}

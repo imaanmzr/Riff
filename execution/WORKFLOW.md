@@ -15,6 +15,10 @@ build/test baseline, including pre-existing failures. Choose one integration
 owner. Prefer an isolated branch/worktree per concurrent implementer. When
 isolation is unavailable, work sequentially in nonconflicting scope. Never reset
 or overwrite user changes. No automatic installation of external workflow packs.
+For v2 plans, also read planning/RECORDS.md. Validate live authored artifacts and
+frozen behavior before dispatch; compare source against the plan manifest until
+a new execution manifest has qualifying integration evidence. Map frozen
+required_checks to actual verification records. Simulated evidence is ineligible.
 
 ## Dispatch
 If new evidence has surfaced, reassess the plan using the

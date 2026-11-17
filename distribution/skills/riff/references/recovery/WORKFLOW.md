@@ -43,6 +43,11 @@ replacement protect one checkpoint file; they are not a distributed transaction.
 7. Report completed work, stale/blocked work, unresolved decisions and next task.
 
 ## Commands
+The main CLI exposes `riff checkpoint TASK --manifest PATH --expected-generation N`
+and `riff reconcile TASK --manifest PATH`. The latter prints a proposal only.
+Never silently reload and retry a stale generation. v2 checkpoints capture live
+authored/config digests; resume compares them even if JSON revisions did not move.
+
 python3 recovery/state.py checkpoint --state STATE --plan PLAN --run RUN --root REPO --manifest MANIFEST --expected-generation 0
 python3 recovery/state.py resume --state STATE --plan PLAN --root REPO --manifest MANIFEST
 

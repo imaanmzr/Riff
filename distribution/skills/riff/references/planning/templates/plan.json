@@ -1,27 +1,24 @@
 {
+  "schema_version": 2,
+  "requirement_details": [],
+  "acceptance_checks": [],
+  "decisions": [],
+  "evidence": [],
+  "reports": [],
+  "reviewed_artifacts": [
+    "plan.md"
+  ],
+  "source_manifest": {},
+  "behavior_config": {},
+  "behavior_provenance": {},
   "route": "standard",
   "status": "DRAFT",
   "revision": 1,
-  "source_revision": "REPLACE_WITH_ACTUAL_REVISION",
-  "requirements": [
-    "R1"
-  ],
-  "tasks": [
-    {
-      "id": "T1",
-      "dependencies": [],
-      "requirements": [
-        "R1"
-      ],
-      "objective": "specified",
-      "inputs": "specified",
-      "scope": "specified",
-      "outputs": "specified",
-      "owner": "unassigned",
-      "capability": "specified",
-      "reviewer": "unassigned",
-      "verification": "specified"
-    }
-  ],
-  "reviews": []
+  "source_revision": null,
+  "requirements": [],
+  "tasks": [],
+  "reviews": [],
+  "unresolved_questions": [
+    "Inspect source and define acceptance criteria"
+  ]
 }

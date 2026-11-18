@@ -34,10 +34,9 @@ Record actual agent/model separately from requested capability; unavailable
 models do not justify invented routing. Run sequentially if agents unavailable.
 
 ## Implement and verify
-Use the [implementation guide](IMPLEMENTATION.md) to choose a first working
-slice and build a focused feedback loop. Use regression tests for behavioral
-bugs and meaningful tests for new behavior. Choose tests that exercise the
-behavior. Run required project checks. Record command, exit code, evidence reference,
+For behavior changes use the [implementation guide](IMPLEMENTATION.md) to choose
+a working slice and useful checks. A clear copy change uses focused verification
+directly. Run required project checks. Record command, exit code, evidence reference,
 and exact candidate revision or content fingerprint. Never mark skipped,
 timed-out, failed or unavailable checks as passed. Baseline failures require
 explicit evidence that changed behavior is unaffected; unresolved required
@@ -53,6 +52,8 @@ Review raw diff, specification, and actual verification evidence. Record reviewe
 session, candidate revision, verdict and findings. Implementer cannot approve
 own standard/complex/critical task. Small tasks permit labeled self-review.
 Any candidate change invalidates its previous checks and reviews.
+Use [review technique](REVIEW.md) for those passes. Consult design/testing guides
+only for unresolved concerns and reuse current evidence by reference.
 
 Only the integration owner applies accepted changes. Resolve conflicts without
 inventing design decisions; re-review changed conflict resolutions. Mark task

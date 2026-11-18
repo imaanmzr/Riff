@@ -1,0 +1,91 @@
+{
+  "reviewer": "/root/depth_reviewer",
+  "independent": true,
+  "scope": "Guidance, selective reading triggers, packaging, documentation and four controlled installed-skill trials",
+  "source_manifest": {
+    "planning/DESIGN.md": "ce1f0b3cc96a2e3b8ccad1c4288b06a251828b5e6bc63f8b9b6dd9ec1ea36cda",
+    "planning/DEBUG.md": "e0b37349ea75d7761ee0a649276785d9ed96cfb8b3b95945bba0acabff0d64e9",
+    "planning/WORKFLOW.md": "d3b6ab537032fd940efc92ff970cbf0e7b92e59301c982a58f926825d40629a2",
+    "planning/RECORDS.md": "496b417fcf8c277abff40b03ffc71ac3eed5b8d085a4c0e85a79878685726335",
+    "execution/IMPLEMENTATION.md": "191d085094d5995ec8183fc2fa70597bbba7402f0e8d38eaa104e67b63c4f444",
+    "execution/REVIEW.md": "27fd6462ecd43974930080b6edf6953bbd1118c03f5ed7a7fdc9da5e75f262f7",
+    "execution/WORKFLOW.md": "3ccca20abef4cedf7fcfe0a66696f5cafde19a1dbdb1d89bfddc9c73c9436120",
+    "distribution/skills/riff/SKILL.md": "8b319bdeb9ae50091c50e0c1a07be8d10fdbf6131e479fee8e10e830dbc6855e",
+    "distribution/tests/test_install.py": "a2dcc2f4175ac9f294e4f0134bd47df960830f5fd086c6184ad0edbe7fe45ab1",
+    "README.md": "f94a0c4468f3c43ece0e76b2331964523879c14d9d7b3406b8eaa3fcacc2d76f",
+    "docs/features.md": "b572932a98ee5f4792b5c4d0a8998015e5b9d6e299c1eb6d87d9a5d25c54cbcb",
+    "distribution/skills/riff/references/planning/DESIGN.md": "ce1f0b3cc96a2e3b8ccad1c4288b06a251828b5e6bc63f8b9b6dd9ec1ea36cda",
+    "distribution/skills/riff/references/planning/DEBUG.md": "e0b37349ea75d7761ee0a649276785d9ed96cfb8b3b95945bba0acabff0d64e9",
+    "distribution/skills/riff/references/planning/WORKFLOW.md": "d3b6ab537032fd940efc92ff970cbf0e7b92e59301c982a58f926825d40629a2",
+    "distribution/skills/riff/references/planning/RECORDS.md": "496b417fcf8c277abff40b03ffc71ac3eed5b8d085a4c0e85a79878685726335",
+    "distribution/skills/riff/references/execution/IMPLEMENTATION.md": "191d085094d5995ec8183fc2fa70597bbba7402f0e8d38eaa104e67b63c4f444",
+    "distribution/skills/riff/references/execution/REVIEW.md": "27fd6462ecd43974930080b6edf6953bbd1118c03f5ed7a7fdc9da5e75f262f7",
+    "distribution/skills/riff/references/execution/WORKFLOW.md": "3ccca20abef4cedf7fcfe0a66696f5cafde19a1dbdb1d89bfddc9c73c9436120"
+  },
+  "trial_evidence_sha256": {
+    "copy/observation.json": "7b9f7ce59d980137a5c9295765c8cb16be4731cacffc94bac52b329f348c7499",
+    "ambiguity/observation.json": "f427f7ee74c3af400f285cc73d8c745383fe964b8363936f150ae85f57d8c8b3",
+    "implementation/review-before.json": "53bccf0e442b0959a2f4ed04e7a8ace2a250843f9a0ed8d21647353523a1af0c",
+    "implementation/review-after.json": "aa2932403149e545bc9449e7dd200205ebd8a942625d3fb323276be929193eab",
+    "implementation/docs/work/quantity/plan-review.json": "11247c60ea2a141ce4c1ad330c6aa1652811b0b34d2c92f00edb4ed673a67359",
+    "debug/observation.json": "0f3754f7fcdacee70daa9656937d8e4d12a8b4fbd294cb40b0dcff9bf1537dd5"
+  },
+  "spec_verdict": "pass",
+  "quality_verdict": "pass",
+  "integration_verdict": "pass",
+  "resolved_findings": [
+    {
+      "id": "F1",
+      "location": "implementation/quantity.py:2",
+      "resolution": "Positive guard rejects zero and negative strings; final tests and direct boundary checks passed."
+    },
+    {
+      "id": "F2",
+      "location": "implementation/test_quantity.py:5",
+      "resolution": "Independent literal replaces self-comparison; observed deliberately wrong result fails sensitive test."
+    },
+    {
+      "id": "F3",
+      "location": "ambiguity and implementation trial plan task capability",
+      "resolution": "Exact coding enum now used; actual independent current plan review bound before execution."
+    }
+  ],
+  "trial_verdicts": {
+    "copy": {
+      "spec": "pass",
+      "quality": "pass",
+      "evidence": "Exact corrected bytes and newline preserved; small self-review, no design/debug/testing guide read."
+    },
+    "ambiguity": {
+      "spec": "pass",
+      "quality": "pass",
+      "evidence": "Inspected login filter, recorded material question and prepared answer, explicit subscription/day examples and reviewed proposed contract; no source implementation."
+    },
+    "debug": {
+      "spec": "pass",
+      "quality": "pass",
+      "evidence": "Actual 100/100 two-call reproduction, single-call controls 0/100, competing hypotheses distinguished, source unchanged and diagnostic commands bounded."
+    },
+    "implementation": {
+      "spec": "pass",
+      "quality": "pass",
+      "evidence": "Reviewed plan before edits. Seeded flaws independently found and corrected; actual red/green/sensitivity outcomes inspected, final unittest and expanded compatibility checks rerun."
+    }
+  },
+  "checks_independently_observed": [
+    "Installed v2 READY checks for ambiguity and implementation plans before product edits",
+    "Baseline ineffective quantity test passed before independent findings",
+    "Final quantity unittest: 4 passed",
+    "Positive formatting and invalid string direct assertions passed",
+    "python tools/sync_references.py --check passed",
+    "git diff --check passed"
+  ],
+  "limitations": [
+    "Controlled trials mirror guide examples; transfer to unseen real projects unmeasured.",
+    "No matched baseline or actual host token counters; word counts are instruction-size proxies only.",
+    "Copy trial exposed substantial existing v2 bookkeeping time.",
+    "Initial installed guide copies precede final minor wording trims; their actual consulted hashes are preserved separately.",
+    "Root completed the implementation fixture after an interrupted agent handoff; this is disclosed in evaluation."
+  ],
+  "remaining_blockers": []
+}

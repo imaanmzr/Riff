@@ -1,72 +1,61 @@
 ---
 name: riff
-description: Design, document, plan, execute, review, and resume software engineering work. Use for interface design, architecture audits, project documentation, reviewed implementation, and recovery. Scale effort to task risk.
+description: Research, design, debug, document, plan, execute, review, and resume engineering work. Scale investigation and verification to uncertainty and risk.
 ---
 # Engineering Workflow
 
-Version 0.8.0. Read the references relevant to the requested operation.
+Version 0.8.0. Read references for the requested operation and current uncertainty.
 
-## Resolve paths first
-Treat the directory containing this SKILL.md as SKILL_ROOT and the user's target
-repository as PROJECT_ROOT. Every `planning/`, `execution/`, `recovery/` or
-`routing/` path in bundled instructions means SKILL_ROOT/references/<path>.
-Run Python utilities by their absolute paths; pass project artifacts as absolute
-paths. On Windows, use `py -3` or `python` for examples that use `python3`.
-Do not change working directory to the skill and accidentally inspect it
-as the target project. Never write task state or configuration inside this skill.
+## Resolve paths
+The directory containing this file is SKILL_ROOT. The target repository is
+PROJECT_ROOT. Bundled planning/, execution/, recovery/ and routing/ paths mean
+SKILL_ROOT/references/<path>. Run utilities by absolute path and pass absolute
+project artifact paths. On Windows use `py -3` or `python` for `python3` examples.
+Inspect the target project, and save its state there.
 
-Read the target project's applicable instructions (AGENTS.md, CLAUDE.md, Cursor
-rules, and existing conventions); obey the current host's instruction precedence. Optional project
-settings live in PROJECT_ROOT/.engineering-workflow/project.json; routing.json
-and host.json in that same directory supply routing settings. Task records belong
-in PROJECT_ROOT/docs/work/<task-id>/ unless project settings override that path.
+Read applicable project instructions and obey host instruction precedence.
+Optional settings live in PROJECT_ROOT/.engineering-workflow/project.json,
+routing.json and host.json. Task records default to PROJECT_ROOT/docs/work/<id>/.
+Use plan.md, plan.json and run.json so the CLI can find them.
 
-## Choose operation
-- Research: read [Research](references/planning/RESEARCH.md). Produce bounded,
-  sourced investigation reports; distinguish facts, inference and uncertainty.
-- Debug: read [Debug](references/planning/DEBUG.md). Diagnose and reproduce with
-  bounded isolated diagnostics; do not edit product code merely to diagnose.
-- Replan: read [Replan](references/planning/REPLAN.md). Preserve snapshots and
-  superseded decisions, invalidate stale reviews, and stop before execution.
-- Plan: read [Planning](references/planning/WORKFLOW.md). Stop after a reviewed plan.
-- Design or audit architecture: use [Design & Architecture](references/planning/DESIGN.md).
-  Analyze and recommend within the requested scope.
-- Advise on or update project docs: use [Documentation](references/planning/DOCUMENTATION.md).
-  Edit only when the request authorizes the documentation change.
-- Execute: read [Planning](references/planning/WORKFLOW.md) and
-  [Execution](references/execution/WORKFLOW.md), including its implementation guide.
-  Require user authorization to execute, not merely a READY plan.
-- Audit a spec, plan, or code change: inspect it independently using the review rules
-  in references/planning/WORKFLOW.md and references/execution/WORKFLOW.md.
-- Resume/checkpoint: also read references/recovery/WORKFLOW.md.
-- Delegate/select models: also read references/routing/WORKFLOW.md.
+## Select guidance
+- Plan: read [Planning](references/planning/WORKFLOW.md). For unclear behavior,
+  overloaded terms, incomplete acceptance examples or interface choices, consult
+  [Requirements & Design](references/planning/DESIGN.md). Stop after plan review.
+- Design/architecture audit: use [Requirements & Design](references/planning/DESIGN.md).
+- Research: use [Research](references/planning/RESEARCH.md) for bounded, sourced findings.
+- Debug: use [Debug](references/planning/DEBUG.md) for bounded diagnosis/reproduction.
+  Product edits require execution authorization.
+- Documentation: use [Documentation](references/planning/DOCUMENTATION.md). Edit
+  within the requested scope.
+- Execute: read Planning and [Execution](references/execution/WORKFLOW.md). Use
+  [Implementation](references/execution/IMPLEMENTATION.md) for behavior changes.
+  Clear copy changes use focused verification directly.
+- Review/audit: use [Review](references/execution/REVIEW.md) and the applicable
+  Planning/Execution review gates. Consult design/testing guides for unresolved concerns.
+- Replan: use [Replan](references/planning/REPLAN.md). Preserve snapshots and decisions.
+- Resume/checkpoint: also read [Recovery](references/recovery/WORKFLOW.md).
+- Delegate/select models: also read [Routing](references/routing/WORKFLOW.md).
 
-Preserve scope and prior authorization. If a planning request is ambiguous,
-start with discovery and planning; do not silently begin product implementation.
-Use the [route rubric](references/planning/WORKFLOW.md#route-rubric) to match
-effort to the task and reassess when material evidence changes.
+Load engineering guides selectively. Reuse current decisions and evidence by
+path/ID. Summarize changes and open questions instead of copying full artifacts.
+Use existing project terminology and record meaningful clarifications in its
+current specification or glossary. Examples in guides support judgment.
 
-## Host capabilities
-Use real tools for subagents and model selection when available. Explicitly
-record unavailable capabilities; never simulate independent review or claim a
-model was launched from a routing proposal. Empty model mappings disable the
-router, not planning. A capable current agent can work sequentially, but required
-independent review remains outstanding until another session performs it.
+## Gates and evidence
+Use Planning's route rubric and reassess when scope or risk changes. Planning
+completion alone does not authorize execution. Preserve prior authorization and
+user work. Require current reviews and resolve blockers before dispatch.
 
-## Evidence
-Use bundled validators as structural checks, not proof of correctness. Read the
-actual source, run relevant checks, preserve findings, and bind reviews to exact
-revisions. Stop at unresolved blockers. Do not install other skill packs or
-publish/deploy merely because this skill is invoked.
+Use actual host tools for subagents/model selection. Record unavailable
+capabilities. Empty model mappings disable routing, not planning. Sequential work
+remains possible, while required independent review awaits a separate session.
+Never invent model launches, usage, review independence or verification success.
+Validators check records and freshness; inspect the actual source and evidence.
 
-## Different hosts and models
-Read references/hosts.md for invocation, model selection, and cross-host handoffs.
-The workflow is model-independent; its tools do not invoke provider APIs. Use
-only the active host's verified capabilities. A subscription or model visible
-in another app does not establish access in the current host.
-
-Use plan.json and plan.md for planning records and run.json for execution records
-in each task directory so riff status, validate and route can locate them.
-For v2 shapes, live binding and migration, read [Records](references/planning/RECORDS.md).
-Use `riff show`, `explain`, `check`, `graph`, `render`, and `diff` to inspect work.
-Explain recorded versus evaluated status; unknown freshness is not a pass.
+For v2 artifacts, live binding and migration read [Records](references/planning/RECORDS.md).
+Use `riff show`, `explain`, `check`, `graph`, `render` and `diff` for inspection.
+Unknown freshness cannot establish readiness. Read [Hosts](references/hosts.md)
+for invocation, handoffs and verified capabilities. The host supplies model access.
+Publication, deployment and installing external workflow packs require authority
+within the user's request.

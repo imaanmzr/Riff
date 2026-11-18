@@ -1,0 +1,496 @@
+{
+  "baseline": "df2763496ed0b29b122c60068f4d270bf9d0e80e",
+  "date": "2026-11-18",
+  "method": "Four isolated agent sessions used installed skill copies. Root completed the fourth session after an agent handoff. One independent reviewer. Prepared product response supplied explicitly.",
+  "limitations": [
+    "No matched baseline runs or token counters. Word counts are instruction-size proxies.",
+    "Copy trial spent substantial time on existing v2 evidence bookkeeping; lower end-to-end overhead has not been established.",
+    "Trial installed files were captured before final wording trims; their hashes/counts above describe files actually consulted.",
+    "Controlled examples mirror guide examples; broader transfer to unseen real projects is unmeasured."
+  ],
+  "trials": [
+    {
+      "scenario": "copy",
+      "route": "small",
+      "guides_consulted": [
+        {
+          "path": ".agents/skills/riff/SKILL.md",
+          "sha256": "8b319bdeb9ae50091c50e0c1a07be8d10fdbf6131e479fee8e10e830dbc6855e",
+          "words": 417
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/WORKFLOW.md",
+          "sha256": "d3b6ab537032fd940efc92ff970cbf0e7b92e59301c982a58f926825d40629a2",
+          "words": 1216
+        },
+        {
+          "path": ".agents/skills/riff/references/execution/WORKFLOW.md",
+          "sha256": "3ccca20abef4cedf7fcfe0a66696f5cafde19a1dbdb1d89bfddc9c73c9436120",
+          "words": 806
+        },
+        {
+          "path": ".agents/skills/riff/references/execution/REVIEW.md",
+          "sha256": "27fd6462ecd43974930080b6edf6953bbd1118c03f5ed7a7fdc9da5e75f262f7",
+          "words": 310
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/RECORDS.md",
+          "sha256": "f20b5e735f642c6b0e1279ac07cf5ec9b6968488bc2c857b19c191b11e10109d",
+          "words": 651
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/templates/plan.json",
+          "sha256": "d08e22ad2696a03ca0aff6198c7dfae0a9f2f3aa7d30ceaab1ad19c5f994b4ce",
+          "words": 47
+        },
+        {
+          "path": ".agents/skills/riff/references/execution/template.json",
+          "sha256": "02e506c6a9d0b312b67635cfeeb2bd06ae8b11b85eb6a7e53f09bfd4ec4c4573",
+          "words": 35
+        }
+      ],
+      "distinct_consulted_words": 3482,
+      "elapsed_seconds": 1121.559,
+      "elapsed_basis": "First trial tool timestamp to observation creation; initial commentary excluded.",
+      "usage": null,
+      "observation_file": "build/depth-trials/copy/observation.json",
+      "request": "Fix Welcom to Welcome in label.txt.",
+      "outcome": "Welcome to the dashboard; original CRLF preserved. Execution complete.",
+      "verification": [
+        {
+          "command": "python -c \"from pathlib import Path; actual=Path(r'C:/repos/Personals/Riff/build/depth-trials/copy/label.txt').read_bytes(); assert actual == b'Welcome to the dashboard\\r\\n', repr(actual); print('PASS: exact corrected bytes, original suffix and CRLF preserved')\"",
+          "exit_code": 0
+        },
+        {
+          "command": "python -B C:/repos/Personals/Riff/build/depth-trials/copy/.agents/skills/riff/references/execution/gates.py C:/repos/Personals/Riff/build/depth-trials/copy/docs/work/copy-fix/plan.json C:/repos/Personals/Riff/build/depth-trials/copy/docs/work/copy-fix/run.json --project C:/repos/Personals/Riff/build/depth-trials/copy",
+          "exit_code": 0,
+          "result": "errors: []; eligible_tasks: []"
+        }
+      ],
+      "limitations": [
+        "Independent review not required for Small route.",
+        "Host usage unavailable.",
+        "No application launch required for a plain-text copy change."
+      ]
+    },
+    {
+      "scenario": "ambiguity",
+      "route": "standard",
+      "guides_consulted": [
+        {
+          "path": ".agents/skills/riff/SKILL.md",
+          "sha256": "8b319bdeb9ae50091c50e0c1a07be8d10fdbf6131e479fee8e10e830dbc6855e",
+          "words": 417
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/WORKFLOW.md",
+          "sha256": "d3b6ab537032fd940efc92ff970cbf0e7b92e59301c982a58f926825d40629a2",
+          "words": 1216
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/DESIGN.md",
+          "sha256": "9909d564fd13fdf21cb99965c4b7a2ae1ba5e64bb499dbf8129f906844ef2641",
+          "words": 637
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/RECORDS.md",
+          "sha256": "f20b5e735f642c6b0e1279ac07cf5ec9b6968488bc2c857b19c191b11e10109d",
+          "words": 651
+        },
+        {
+          "path": ".agents/skills/riff/references/execution/template.json",
+          "sha256": "02e506c6a9d0b312b67635cfeeb2bd06ae8b11b85eb6a7e53f09bfd4ec4c4573",
+          "words": 35
+        }
+      ],
+      "distinct_consulted_words": 2956,
+      "elapsed_seconds": 785.1565902233124,
+      "elapsed_basis": "Upper-bound wall interval from fixture source creation to observation/review update; dispatch timestamp unavailable.",
+      "usage": null,
+      "observation_file": "build/depth-trials/ambiguity/observation.json",
+      "request": "Change the filter to show active customers at a requested day. Plan only.",
+      "material_question": "Does active mean recent login, or paid subscription covering requested day?",
+      "prepared_answer_used": true,
+      "prepared_answer": "Prepared product-owner response, fixture input.\nActive means a paid subscription where start <= requested_day < end.\nRecent login is irrelevant. Expired and future subscriptions are excluded.\n",
+      "source": "def active_customers(customers):\n    return [c for c in customers if c[\"last_login_days\"] < 30]\n",
+      "acceptance_examples": [
+        {
+          "id": "AC1",
+          "requirements": [
+            "R1"
+          ],
+          "procedure": "For requested_day=date(2026,11,18), test paid intervals spanning the day, starting that day, ending that day, future start 11/19, expired end 11/17, and start=end.",
+          "expected": "Include spanning and exact-start only. Exclude exact-end, future, expired, and zero-length intervals."
+        },
+        {
+          "id": "AC2",
+          "requirements": [
+            "R1",
+            "R2"
+          ],
+          "procedure": "Test unpaid in-range recent-login customer, paid in-range old-login customer, and paid in-range customer without last_login_days.",
+          "expected": "Unpaid excluded; paid cases included regardless of recency or absence of login field."
+        },
+        {
+          "id": "AC3",
+          "requirements": [
+            "R3"
+          ],
+          "procedure": "Test empty input and mixed included/excluded records; compare input snapshots and returned object identities.",
+          "expected": "Empty returns []; selected original mappings retain input order; source iterable contents/mappings remain unchanged."
+        },
+        {
+          "id": "AC4",
+          "requirements": [
+            "R2"
+          ],
+          "procedure": "Call two-argument API with date values; test missing paid/start/end on evaluated required branches and invalid date comparison; inspect any consumers discovered before implementing.",
+          "expected": "Required requested_day and new schema are explicit; ordinary Python errors for malformed evaluated fields; no login or implicit today fallback."
+        }
+      ],
+      "outcome": "READY standard plan independently reviewed; product ambiguity resolved from prepared fixture; no product implementation.",
+      "review": {
+        "reviewer": "/root/depth_reviewer",
+        "revision": 2,
+        "spec": "pass",
+        "quality": "pass",
+        "source_revision": "sha256:0388a410d888deaefb6def9460c69a9601e0eb88e926cba1fc290cfa580292c0",
+        "authored_digest": "0d69f9db5178037604ff0b9b87e4a0084692f59ac4e64ce8ea366a11583de299",
+        "plan_digest": "c563854eb94a9234966bba34416d7448877f4a58b9c86c033ebfbba1fa8f3a51",
+        "correction": "T1 capability is exact supported profile coding"
+      }
+    },
+    {
+      "scenario": "debug",
+      "route": "critical",
+      "guides_consulted": [
+        {
+          "path": ".agents/skills/riff/SKILL.md",
+          "sha256": "8b319bdeb9ae50091c50e0c1a07be8d10fdbf6131e479fee8e10e830dbc6855e",
+          "words": 417
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/DEBUG.md",
+          "sha256": "5954c32f8e923481c9977564fe83a2393dd129983192b59b39984a14bd341e84",
+          "words": 764
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/WORKFLOW.md",
+          "sha256": "d3b6ab537032fd940efc92ff970cbf0e7b92e59301c982a58f926825d40629a2",
+          "words": 1216
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/RECORDS.md",
+          "sha256": "f20b5e735f642c6b0e1279ac07cf5ec9b6968488bc2c857b19c191b11e10109d",
+          "words": 651
+        },
+        {
+          "path": ".agents/skills/riff/references/hosts.md",
+          "sha256": "223fc6d869f60c036720b5ad29799c113c7aaeb935924301fd9cb6794e2dc8cc",
+          "words": 412
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/templates/debug.md",
+          "sha256": "e85370b1141a90490ede2ab89b27b2daed6bc0ee0a19534a6319c55959c5abfb",
+          "words": 108
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/templates/debug.json",
+          "sha256": "e7bf238cd0b722fa1107cecbc8b277f83a785f9a94df12a3511a39ba0d177124",
+          "words": 34
+        },
+        {
+          "path": ".agents/skills/riff/references/planning/templates/plan.json",
+          "sha256": "d08e22ad2696a03ca0aff6198c7dfae0a9f2f3aa7d30ceaab1ad19c5f994b4ce",
+          "words": 47
+        }
+      ],
+      "distinct_consulted_words": 3649,
+      "elapsed_seconds": 283.4497693000012,
+      "elapsed_basis": null,
+      "usage": null,
+      "observation_file": "build/depth-trials/debug/observation.json",
+      "request": "Diagnose occasional cross-tenant cache values without product edits.",
+      "source": "cache = {}\ndef fetch(tenant, item):\n    if item not in cache:\n        cache[item] = tenant + \":\" + item\n    return cache[item]\n",
+      "reproduction": {
+        "baseline_wrong": 200,
+        "baseline_total": 800,
+        "affected_runs": 100,
+        "repeated_runs": 100,
+        "reduced_pair_wrong_second_call": 100,
+        "reduced_pair_runs": 100,
+        "single_call_failures": 0
+      },
+      "hypotheses": [
+        {
+          "id": "H-KEY",
+          "text": "Tenant is omitted from the cache key, so the first tenant to request an item owns all subsequent cached responses for that item.",
+          "status": "supported",
+          "evidence": [
+            "E-SOURCE",
+            "E-BASELINE",
+            "E-REDUCTION",
+            "E-CONTROLS"
+          ]
+        },
+        {
+          "id": "H-CALLER",
+          "text": "A caller passing the wrong tenant is necessary to produce this fixture symptom.",
+          "status": "refuted",
+          "evidence": [
+            "E-REDUCTION",
+            "E-CONTROLS"
+          ]
+        },
+        {
+          "id": "H-RACE",
+          "text": "Concurrent access or a timing race is necessary to produce this fixture symptom.",
+          "status": "refuted",
+          "evidence": [
+            "E-BASELINE",
+            "E-REDUCTION"
+          ]
+        },
+        {
+          "id": "H-FORMAT",
+          "text": "The tenant value is corrupted even on a cache miss.",
+          "status": "refuted",
+          "evidence": [
+            "E-REDUCTION",
+            "E-CONTROLS"
+          ]
+        }
+      ],
+      "outcome": "complete",
+      "cause": "cache keyed by item omits tenant; first cached tenant wins",
+      "source_preserved": true,
+      "command_duration_seconds": 1.0603414000361226,
+      "cleanup": "All runner child process trees terminated; no servers or persistent processes started."
+    },
+    {
+      "scenario": "implementation",
+      "route": "standard",
+      "guides_consulted": [
+        {
+          "path": ".agents/skills/riff/references/execution/IMPLEMENTATION.md",
+          "sha256": "191d085094d5995ec8183fc2fa70597bbba7402f0e8d38eaa104e67b63c4f444",
+          "words": 434
+        }
+      ],
+      "distinct_consulted_words": 434,
+      "elapsed_seconds": 23.783545999991475,
+      "elapsed_basis": null,
+      "usage": null,
+      "observation_file": "build/depth-trials/implementation/observation.json",
+      "request": "Parse quantity strings. Positive decimal integers return int. Zero, negatives, malformed strings raise ValueError. Existing positive behavior stays compatible.\n",
+      "baseline_source": "def parse_quantity(value):\n    return int(value)\n",
+      "source": "def parse_quantity(value):\n    quantity = int(value)\n    if quantity <= 0:\n        raise ValueError(\"Quantity must be positive\")\n    return quantity\n",
+      "tests": "import unittest\nfrom quantity import parse_quantity\n\n\nclass QuantityTests(unittest.TestCase):\n    def test_positive(self):\n        self.assertEqual(parse_quantity(\"2\"), 2)\n\n    def test_zero_rejected(self):\n        with self.assertRaises(ValueError):\n            parse_quantity(\"0\")\n\n    def test_negative_rejected(self):\n        with self.assertRaises(ValueError):\n            parse_quantity(\"-1\")\n\n    def test_malformed_rejected(self):\n        with self.assertRaises(ValueError):\n            parse_quantity(\"many\")\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+      "commands": [
+        {
+          "phase": "baseline",
+          "command": "python -m unittest -v test_quantity",
+          "exit_code": 0,
+          "output": "test_positive (test_quantity.QuantityTests.test_positive) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+          "utc": "2026-11-18T07:04:07.897689+00:00",
+          "elapsed_seconds": 0.3039901999873109,
+          "candidate_manifest": {
+            "spec.md": "aa1b920e03536a210a7461fbcbd6807b222d4439ddc901a3d466dbf0516bf01f",
+            "quantity.py": "c07b4ed2d779e6fedc5d61322219b2c3785adbd841e0a6f5571141756525f2ae",
+            "test_quantity.py": "ba3fb9f52b749418bc8b5902f48f4dc5b1edabfc2ec3fe5268c8810762829c8f"
+          }
+        },
+        {
+          "phase": "draft plan structure",
+          "command": "python C:\\repos\\Personals\\Riff\\build\\depth-trials\\implementation\\.agents\\skills\\riff\\references\\planning\\validate.py C:\\repos\\Personals\\Riff\\build\\depth-trials\\implementation\\docs\\work\\quantity\\plan.json --project C:\\repos\\Personals\\Riff\\build\\depth-trials\\implementation",
+          "exit_code": 0,
+          "output": "Structural checks passed; semantic review still required.\n",
+          "utc": "2026-11-18T07:04:08.063032+00:00",
+          "elapsed_seconds": 0.1645328999729827,
+          "candidate_manifest": {
+            "spec.md": "aa1b920e03536a210a7461fbcbd6807b222d4439ddc901a3d466dbf0516bf01f",
+            "quantity.py": "c07b4ed2d779e6fedc5d61322219b2c3785adbd841e0a6f5571141756525f2ae",
+            "test_quantity.py": "ba3fb9f52b749418bc8b5902f48f4dc5b1edabfc2ec3fe5268c8810762829c8f"
+          }
+        },
+        {
+          "phase": "red: explicit zero and negative assertions",
+          "command": "python -m unittest -v test_quantity",
+          "exit_code": 1,
+          "output": "test_malformed_rejected (test_quantity.QuantityTests.test_malformed_rejected) ... ok\ntest_negative_rejected (test_quantity.QuantityTests.test_negative_rejected) ... FAIL\ntest_positive (test_quantity.QuantityTests.test_positive) ... ok\ntest_zero_rejected (test_quantity.QuantityTests.test_zero_rejected) ... FAIL\n\n======================================================================\nFAIL: test_negative_rejected (test_quantity.QuantityTests.test_negative_rejected)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"C:\\repos\\Personals\\Riff\\build\\depth-trials\\implementation\\test_quantity.py\", line 14, in test_negative_rejected\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_zero_rejected (test_quantity.QuantityTests.test_zero_rejected)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"C:\\repos\\Personals\\Riff\\build\\depth-trials\\implementation\\test_quantity.py\", line 10, in test_zero_rejected\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 4 tests in 0.005s\n\nFAILED (failures=2)\n"
+        },
+        {
+          "phase": "green: positivity guard and literal successful result",
+          "command": "python -m unittest -v test_quantity",
+          "exit_code": 0,
+          "output": "test_malformed_rejected (test_quantity.QuantityTests.test_malformed_rejected) ... ok\ntest_negative_rejected (test_quantity.QuantityTests.test_negative_rejected) ... ok\ntest_positive (test_quantity.QuantityTests.test_positive) ... ok\ntest_zero_rejected (test_quantity.QuantityTests.test_zero_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+        },
+        {
+          "phase": "sensitivity: incorrect positive result detected",
+          "command": "python -m unittest -v test_quantity",
+          "exit_code": 1,
+          "output": "test_malformed_rejected (test_quantity.QuantityTests.test_malformed_rejected) ... ok\ntest_negative_rejected (test_quantity.QuantityTests.test_negative_rejected) ... ok\ntest_positive (test_quantity.QuantityTests.test_positive) ... FAIL\ntest_zero_rejected (test_quantity.QuantityTests.test_zero_rejected) ... ok\n\n======================================================================\nFAIL: test_positive (test_quantity.QuantityTests.test_positive)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"C:\\repos\\Personals\\Riff\\build\\depth-trials\\implementation\\test_quantity.py\", line 7, in test_positive\n    self.assertEqual(parse_quantity(\"2\"), 2)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 3 != 2\n\n----------------------------------------------------------------------\nRan 4 tests in 0.002s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "phase": "final: restored correct candidate",
+          "command": "python -m unittest -v test_quantity",
+          "exit_code": 0,
+          "output": "test_malformed_rejected (test_quantity.QuantityTests.test_malformed_rejected) ... ok\ntest_negative_rejected (test_quantity.QuantityTests.test_negative_rejected) ... ok\ntest_positive (test_quantity.QuantityTests.test_positive) ... ok\ntest_zero_rejected (test_quantity.QuantityTests.test_zero_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+        }
+      ],
+      "handoff": "Trial agent paused after reviewed plan. Root completed the authorized implementation with the installed guide; same independent reviewer retained.",
+      "completion_elapsed_seconds": 2.5411029999959283,
+      "candidate_manifest": {
+        "quantity.py": "04273ec465e58bf7fc1580e49d9649bd3d9598ef1a401bc5aa4fbe7692a24cbc",
+        "test_quantity.py": "21185bb24347ace7f24e316b2a4f99e11315f9bfa3cea0c0435927e718bd90e9",
+        "spec.md": "aa1b920e03536a210a7461fbcbd6807b222d4439ddc901a3d466dbf0516bf01f"
+      },
+      "review_before": {
+        "reviewer": "/root/depth_reviewer",
+        "candidate_sha256": {
+          "spec.md": "aa1b920e03536a210a7461fbcbd6807b222d4439ddc901a3d466dbf0516bf01f",
+          "quantity.py": "c07b4ed2d779e6fedc5d61322219b2c3785adbd841e0a6f5571141756525f2ae",
+          "test_quantity.py": "ba3fb9f52b749418bc8b5902f48f4dc5b1edabfc2ec3fe5268c8810762829c8f"
+        },
+        "spec": {
+          "verdict": "fail",
+          "findings": [
+            {
+              "id": "F1",
+              "severity": "blocking",
+              "location": "quantity.py:2",
+              "consequence": "Zero and negative quantities are accepted despite the positive-only contract.",
+              "resolution_check": "Assert ValueError for 0 and negative strings, and rerun positive/malformed cases."
+            }
+          ]
+        },
+        "quality": {
+          "verdict": "fail",
+          "findings": [
+            {
+              "id": "F2",
+              "severity": "blocking",
+              "location": "test_quantity.py:5",
+              "consequence": "Self-comparison passes even if the parser returns an incorrect value.",
+              "resolution_check": "Assert the independent literal 2 for input 2; exercise rejected boundaries and malformed input."
+            }
+          ]
+        },
+        "observed_check": {
+          "command": "python -m unittest discover -s build/depth-trials/implementation -p test_quantity.py",
+          "exit_code": 0,
+          "tests": 1
+        },
+        "integration_allowed": false
+      },
+      "outcome": "complete after independent spec, quality and integration review",
+      "accepted_candidate_revision": "sha256:9681fdb2699c55c7d259c37775a102ca388aae4848383e76e3c712dd9321c42f",
+      "review_after": {
+        "reviewer": "/root/depth_reviewer",
+        "independent": true,
+        "candidate_revision": "sha256:9681fdb2699c55c7d259c37775a102ca388aae4848383e76e3c712dd9321c42f",
+        "candidate_manifest": {
+          "spec.md": "aa1b920e03536a210a7461fbcbd6807b222d4439ddc901a3d466dbf0516bf01f",
+          "quantity.py": "04273ec465e58bf7fc1580e49d9649bd3d9598ef1a401bc5aa4fbe7692a24cbc",
+          "test_quantity.py": "21185bb24347ace7f24e316b2a4f99e11315f9bfa3cea0c0435927e718bd90e9",
+          ".engineering-workflow/project.json": "ab6d5aecd429ce4a4e35306d361003db22544ab30239749d014224f5a2087864"
+        },
+        "checks": [
+          {
+            "command": "python -m unittest -v test_quantity",
+            "exit_code": 0,
+            "output": "test_malformed_rejected (test_quantity.QuantityTests.test_malformed_rejected) ... ok\ntest_negative_rejected (test_quantity.QuantityTests.test_negative_rejected) ... ok\ntest_positive (test_quantity.QuantityTests.test_positive) ... ok\ntest_zero_rejected (test_quantity.QuantityTests.test_zero_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+            "revision": "sha256:9681fdb2699c55c7d259c37775a102ca388aae4848383e76e3c712dd9321c42f"
+          },
+          {
+            "command": "python -c <positive compatibility and invalid-string boundary assertions>",
+            "script": "from quantity import parse_quantity\nfor value, expected in [(\"2\",2),(\"0002\",2),(\" 2 \",2),(\"+2\",2),(\"99999999999999999999\",99999999999999999999)]:\n assert parse_quantity(value)==expected,(value,parse_quantity(value))\nfor value in [\"0\",\"-1\",\"-999\",\"\", \"many\", \"1.5\", \"+-2\"]:\n try: parse_quantity(value)\n except ValueError: pass\n else: raise AssertionError(value)\nprint(\"PASS positive compatibility and zero/negative/malformed boundaries\")",
+            "exit_code": 0,
+            "output": "PASS positive compatibility and zero/negative/malformed boundaries\n",
+            "revision": "sha256:9681fdb2699c55c7d259c37775a102ca388aae4848383e76e3c712dd9321c42f"
+          }
+        ],
+        "spec": {
+          "verdict": "pass",
+          "resolved_findings": [
+            "F1"
+          ],
+          "evidence": "Nonpositive guard and direct positive/zero/negative/malformed checks."
+        },
+        "quality": {
+          "verdict": "pass",
+          "resolved_findings": [
+            "F2"
+          ],
+          "evidence": "Literal expected value and sensitivity failure output inspected; smallest scoped int conversion guard."
+        },
+        "source_manifest_review": {
+          "verdict": "pass",
+          "revision": "sha256:9681fdb2699c55c7d259c37775a102ca388aae4848383e76e3c712dd9321c42f",
+          "manifest_digest": "7d57556b169108f1f243c2721e239b4457c9feebaacd882154c850c40e886967",
+          "reviewer": "/root/depth_reviewer",
+          "independent": true,
+          "evidence": "review-after.json"
+        },
+        "integration_review": {
+          "kind": "integration",
+          "verdict": "pass",
+          "revision": "sha256:9681fdb2699c55c7d259c37775a102ca388aae4848383e76e3c712dd9321c42f",
+          "reviewer": "/root/depth_reviewer",
+          "independent": true,
+          "evidence": "review-after.json"
+        }
+      },
+      "gate": {
+        "exit_code": 0,
+        "output": "{\n  \"errors\": [],\n  \"eligible_tasks\": []\n}\n"
+      },
+      "evidence_path_correction": "Trial run references resolve to ../../../review-after.json from docs/work/quantity; existence verified and installed gate passed after correction."
+    }
+  ],
+  "checks": [
+    {
+      "command": "python planning/tests/test_validate.py",
+      "exit_code": 0,
+      "tests": 8,
+      "skipped": 0
+    },
+    {
+      "command": "python execution/tests/test_gates.py",
+      "exit_code": 0,
+      "tests": 12,
+      "skipped": 0
+    },
+    {
+      "command": "python distribution/tests/test_install.py",
+      "exit_code": 0,
+      "tests": 12,
+      "skipped": 1
+    },
+    {
+      "command": "python distribution/tests/test_features.py",
+      "exit_code": 0,
+      "tests": 11,
+      "skipped": 0
+    },
+    {
+      "command": "python distribution/tests/test_cli.py",
+      "exit_code": 0,
+      "tests": 19,
+      "skipped": 0
+    },
+    {
+      "command": "python tools/sync_references.py --check",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": "Local Markdown paths and anchors checked across changed guides and user docs",
+      "exit_code": 0
+    }
+  ],
+  "independent_final_review": "review.json"
+}

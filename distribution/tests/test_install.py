@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -12,6 +13,8 @@ GUIDES = (
     'planning/DESIGN.md',
     'planning/DOCUMENTATION.md',
     'execution/IMPLEMENTATION.md',
+    'execution/REVIEW.md',
+    'planning/DEBUG.md',
 )
 
 class InstallTests(unittest.TestCase):
@@ -55,6 +58,11 @@ class InstallTests(unittest.TestCase):
         self.assertEqual('riff',values['name'])
         for phase in ('planning','execution','recovery','routing'):
             self.assertTrue((root/'references'/phase/'WORKFLOW.md').exists())
+        for target in re.findall(r'\]\(([^)]+)\)', s):
+            if '://' in target:
+                continue
+            with self.subTest(link=target):
+                self.assertTrue((root / target.split('#', 1)[0]).is_file())
 
     def test_bundled_workflow_references_match_source(self):
         for path in (*GUIDES, 'planning/WORKFLOW.md', 'execution/WORKFLOW.md',

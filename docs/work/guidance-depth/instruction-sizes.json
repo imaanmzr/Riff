@@ -1,0 +1,35 @@
+{
+  "method": "Whitespace-delimited words in each file. Size proxy only; model tokens unavailable.",
+  "guides": [
+    {
+      "path": "distribution/skills/riff/SKILL.md",
+      "before_words": 562,
+      "after_words": 417,
+      "sha256": "8b319bdeb9ae50091c50e0c1a07be8d10fdbf6131e479fee8e10e830dbc6855e"
+    },
+    {
+      "path": "planning/DESIGN.md",
+      "before_words": 236,
+      "after_words": 575,
+      "sha256": "ce1f0b3cc96a2e3b8ccad1c4288b06a251828b5e6bc63f8b9b6dd9ec1ea36cda"
+    },
+    {
+      "path": "execution/IMPLEMENTATION.md",
+      "before_words": 169,
+      "after_words": 434,
+      "sha256": "191d085094d5995ec8183fc2fa70597bbba7402f0e8d38eaa104e67b63c4f444"
+    },
+    {
+      "path": "planning/DEBUG.md",
+      "before_words": 520,
+      "after_words": 745,
+      "sha256": "e0b37349ea75d7761ee0a649276785d9ed96cfb8b3b95945bba0acabff0d64e9"
+    },
+    {
+      "path": "execution/REVIEW.md",
+      "before_words": null,
+      "after_words": 310,
+      "sha256": "27fd6462ecd43974930080b6edf6953bbd1118c03f5ed7a7fdc9da5e75f262f7"
+    }
+  ]
+}

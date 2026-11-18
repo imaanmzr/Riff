@@ -3,6 +3,20 @@ An engineering workflow for design, documentation, planning, execution,
 review, and recovery. Invoke the installed skill as `$riff` in Codex or
 `/riff` in Cursor, VS Code Copilot, and Claude Code.
 
+Riff 0.8.0 also includes research/debug/replan workflows, profile settings,
+live evidence checks, and offline HTML exports with Mermaid diagrams.
+Choose a task ID when creating records, then reuse it in commands.
+
+    ./riff new refunds --title "Partial refunds"
+    ./riff plan --task refunds
+    ./riff status
+    ./riff render refunds --format html --output refunds.html
+
+The ID `refunds` selects `docs/work/refunds/` by default. That folder contains
+plan.md and plan.json. The `plan` command prints a prompt for your agent chat.
+The `render` command writes an export to the selected output path. Open the HTML
+file in your browser. Use `./riff render --help` for its options.
+
 From this extracted directory:
 
     ./riff init

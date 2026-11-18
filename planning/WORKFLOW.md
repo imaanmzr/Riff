@@ -17,8 +17,9 @@ within the user's authorization; label speculative conclusions explicitly.
    constraints, known facts, assumptions, and open questions. Ask only questions
    that block a meaningful decision; investigate discoverable facts yourself.
 3. Use the [route rubric](#route-rubric) to select the effort for this task.
-   Consult [Design & Architecture](DESIGN.md) for consequential design choices
-   and [Documentation](DOCUMENTATION.md) when a change needs durable docs.
+   Consult [Requirements & Design](DESIGN.md) for unclear behavior, overloaded
+   terms, incomplete acceptance examples or consequential design choices. Use
+   [Documentation](DOCUMENTATION.md) when a change needs durable docs.
 4. Inspect existing behavior before proposing new architecture. Record evidence
    with source paths/revisions or external primary-source URLs and access dates.
    Distinguish observations, inferences, assumptions, and unresolved questions.
@@ -46,8 +47,9 @@ within the user's authorization; label speculative conclusions explicitly.
     For all other routes, request independent plan review with the brief,
     evidence, specification, plan, and repository context. Provide the artifacts
     without the author's persuasive rationale.
-    Review requirement coverage, feasibility, dependency cycles, verification,
-    failure cases, scope, and integration. When the route requires independent
+    Use [review technique](../execution/REVIEW.md) for coverage, feasibility,
+    verification and failure cases; check dependency cycles, scope and integration.
+    When the route requires independent
     review, use a separate session. If none is available, label any self-review
     and leave independent review outstanding.
 11. Reassess the route before marking the plan READY. Resolve findings and
@@ -107,6 +109,8 @@ operations. Research/debug reports do not independently authorize implementation
 Write human-readable plans using the layered template: outcome and next action
 first, then behavior/diagrams, decisions, delivery and detailed evidence. Keep
 small plans compact. Diagrams supplement acceptance criteria, never replace them.
+Read engineering guides only for the operation or an unresolved concern. Reuse
+current decisions/evidence by reference and summarize changes and open questions.
 Resolve the effective profile for the task. Use its `sections` as authoring
 emphasis and map its `required_checks` to tracked verification. The route and
 review requirements still follow the risk rubric and target project instructions.

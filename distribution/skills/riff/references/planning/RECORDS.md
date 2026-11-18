@@ -7,6 +7,8 @@ facts. `riff render` exports a composed view without editing either source.
 ## Record structure
 
 Keep requirements as an array of stable IDs and tasks as the existing task array.
+Task `capability` uses the exact profile value `fast`, `coding`, or
+`deep_reasoning`. Put explanations in the task description or authored plan.
 Set `outcome` to the observable result and `scope` to the boundaries. Exports
 display these short structured fields before the specification. Add detail and
 reasoning to the authored document.

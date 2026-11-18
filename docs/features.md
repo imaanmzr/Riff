@@ -1,5 +1,11 @@
 # Readable plans and investigation workflows
 
+Examples on this page use saved task IDs. You choose an ID with
+`riff new retry-bug`, which creates `docs/work/retry-bug/plan.md` and `plan.json`
+by default. Later commands use `retry-bug` to find that folder. List existing IDs
+with `riff status`. See [command syntax and task IDs](commands.md#command-syntax)
+for a walkthrough and [render options](commands.md#render-options) for exports.
+
 ## Read, explain, and export
 
 ```bash
@@ -99,3 +105,34 @@ Migration previews by default. Applying writes only plan.json, preserves exact
 backup bytes and extension fields, archives reviews, increments revision and
 sets DRAFT. Old execution bindings remain stale until reviewed reconciliation.
 Read [Record contracts](../planning/RECORDS.md) for schema and review binding details.
+
+## Token usage and budgets
+
+Engineering guidance is selected by the work being done. Ambiguous requirements
+and interface choices use the design guide. Behavior changes use implementation
+and testing guidance. Bug investigation uses the debug guide, and reviews use
+the compact review guide. A clear copy change can use focused verification
+directly. Risk still determines the required review and evidence.
+
+Testing is adaptive. Agents prefer a failing regression test for bugs and small
+test-first slices when useful. When a useful automated check is impractical,
+they record the reason and concrete alternative evidence. Existing project tools,
+terminology and documentation conventions guide their choices. Resolved terms,
+decisions and evidence stay in the existing task records where possible.
+
+The local CLI reads files and runs Python utilities. Generating prompts,
+validating records, comparing snapshots, and rendering exports use local
+computation. The agent host accounts for model tokens when an agent reads those
+outputs, investigates code, writes plans, or performs reviews.
+
+Saved records may reduce repeated investigation across sessions. Writing and
+reviewing them also uses context. Use the small route for a clear local change
+and concise views when you need a summary. Diagram visibility and export detail
+are presentation choices, while the risk route determines review requirements.
+
+Routing uses configured token budgets and recorded usage or reservations to
+propose assignments. The coordinator and host supply actual usage accounting.
+The host controls provider calls and spending. Riff's local pilots recorded no
+comparative token or cost measurements, so token savings remain unmeasured.
+See the [routing workflow](../routing/WORKFLOW.md#dispatch-protocol) for budget
+accounting and the [pilot evidence](work/riff-expansion/pilots.json) for its limits.

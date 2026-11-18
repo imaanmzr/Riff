@@ -128,6 +128,46 @@ index.
 
 ## Configure and update
 
+### Upgrade to 0.8.0
+
+Update the terminal utility from your latest Riff checkout, then update the skill
+in each target project. On Windows, run the following in PowerShell from the Riff
+checkout, replacing the example project path and host with yours.
+
+```powershell
+$riffBin = python .\install_cli.py --print-bin-path
+if ($LASTEXITCODE -ne 0) { throw 'Riff installation failed' }
+& "$riffBin\riff.cmd" --version
+& "$riffBin\riff.cmd" update --project "C:\repos\my-app" --host codex
+```
+
+On Linux or macOS, run from the latest checkout.
+
+```bash
+python3 install_cli.py
+export PATH="$HOME/.local/bin:$PATH"
+riff --version
+riff update --project /path/to/my-app --host codex
+```
+
+Use your original `--prefix` if you installed the utility in a custom location.
+The version should report `Riff 0.8.0`. The skill update completes before the
+configuration wizard opens. Answer `no` at `Save configuration?` to retain your
+saved settings. Reconcile any locally edited skill files before updating them.
+
+To find saved task IDs and preview migrating one, run in the target project.
+
+```bash
+riff status
+riff migrate refunds
+```
+
+Migration is optional. Applying `riff migrate refunds --apply` creates a backup,
+upgrades `plan.json`, archives prior reviews, and returns the plan to DRAFT for
+review. See [migration and recovery](features.md#compare-checkpoint-and-migrate).
+
+### Change settings or refresh a project skill
+
 ```bash
 riff configure --project /work/my-service --host claude
 riff update --project /work/my-service --host claude
@@ -205,3 +245,5 @@ engineering workflow. Model access and subagents are supplied by the selected ho
 
 See the [command reference](commands.md) for task creation, progress, validation,
 and routing commands.
+Start with [command syntax and task IDs](commands.md#command-syntax) for an
+explanation of positional arguments, flags, folders, and rendering.

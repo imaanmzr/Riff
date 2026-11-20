@@ -8,4 +8,5 @@ recursive-include routing *.py *.md *.json
 recursive-include tools *.py
 recursive-include docs *.md *.json
 global-exclude *.pyc
+include LICENSE CITATION.cff
 prune distribution/skills/riff/references/planning/__pycache__

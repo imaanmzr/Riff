@@ -2,8 +2,21 @@
 
 ## Requirements
 
-Python 3.10 or newer. The host application must support repository skills or
-allow an agent to read `SKILL.md` directly.
+Python 3.10 or newer and a coding agent that supports project skills. Riff
+includes installation paths for Codex, Cursor, VS Code with GitHub Copilot, and
+Claude Code. An agent without skill discovery can read `SKILL.md` by path.
+
+## Get the source
+
+Clone the public repository before running the installation commands below:
+
+```bash
+git clone https://github.com/imaanmzr/Riff.git
+cd Riff
+```
+
+If you downloaded a source archive instead, extract it and open a terminal in
+the directory containing `install_cli.py`.
 
 ## Install the terminal utility
 
@@ -43,8 +56,7 @@ installer with that prefix to upgrade the CLI.
 If Windows reports that a filename is too long, choose a shorter
 `--prefix` or move the project closer to the drive root.
 
-To remove the CLI, delete its install directory and remove its `bin` entry
-from your user **Path**.
+See [Uninstall](#uninstall) for the files to remove.
 
 ### Linux and macOS
 
@@ -75,10 +87,11 @@ After installing the terminal utility, run:
 riff init
 ```
 
-The CLI asks for a project path and one host: Codex, Cursor, VS Code with GitHub Copilot, or Claude Code. It
-installs under `.agents/skills`, `.cursor/skills`, `.github/skills`, or
-`.claude/skills`. Cursor can read the Codex and Claude paths too, and Riff
-reuses an existing installation.
+The CLI asks for a project path and one host. It installs the skill under
+`.agents/skills/riff` for Codex, `.cursor/skills/riff` for Cursor,
+`.github/skills/riff` for VS Code Copilot, or `.claude/skills/riff` for Claude Code. Cursor can also discover the Codex and
+Claude paths. If either copy is already installed, Riff directs you to use it
+and update it with its original host instead of installing a duplicate.
 
 The wizard asks for build/test commands and a task-record directory. It treats
 commands as documentation and never executes them. Model IDs and concurrency
@@ -225,7 +238,18 @@ These values do not grant provider access. Select the main model in the host UI.
 Remove the installed `riff` folder from the host's `.agents/skills`,
 `.cursor/skills`, `.github/skills`, or `.claude/skills` directory. Keep
 `.engineering-workflow/` and task records if you want to retain configuration
-and history.
+and history. Remove any instruction-file reference you added yourself.
+
+For a CLI installed with `install_cli.py`, remove only these managed paths under
+the prefix used at installation:
+
+- `bin/riff` on Linux/macOS or `bin/riff.cmd` on Windows.
+- `lib/riff-workflow/`.
+
+The default prefix is `~/.local` on Linux/macOS and `%LOCALAPPDATA%\Riff` on
+Windows. For Microsoft Store Python, use the actual path printed by the installer.
+Remove a PATH entry only if you added it for Riff and no other tools use it.
+For a pipx installation, run `pipx uninstall riff-workflow`.
 
 ## VS Code with GitHub Copilot
 

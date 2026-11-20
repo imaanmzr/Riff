@@ -1,24 +1,53 @@
-# Recovery 0.3
+# Recovery
 
-Ask: "Resume the task using recovery/WORKFLOW.md. Inspect saved progress before continuing."
+Recovery saves local checkpoints and proposes how to reconcile interrupted work
+or source changes. Read [WORKFLOW.md](WORKFLOW.md) before saving or resuming state.
 
-Includes atomic local checkpoints, generation-based stale-writer rejection,
-checksum verification, file fingerprints, interrupted-task detection, conservative
-plan/source invalidation, preserved historical records and structured handoffs.
-Uses Python's standard library; advisory locking targets Linux/Unix.
+## Use
 
-Read WORKFLOW.md for commands and manifest requirements. Resume is read-only and
-returns a proposal. Review that proposal and real work before saving reconciled
-state or dispatching agents. Prior authorization persists; no extra approval is
-required for routine safe continuation. Missing authorization cannot be invented.
+From the target project, save a checkpoint using a JSON array of project-relative
+file paths as the manifest:
 
-Validation: 32 regressions pass (8 planning, 12 execution, 12 recovery), plus a
-CLI checkpoint -> source change -> resume scenario confirming blocked state and
-no checkpoint mutation during resume. Fault injection verifies preservation of
-the previous checkpoint if replacement fails. This is not a power-loss or
-multi-machine durability certification.
+```bash
+riff checkpoint retry-fix --manifest source-files.json --expected-generation 0
+riff reconcile retry-fix --manifest source-files.json
+```
 
-Known boundaries: only manifest-listed files are fingerprinted; regenerate the
-inventory to detect additions. Source drift blocks the whole run conservatively.
-No automatic side-effect retries, distributed scheduler, or global skill install.
-A current checksum proves stored-content integrity, not truth of task claims.
+Generation `0` creates the first checkpoint. For later saves, use the generation
+read from the current checkpoint. Stale writers are rejected. `reconcile` prints
+a proposal for inspection without changing task state or replaying work.
+
+To continue in an agent chat:
+
+```text
+$riff Resume the task at docs/work/retry-fix/.
+```
+
+Use `/riff` in Cursor, VS Code Copilot, or Claude Code. The agent must compare
+saved state with the current repository, inspect interrupted work, and resolve
+stale evidence before continuing. Prior authorization remains in effect.
+
+## Checkpoints and boundaries
+
+Checkpoints contain checksums, generation numbers, plan and execution records,
+file fingerprints, and reconciliation history. Local locking and atomic file
+replacement protect checkpoint writes on Windows and Unix.
+
+Only manifest-listed paths are fingerprinted. Regenerate the inventory to detect
+new files. Source drift conservatively blocks the run until affected work and
+reviews are reconciled. A checksum establishes stored-content integrity; it does
+not establish that task claims are true.
+
+Recovery provides no distributed locking, automatic rollback, external-action
+retries, or independent backups.
+
+## Validation
+
+From the repository root:
+
+```bash
+python3 recovery/tests/test_state.py
+```
+
+The suite covers stale writers, corrupt checkpoints, interrupted work, source
+drift, and preservation of the prior checkpoint when replacement fails.

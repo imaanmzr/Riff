@@ -1,37 +1,96 @@
-# Contributing
+# Contributing to Riff
 
-Riff is an early workflow tool. Keep instructions short, make state transitions
-easy to inspect, and report what is actually automated versus what the agent or
-host must do.
+Bug reports, documentation fixes, and focused pull requests are welcome.
+Use [GitHub issues](https://github.com/imaanmzr/Riff/issues) to report a problem
+or discuss a proposed feature.
 
-## Local checks
+## Report a bug
+
+Include your operating system, Python version, `riff --version`, agent host,
+the command or workflow you ran, and steps to reproduce the problem. Describe
+what you expected and what happened. Include the error output and a minimal
+task record when it helps, with credentials and private project details removed.
+
+For changes to task schemas, workflow gates, or host support, describe the
+intended behavior in an issue before making a large change.
+
+## Work from source
+
+Clone the repository and run the CLI without installing it:
+
+```bash
+git clone https://github.com/imaanmzr/Riff.git
+cd Riff
+python3 riff.py --help
+```
+
+Python 3.10 or newer is required. The CLI and Python regression tests use the
+standard library. Packaging requires setuptools 68 or newer. The browser test
+also requires Node.js 22 or newer and a Chromium-based browser.
+
+## Check your changes
+
+Run these suites from the repository root:
 
 ```bash
 python3 planning/tests/test_validate.py
+python3 planning/tests/test_records.py
+python3 planning/tests/test_reports.py
+python3 planning/tests/test_presentation.py
 python3 execution/tests/test_gates.py
 python3 recovery/tests/test_state.py
 python3 routing/tests/test_router.py
+python3 routing/tests/test_adapters.py
 python3 distribution/tests/test_install.py
 python3 distribution/tests/test_cli.py
+python3 distribution/tests/test_features.py
+python3 tools/sync_references.py --check
 ```
 
-When changing workflow behavior, update the corresponding phase instructions and
-skill-bundled copy. Add regression coverage for behavior that could cause stale
-reviews, unsafe redispatch, overwritten user settings, or incorrect task routing.
+Run both planning and execution regression suites for workflow changes. Run
+recovery tests when changing workflow state or readiness rules, and routing tests
+when changing dispatch, budgets, or capabilities. Add regression coverage for
+behavior changes, especially stale reviews, repeated dispatch, overwritten user
+settings, and task conflicts. Check installed behavior as well as source helpers.
 
-## Release checklist
+## Edit workflow references
 
-- Run `python tools/sync_references.py` after canonical workflow/core edits, and
-  `python tools/sync_references.py --check` before release. New tests must run
-  against installed references as well as source helpers.
-- Run records, reports, presentation, features and adapter tests in addition to
-  the original six suites. For browser verification set RIFF_BROWSER to a Chromium
-  binary and provide Node 22+; Windows Chrome/Edge are discovered automatically.
-- Inspect asset checksums/licenses and the built wheel/sdist for core and assets.
+The canonical workflows are in `planning/`, `execution/`, `recovery/`, and
+`routing/`. Edit those files first, then synchronize the copies shipped in the
+skill:
 
-- Update the bundled skill from the canonical phase sources.
-- Run the local checks above.
-- Test CLI init, configure, update, and each supported host path.
-- Build and inspect the release archive.
-- Describe host sessions or feature pilots that remain untested.
-- Add a license before public release if reuse is intended.
+```bash
+python3 tools/sync_references.py
+python3 tools/sync_references.py --check
+```
+
+The Python core in `planning/riff_core/` is synchronized by the same command.
+Keep the MIT notices in the root, distribution, and installed skill consistent.
+Preserve the separate notices accompanying third-party assets.
+
+## Submit a pull request
+
+Keep the change focused. Explain the problem, the resulting behavior, and how
+you verified it. Update affected docs and command examples. State which checks
+were skipped and why.
+
+## Release verification
+
+1. Run all regression suites and the reference parity check above. For browser
+   verification, set `RIFF_BROWSER` to a Chromium-based browser executable and
+   provide Node.js 22 or newer. Windows Chrome and Edge are detected automatically.
+2. Test CLI initialization, configuration, and updates for each host. Installer
+   coverage does not establish that a live host session works.
+3. Verify the hashes and license notices for bundled browser assets.
+4. Build the wheel and source archive with `python3 tools/verify_release.py`.
+   This also exercises isolated wheel, standalone CLI, and skill installations;
+   it writes build outputs and updates
+   `docs/work/riff-expansion/package-verification.json`.
+5. Inspect both archives for the core utilities, rendering assets, and MIT license
+   notices. Record any checks or host sessions that were not run.
+6. Update the version in package metadata, the CLI, skill, and citation metadata.
+   Describe the release in [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+Contributions are distributed under Riff's [MIT License](LICENSE).

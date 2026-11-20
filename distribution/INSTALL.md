@@ -1,107 +1,122 @@
-# Engineering Workflow — project installation
+# Install the Riff project skill
 
-Requires Python 3.10 or newer on Windows, Linux, or macOS.
-This package supplies one repository skill for Codex, Cursor, VS Code with
-GitHub Copilot, and Claude Code. It can be installed with standard Python.
-Provider access is supplied by your agent environment.
+Python 3.10 or newer is required. The skill supports project installation for
+Codex, Cursor, VS Code with GitHub Copilot, and Claude Code. Your host supplies
+model access and agent tools.
 
 ## Install
-From the extracted Riff directory:
 
-    python3 riff.py init --project /absolute/path/to/your/project --host codex
-    python3 riff.py init --project /absolute/path/to/your/project --host cursor
-    python3 riff.py init --project /absolute/path/to/your/project --host vscode
-    python3 riff.py init --project /absolute/path/to/your/project --host claude
+From this distribution directory, choose the command for your host:
 
-On Windows, run `py -3 .\riff.py init --project C:\work\my-service --host vscode`
-from this directory. Use `python` if the Python launcher is unavailable.
-For a `riff` command available across projects, run the top-level
-`install_cli.py` from the full repository checkout. See the
-[Windows installation guide](../docs/installation.md#windows) for the
-PowerShell commands that install the CLI and update your PATH.
+```bash
+python3 riff.py init --project /path/to/project --host codex
+python3 riff.py init --project /path/to/project --host cursor
+python3 riff.py init --project /path/to/project --host vscode
+python3 riff.py init --project /path/to/project --host claude
+```
 
-Choose the host you use. It adds the skill under .agents/skills (Codex),
-.cursor/skills (Cursor), .github/skills (VS Code Copilot), or .claude/skills
-(Claude Code), and initializes settings under
-.engineering-workflow/. Existing AGENTS.md and settings are preserved. The source
-folder can be moved or deleted after installation. Include the installed skill
-and shared settings in your project's version control if the team should use it;
-keep secrets out of host.json and task records.
+On Windows, use `py -3` or `python` in place of `python3`. The target project
+must already exist. The setup wizard saves build/test commands as text; it does
+not execute them. Canceling configuration leaves the skill installed.
 
-For a Git project, pick Git visibility during setup or pass `--git local`
-or `--git track` to `riff init`. To switch an existing project, use
-`riff configure --git local` or `riff configure --git track`. Local mode
-uses Git's clone-local exclusions for the Riff skill folders, settings, and
-configured task-record directory. Use a dedicated task-record directory.
-To keep already tracked Riff files local, run
-`riff configure --git local --untrack`. Review the staged removals before
-committing. The working copies stay on disk.
+The skill is installed under `.agents/skills/riff` for Codex,
+`.cursor/skills/riff` for Cursor, `.github/skills/riff` for VS Code Copilot, or
+`.claude/skills/riff` for Claude Code. Project settings live in
+`.engineering-workflow/`. Existing instruction files are preserved.
 
-## Use in your agent
-Open the target project and select riff. Use $riff in Codex or /riff in
-Cursor, VS Code Copilot, and Claude Code.
+Cursor can also discover Codex and Claude skill paths. When either is already
+installed, Riff directs you to use that copy and update it with its original
+host rather than creating another Cursor copy.
 
-    $riff Design the retry interface.
-    $riff Audit architecture in the installer.
-    $riff Update the setup docs.
-    $riff Plan <feature>. Stop after the plan passes review.
-    $riff Execute the reviewed plan at docs/work/<task-id>/.
-    $riff Resume the task at docs/work/<task-id>/.
-    $riff Audit this plan independently.
+For a `riff` command available across projects, run `install_cli.py` from the
+full repository checkout. The full
+[installation guide](https://github.com/imaanmzr/Riff/blob/HEAD/docs/installation.md)
+includes platform-specific PATH instructions.
 
-If discovery is unavailable, explicitly ask the agent to read
-.agents/skills/riff/SKILL.md. A local repository install does not
-install a personal skill in ChatGPT's Skills directory. For manual loading in Cursor or Claude Code, substitute the installed host
-folder. Other applications can load SKILL.md explicitly; native support is not
-claimed. See references/hosts.md inside the installed skill for handoffs.
+## Git visibility
 
-## Optional default behavior
-Append this sentence to your existing AGENTS.md if desired:
+During setup in a Git project, select `local`, `track`, or `unchanged`. You can
+also pass `--git local` or `--git track` to `init`, or switch later:
 
-For feature planning, implementation, review, and recovery, follow
-`.agents/skills/riff/SKILL.md`; scale process to task risk.
+```bash
+python3 riff.py configure --project /path/to/project --git local
+python3 riff.py configure --project /path/to/project --git track
+```
 
-The installer deliberately does not change your project's instructions.
+Local mode uses Git's clone-local exclusions for the skill, settings, and the
+entire configured task-record directory. Choose a dedicated records directory.
+Tracking mode removes Riff's exclusions; other Git ignore rules still apply.
 
-## Configure
-.engineering-workflow/project.json: build/test commands, architecture constraints,
-and domain invariants. Task records default to docs/work/<task-id>/.
-.engineering-workflow/routing.json: model mappings, concurrency and token budgets.
-.engineering-workflow/host.json: actual host models/capabilities and available slots.
+To stop tracking Riff files already in Git, add `--untrack` to
+`configure --git local`. This stages removals from the index and retains working
+copies. Inspect the staged changes before committing.
 
-Empty model mappings intentionally dispatch nothing. Ask the agent to inspect
-host capabilities before setting real model IDs. Planning can run in the current
-agent without the routing utility. Do not invent independent reviews if subagents
-are unavailable; required independent review remains outstanding.
+## Invoke the skill
+
+Open the target project. Use `$riff` in Codex or `/riff` in Cursor, VS Code
+Copilot, or Claude Code:
+
+```text
+$riff Design the retry interface.
+$riff Update the setup docs.
+$riff Plan the retry fix. Stop after plan review.
+$riff Execute the reviewed plan at docs/work/retry-fix/.
+$riff Resume the task at docs/work/retry-fix/.
+```
+
+If skill discovery is unavailable, ask the agent to read the installed
+`SKILL.md` by path. See [host guidance](skills/riff/references/hosts.md) for model
+selection and handoffs. Do not run two coordinators against the same task.
+
+To use Riff by default, optionally add a reference to your project's existing
+instruction file, substituting the path for your host:
+
+```text
+For planning, implementation, review, and recovery, follow
+.agents/skills/riff/SKILL.md and scale the process to task risk.
+```
+
+The installer does not add this reference automatically.
+
+## Configuration
+
+The wizard writes these files in the target project:
+
+- `.engineering-workflow/project.json`: build/test commands, task-record
+  directory, and project constraints.
+- `.engineering-workflow/routing-<host>.json`: model mappings, concurrency, and
+  token budgets.
+- `.engineering-workflow/hosts/<host>.json`: declared host models and capabilities.
+
+The CLI prefers host-specific routing and capability files and falls back to
+shared `routing.json` and `host.json` when they are absent. Model mappings must
+match the active host. Empty mappings disable routing; planning can still run in
+the current agent. Token budgets guide assignments and do not cap provider bills.
+Task records default to `docs/work/<task-id>/`.
 
 ## Update
 
-    python3 riff.py update --project /absolute/path/to/your/project --host claude
+```bash
+python3 riff.py update --project /path/to/project --host claude
+```
 
-Use the same --host as the original install.
+Use the same host as the original installation. Updates refuse locally modified
+or unmanaged skill files; reconcile those edits first. The skill updates before
+the configuration wizard opens. Answer `no` at `Save configuration?` to keep saved
+settings. Run one installer or wizard per target project at a time.
 
-Updates refuse locally modified or unmanaged skill files. Preserve/reconcile
-those edits first. Existing project configuration is never overwritten. Do not
-run simultaneous installers against the same project.
+The project skill remains usable after its installation source is moved or
+removed. The CLI still needs this distribution directory or an installed copy.
 
 ## Remove
-Delete only .agents/skills/riff from the target project. Retain
-.engineering-workflow and docs/work if you want to keep configuration/history.
-Remove any optional AGENTS.md reference you added yourself.
 
-## Validation and limitations
-The installer test suite covers frontmatter, bundled references, and host
-installation paths. Utilities validate records and propose routing. The
-selected agent host supplies live discovery and model execution.
+Delete `riff` from the skill directory used by your host. If Cursor uses an
+existing Codex or Claude copy, remove that copy only when no host needs it.
+Keep `.engineering-workflow/` and task records to retain configuration and history.
+Remove any instruction-file reference you added yourself.
 
-## Cursor compatibility and multiple hosts
-Cursor also discovers .agents/skills and .claude/skills. If either copy already
-exists, reuse it; the installer refuses a redundant Cursor installation. If you
-need both Codex and Claude Code native paths, keep those copies updated together;
-Cursor may list both. Never run two coordinators on the same task concurrently.
+## Verification and license
 
-Models are chosen through the host or its available delegation tools. This skill
-is not tied to OpenAI models and does not provide cross-provider API calls.
-Use optional .engineering-workflow/hosts/<host>.json and routing-<host>.json to
-keep model mappings separate. Real Cursor/Claude sessions have not been exercised
-here; installer and instruction compatibility have been tested.
+Regression tests cover installation paths and bundled references. Live workflow
+sessions in Cursor and Claude Code have not been verified.
+Riff is distributed under the [MIT License](LICENSE).

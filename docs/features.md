@@ -19,15 +19,16 @@ riff render retry-bug --format markdown --output readable-plan.md
 riff export retry-bug --format html --output readable-plan.html
 ```
 
-`show` reads the human view. `explain` describes blockers, evidence gaps and next
+`show` displays the plan. `explain` describes blockers, evidence gaps and next
 actions. `check` evaluates structure, consistency, live review bindings, freshness
 and execution eligibility, returning nonzero if required evidence fails or is
 unknown. These checks cannot prove semantic correctness or review independence.
 `status` keeps its existing fields; `--details` adds current evaluation.
 
-Recorded READY is distinct from evaluated readiness. A changed source file,
-authored contract or behavior profile can invalidate it. Missing fingerprints
-mean unknown freshness. Legacy records remain readable but lack v2 bindings.
+A plan can still say READY after the evidence behind that status becomes stale.
+`check` evaluates the current files: changes to source, authored documents, or
+behavioral settings can invalidate prior reviews. Missing fingerprints leave
+freshness unknown. Legacy records remain readable but lack v2 review bindings.
 
 `show` and `render` accept `--detail concise|full` and `--diagrams auto|none`.
 Inspection commands accept `--json`. `graph` emits Mermaid to stdout by default;
@@ -71,11 +72,14 @@ riff config set profile research
 riff config set debug_command_timeout 45
 ```
 
-Profiles: feature, bug, refactor, migration, documentation, architecture, research.
-They select sections and suggested checks, not risk routes or review exemptions.
-Settings resolve built-ins, project/profile, task overrides, then explicit options.
-Effective output includes provenance. Behavioral changes require replan;
-presentation changes do not. `config set` supports profile/profiles, build_command,
+Available profiles are `feature`, `bug`, `refactor`, `migration`, `documentation`,
+`architecture`, and `research`. They select planning sections and required checks.
+Risk routes and review requirements are assessed separately.
+
+Settings are applied from built-in defaults, then the selected profile, project
+settings, task overrides, and explicit command options. Effective output identifies where each
+value came from. Behavioral changes require replanning; presentation changes do
+not. `config set` supports profile/profiles, build_command,
 test_command, architecture_constraints, domain_invariants, sections,
 required_checks, debug_command_timeout, debug_total_timeout, detail and diagrams.
 Values accept JSON or plain text. Custom profiles are objects under `profiles`.

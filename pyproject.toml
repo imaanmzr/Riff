@@ -8,6 +8,12 @@ version = "0.8.0"
 description = "Plan, execute, review and resume engineering work across agent hosts"
 readme = "README.md"
 requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Iman Mazreati"}]
+
+[project.urls]
+Repository = "https://github.com/imaanmzr/Riff"
+Issues = "https://github.com/imaanmzr/Riff/issues"
 
 [project.scripts]
 riff = "distribution.riff:cli"
@@ -15,6 +21,7 @@ riff = "distribution.riff:cli"
 [tool.setuptools]
 packages = ["distribution"]
 include-package-data = true
+license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
-distribution = ["skills/**/*", "assets/*"]
+distribution = ["LICENSE", "skills/**/*", "assets/*"]

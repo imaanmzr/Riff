@@ -2,7 +2,7 @@
 name: riff
 description: Research, design, debug, document, plan, execute, review, and resume engineering work. Scale investigation and verification to uncertainty and risk.
 ---
-# Engineering Workflow
+# Riff
 
 Version 0.8.0. Read references for the requested operation and current uncertainty.
 
@@ -14,8 +14,10 @@ project artifact paths. On Windows use `py -3` or `python` for `python3` example
 Inspect the target project, and save its state there.
 
 Read applicable project instructions and obey host instruction precedence.
-Optional settings live in PROJECT_ROOT/.engineering-workflow/project.json,
-routing.json and host.json. Task records default to PROJECT_ROOT/docs/work/<id>/.
+Optional settings live under PROJECT_ROOT/.engineering-workflow/:
+project.json, routing-<host>.json, and hosts/<host>.json. The CLI falls back to
+shared routing.json and host.json when host-specific files are absent.
+Task records default to PROJECT_ROOT/docs/work/<id>/.
 Use plan.md, plan.json and run.json so the CLI can find them.
 
 ## Select guidance

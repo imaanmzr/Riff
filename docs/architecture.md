@@ -1,57 +1,68 @@
 # Architecture
 
-Riff has a portable skill entry point, project installation CLI, and four
-reference workflows. Project settings and task records belong to the user's
-repository. This lets an agent hand off work between supported hosts by reading
-the same records.
+Riff consists of a project skill, a Python CLI, and four workflow modules. The
+agent host supplies model access and tools. Riff supplies instructions, record
+formats, validators, and local inspection utilities.
 
-## Phases
+## Source layout
 
-| Phase | Responsibility | Main files |
-|---|---|---|
-| Planning | Discovery, research, decisions, specification, task graph, plan review | `planning/` |
-| Execution | Task dispatch, implementation checks, review, integration | `execution/` |
-| Recovery | Checkpoints, source fingerprints, interruption and stale evidence | `recovery/` |
-| Routing | Capability profiles, task conflict selection, concurrency and budgets | `routing/` |
+- `planning/`: discovery, requirements, design, research, debugging, and plan review.
+- `execution/`: execution records, verification and review gates, and integration.
+- `recovery/`: checkpoints, file fingerprints, and reconciliation proposals.
+- `routing/`: capability mappings, task conflicts, concurrency, and budget checks.
+- `planning/riff_core/`: shared record, configuration, storage, and presentation code.
+- `distribution/`: CLI, installer, skill bundle, and offline rendering assets.
 
-The installable skill bundles these references under
-`distribution/skills/riff/`. `distribution/install.py` installs
-it into a host's repository skill directory. root-level `riff` command provides the
-interactive CLI. The phase utilities perform structural checks and routing
-proposals. They do not start agents, authenticate to providers, or certify
-semantic correctness.
+The root `riff` launcher and `riff.py` entry point load `distribution/riff.py`.
+`install_cli.py` installs a standalone CLI. `distribution/install.py` installs
+or updates the project skill in the selected host's skill directory.
 
-## Persistent state
+## Canonical and installed code
 
-Schema v2 preserves structured task/requirement IDs while adding requirement
-descriptions, acceptance checks, decisions, evidence and task-linked reports.
-Authored Markdown remains separate from generated views. Live authored/config
-digests and source manifests bind review evidence. Legacy reads remain compatible;
-migration is explicit and only atomically replaces plan.json.
+The canonical workflow modules and Python core are copied into
+`distribution/skills/riff/references/`. The installed CLI and standalone skill
+utilities load that bundled core. Use `tools/sync_references.py` after changing
+canonical sources and `--check` to detect drift.
 
-The canonical Python core is planning/riff_core. Its bundled copy is shared by
-installed CLI and standalone utilities; tools/sync_references.py verifies parity.
-Browser assets are pinned under distribution/assets and embedded into HTML.
-The Python runtime remains standard-library only. No rendering server is started.
+The Python runtime uses the standard library. HTML exports embed the pinned
+browser libraries in `distribution/assets/` and need no server or network access.
+Their versions, checksums, and licenses are recorded with the assets.
 
-The plan records requirements, decisions, and task dependencies. Execution
-records actual agents, checks, reviews, and integrated revisions. Recovery stores
-checksummed, generation-numbered checkpoints and compares a listed file manifest
-when resuming. Routing uses capability mappings and resource budgets configured
-for the active host.
+## Project state
 
-A new host should inspect the repository and saved state before continuing. A
-checkpoint is evidence about prior work, not proof that the working tree still
-matches it. Source changes can stale reviews and verification.
+Configuration lives in `.engineering-workflow/` in the target project. Task
+records default to `docs/work/<task-id>/`:
 
-## Boundaries
+- `plan.md`: the authored specification and explanation.
+- `plan.json`: requirements, acceptance checks, decisions, dependencies, evidence,
+  and plan reviews.
+- `run.json`: assigned agents, execution state, candidate revisions, checks,
+  reviews, and integrated revisions.
+- `checkpoint.json`: a checksummed snapshot with a generation number, file
+  fingerprints, and reconciliation history.
 
-- Agent Skills discovery differs across hosts. The package includes host-specific
-  install paths and invocation guidance.
-- The host controls model availability, agent parallelism, isolation, and actual
-  usage accounting.
-- The router cannot invoke a provider or enforce billing limits.
-- Recovery fingerprints only paths in its manifest. Regenerate the manifest to
-  include new files.
-- The current tooling is local. It has no shared database or multi-machine lock.
-- No real feature benchmark has established improved quality or lower cost.
+Schema v2 binds plan reviews to authored documents, behavioral configuration,
+and source fingerprints. A recorded READY status can become stale when those
+inputs change. Legacy plans remain readable; explicit migration backs up the
+original record, replaces `plan.json`, and returns the plan to DRAFT for review.
+See [Record contracts](../planning/RECORDS.md).
+
+Routing reads the plan and execution records with host capability and budget
+settings. It proposes assignments; the coordinator checks the proposal and uses
+host tools to dispatch work.
+
+## Handoffs and limits
+
+A new agent session must inspect current instructions, source, saved state, and
+verification evidence before continuing. Checkpoints record previous state;
+they do not establish that the current working tree matches it. Reconciliation
+prints a proposal for the coordinator to inspect and adopt.
+
+Only manifest-listed paths are fingerprinted. Regenerate the inventory to detect
+new files. Locking is local to checkpoint writes; there is no shared database or
+distributed scheduler. Run one coordinator per task.
+
+Validators inspect declared records and source bindings. They do not authenticate
+reviewers, run recorded tests, or prove semantic correctness. Routing does not
+invoke provider APIs or enforce billing limits. The simulated adapter tests the
+dispatch contract; it cannot supply qualifying execution or review evidence.

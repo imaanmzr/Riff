@@ -208,7 +208,7 @@ for a host when it is omitted. `doctor` inspects all hosts by default.
 | --- | --- |
 | `riff init` | Install the project skill and configure the project |
 | `riff configure` | Edit build/test commands, model mappings and budgets |
-| `riff configure --git local\\|track` | Change Git visibility for an existing project without opening the wizard |
+| `riff configure --git local` or `riff configure --git track` | Change Git visibility for an existing project without opening the wizard |
 | `riff configure --git local --untrack` | Stage removal of tracked Riff files and retain local copies |
 | `riff update` | Update a project's skill using the installed Riff version |
 | `riff doctor` | Inspect project settings and discover installed skill files |

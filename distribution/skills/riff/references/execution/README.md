@@ -1,32 +1,46 @@
-# Execution 0.2
+# Execution
 
-Use: "Execute the reviewed plan using execution/WORKFLOW.md."
-The repository AGENTS.md routes explicit implementation requests here.
+The execution workflow implements an authorized, reviewed plan and records
+verification and integration evidence. Read [WORKFLOW.md](WORKFLOW.md) for entry
+requirements and task transitions.
 
-Planning 0.1 remains supported. Execution requires a READY plan, actual user
-authorization, matching baseline, and current review evidence. Fill template.json
-with one task record per planned task. Run:
+## Use
 
-    python3 execution/gates.py plan.json execution.json
-    python3 planning/tests/test_validate.py
-    python3 execution/tests/test_gates.py
+Ask your agent to execute a saved plan:
 
-Task record fields: state, agent, candidate_revision, integration_revision,
-checks, reviews, blockers; blocked tasks also need reason. Each check records
-revision, command, exit_code, evidence. Each review records kind (spec, quality,
-invariants or integration), revision, reviewer, independent, verdict, evidence.
-Final verification uses the execution head_revision and includes requirements.
+```text
+$riff Execute the reviewed plan at docs/work/retry-fix/.
+```
 
-Eligible tasks are dependency-ready, not necessarily safe to run in parallel.
-The coordinator must check scope conflicts and concurrency limits before dispatch.
-The tool checks declared evidence, not its authenticity or semantic adequacy.
-It does not spawn agents, mutate state, run shell commands, or enforce permissions.
-No background daemon or crash-safe execution engine is included.
+Use `/riff` in Cursor, VS Code Copilot, or Claude Code. Execution requires a READY
+plan, user authorization, a matching source baseline, and current review evidence.
+For behavior changes, follow the [implementation guide](IMPLEMENTATION.md).
+Use the [review guide](REVIEW.md) for specification and code-quality reviews.
 
-Validation: 8 planning regression tests and 12 execution regression tests.
-Coverage includes failed checks, stale candidate/final evidence, self-approval,
-unmet dependencies, missing authorization, and critical invariant review.
-Real multi-worktree feature execution remains a pilot, not a completed benchmark.
+## Execution records
 
-Installation: project-local workflow only. Personal skill installation from 0.1
-remains unresolved. This release does not claim global skill availability.
+Use [template.json](template.json) to create `run.json` alongside the plan. Each
+task records its state, assigned agent, candidate and integration revisions,
+checks, reviews, and blockers. Checks identify their command, exit code, evidence,
+and source revision. Reviews identify their kind, reviewer, independence,
+verdict, evidence, and reviewed revision.
+
+A task becomes eligible when its dependencies are integrated. The coordinator
+must still check file conflicts, host capabilities, and concurrency limits.
+`gates.py` evaluates the declared records; the host and coordinator run agents,
+commands, and reviews.
+
+## Validation
+
+From the repository root:
+
+```bash
+python3 execution/gates.py path/to/plan.json path/to/run.json
+python3 planning/tests/test_validate.py
+python3 execution/tests/test_gates.py
+```
+
+The gate rejects missing authorization, unmet dependencies, stale verification,
+and insufficient review evidence. It does not authenticate that evidence or run
+the recorded checks. There is no background execution daemon or automatic retry
+engine.

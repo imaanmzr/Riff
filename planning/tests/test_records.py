@@ -8,7 +8,60 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from riff_core import records, storage
+from riff_core import config, records, storage
+
+
+class SettingsTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+
+    def test_fresh_settings_default_to_riff_without_creating_files(self):
+        self.assertEqual(self.root / '.riff', config.settings_directory(self.root))
+        self.assertEqual({}, config.settings(self.root))
+        self.assertEqual([], list(self.root.iterdir()))
+
+    def test_current_and_legacy_settings_support_root_discovery(self):
+        for name in ('.riff', '.engineering-workflow'):
+            with self.subTest(directory=name), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                settings = root / name
+                settings.mkdir()
+                path = settings / 'project.json'
+                original = b'{"profile":"refactor","test_command":"do not execute", "custom":true}'
+                path.write_bytes(original)
+                task = root / 'notes/task'
+                task.mkdir(parents=True)
+                plan_path = task / 'plan.json'
+                plan_path.write_text('{}')
+                context = config.context(plan_path)
+                self.assertEqual(root.resolve(), context['project'])
+                self.assertEqual('do not execute', context['effective_behavior']['test_command'])
+                self.assertEqual('refactor', config.resolve(root)['profile'])
+                self.assertTrue(config.settings(root)['custom'])
+                self.assertEqual(original, path.read_bytes())
+                self.assertFalse((root / ('.riff' if name != '.riff' else '.engineering-workflow')).exists())
+
+    def test_duplicate_settings_fail_without_merging_or_writing(self):
+        paths = [self.root / name / 'project.json' for name in ('.riff', '.engineering-workflow')]
+        for path, value in zip(paths, (b'{"custom":"current"}', b'{"custom":"legacy"}')):
+            path.parent.mkdir()
+            path.write_bytes(value)
+        before = [path.read_bytes() for path in paths]
+        with self.assertRaisesRegex(ValueError, 'Both .riff and .engineering-workflow'):
+            config.resolve(self.root)
+        self.assertEqual(before, [path.read_bytes() for path in paths])
+
+    def test_settings_path_cannot_be_a_file(self):
+        for name in ('.riff', '.engineering-workflow'):
+            with self.subTest(directory=name):
+                path = self.root / name
+                path.write_bytes(b'preserve this file')
+                with self.assertRaisesRegex(ValueError, 'must be a directory'):
+                    config.settings(self.root)
+                self.assertEqual(b'preserve this file', path.read_bytes())
+                path.unlink()
 
 
 class RecordsTests(unittest.TestCase):

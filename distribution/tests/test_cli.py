@@ -20,7 +20,7 @@ class CliTests(unittest.TestCase):
         self.project = Path(self.temporary.name)
         self.cwd = self.project / 'outside'
         self.cwd.mkdir()
-        settings = self.project / '.engineering-workflow'
+        settings = self.project / '.riff'
         settings.mkdir()
         (settings / 'project.json').write_text('{"artifacts_directory":"docs/work"}')
 
@@ -167,9 +167,10 @@ class CliTests(unittest.TestCase):
         self.assertEqual(local_rules, exclude.read_bytes())
         for path in ('.agents/skills/riff/SKILL.md', '.github/skills/riff/SKILL.md',
                      '.claude/skills/engineering-workflow/SKILL.md',
-                     '.engineering-workflow/project.json', 'docs/work/refunds/run.json'):
+                     '.riff/project.json', 'docs/work/refunds/run.json'):
             with self.subTest(path=path):
                 self.assertEqual(0, self.git('check-ignore', '--', path, check=False).returncode)
+        self.assertEqual(0, self.git('check-ignore', '--', '.engineering-workflow/project.json', check=False).returncode)
         for path in ('.agents/skills/other/SKILL.md', '.github/workflows/ci.yml', 'docs/guide.md'):
             self.assertEqual(1, self.git('check-ignore', '--', path, check=False).returncode)
         self.assertEqual(before, self.git('ls-files', '--stage').stdout)
@@ -186,7 +187,7 @@ class CliTests(unittest.TestCase):
     def test_untrack_stages_only_riff_removals_and_preserves_local_files(self):
         self.git('init', '--quiet')
         riff_paths = (
-            '.engineering-workflow/project.json',
+            '.riff/project.json',
             '.agents/skills/riff/SKILL.md',
             'docs/work/refunds/plan.json',
             'docs/work/refunds/evidence/check [initial].txt',
@@ -225,7 +226,7 @@ class CliTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which('git'), 'Git executable required')
     def test_untrack_protects_content_only_in_the_git_index(self):
         self.git('init', '--quiet')
-        path = '.engineering-workflow/project.json'
+        path = '.riff/project.json'
         self.git('add', '-f', '--', path)
         self.git('-c', 'user.name=Riff Test', '-c', 'user.email=riff@example.invalid',
                  '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Track Riff settings')
@@ -246,8 +247,8 @@ class CliTests(unittest.TestCase):
         self.assertEqual(2, rejected.returncode)
         self.assertIn('--untrack requires --git local', rejected.stderr)
         self.git('init', '--quiet')
-        (self.project / '.gitignore').write_text('!/.engineering-workflow/\n')
-        self.git('add', '--', '.engineering-workflow/project.json')
+        (self.project / '.gitignore').write_text('!/.riff/\n')
+        self.git('add', '--', '.riff/project.json')
         before = self.git('ls-files', '--stage').stdout
         result = self.run_cli('configure', '--git', 'local', '--untrack')
         self.assertNotEqual(0, result.returncode)
@@ -258,7 +259,7 @@ class CliTests(unittest.TestCase):
     def test_git_visibility_scopes_nested_projects_and_escapes_record_paths(self):
         self.git('init', '--quiet')
         nested = self.project / 'apps/site app'
-        settings = nested / '.engineering-workflow'
+        settings = nested / '.riff'
         settings.mkdir(parents=True)
         (settings / 'project.json').write_text('{"artifacts_directory":"notes/Riff [drafts]"}')
         local = self.run_cli('configure', '--git', 'local', project=nested)

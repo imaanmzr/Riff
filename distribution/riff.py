@@ -4,11 +4,11 @@ import argparse
 import json
 from pathlib import Path
 if __package__:
-    from . import commands, task_commands
+    from . import commands, task_commands, core
     from .git_visibility import GitVisibility
     from .install import HOSTS, LEGACY_NAME, NAME, install
 else:
-    import commands, task_commands
+    import commands, task_commands, core
     from git_visibility import GitVisibility
     from install import HOSTS, LEGACY_NAME, NAME, install
 
@@ -35,7 +35,7 @@ def read(path, fallback):
 
 
 def configure(project, host, git, git_mode=None):
-    settings=project/'.engineering-workflow'
+    settings=core.config.settings_directory(project)
     config=read(settings/'project.json',{})
     print('Commands are saved as text, never executed by this wizard. Enter - for unknown.')
     for key,label in [('build_command','Build command'),('test_command','Test command')]:
@@ -237,7 +237,7 @@ def main():
     if git_mode and git is None:
         raise ValueError('Git visibility requires a Git working tree')
     if args.action == 'configure' and git_mode:
-        if not (project / '.engineering-workflow/project.json').is_file():
+        if not (core.config.settings_directory(project) / 'project.json').is_file():
             raise ValueError('Run init before configure')
         git.apply(git_mode, commands.records_directory(project), untrack=untrack)
         return
@@ -254,7 +254,7 @@ def main():
         dest = project / HOSTS[target] / 'skills' / NAME
         if args.action=='update' or not dest.exists(): install(project,args.action=='update',target)
         else: print('Using existing installation:',dest)
-    elif not (project/'.engineering-workflow/project.json').exists():
+    elif not (core.config.settings_directory(project) / 'project.json').exists():
         raise ValueError('Run init before configure')
     if args.action == 'init' and git_mode:
         git.apply(git_mode, commands.records_directory(project))

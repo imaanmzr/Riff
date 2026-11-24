@@ -18,9 +18,11 @@ both. Select the intended copy and keep their versions identical.
 
 ## Host configuration
 The setup wizard writes host-specific capabilities to
-`PROJECT_ROOT/.engineering-workflow/hosts/<host>.json` and model mappings to
-`PROJECT_ROOT/.engineering-workflow/routing-<host>.json`. The CLI prefers these
+`PROJECT_ROOT/.riff/hosts/<host>.json` and model mappings to
+`PROJECT_ROOT/.riff/routing-<host>.json`. The CLI prefers these
 files and falls back to shared `host.json` and `routing.json` when they are absent.
+For legacy-only projects, use the same files under `.engineering-workflow/`.
+Do not mix the two settings directories or silently combine their configuration.
 When calling `router.py` directly, pass the chosen files by absolute path with
 `--host` and `--config`. Verify declared capabilities in the active host before
 dispatch. Preserve other hosts' settings during a handoff. Store no API keys in

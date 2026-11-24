@@ -16,10 +16,25 @@ DEFAULTS = {'build_command': None, 'test_command': None, 'architecture_constrain
             'domain_invariants': [], 'sections': [], 'required_checks': [],
             'debug_command_timeout': 60, 'debug_total_timeout': 300}
 PRESENTATION = {'detail': 'full', 'diagrams': 'auto'}
+SETTINGS_DIRECTORIES = ('.riff', '.engineering-workflow')
+
+
+def settings_directory(project):
+    """Select one settings tree without moving or merging existing files."""
+    current, legacy = (Path(project) / name for name in SETTINGS_DIRECTORIES)
+    for path in (current, legacy):
+        if path.is_symlink():
+            raise ValueError('Refusing symlinked project settings: ' + str(path))
+        if path.exists() and not path.is_dir():
+            raise ValueError('Project settings path must be a directory: ' + str(path))
+    if current.exists() and legacy.exists():
+        raise ValueError('Both .riff and .engineering-workflow settings exist. '
+                         'Preserve your files and resolve the duplicate settings directories before continuing.')
+    return legacy if legacy.exists() else current
 
 
 def settings(project):
-    path = Path(project) / '.engineering-workflow' / 'project.json'
+    path = settings_directory(project) / 'project.json'
     return load(path) if path.exists() else {}
 
 
@@ -93,7 +108,8 @@ def context(plan_path, project=None):
     plan_path = Path(plan_path).resolve()
     if project is None:
         project = next((p for p in plan_path.parents
-                        if (p / '.engineering-workflow/project.json').is_file() or (p / '.git').exists()), None)
+                        if any((p / name / 'project.json').is_file() for name in SETTINGS_DIRECTORIES)
+                        or (p / '.git').exists()), None)
     if project is None:
         raise ValueError('Cannot locate project; supply --project')
     project = Path(project).resolve()

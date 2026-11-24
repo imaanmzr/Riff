@@ -1,0 +1,292 @@
+{
+  "schema_version": 2,
+  "requirement_details": [
+    {
+      "id": "R-1",
+      "description": "Use one shared resolver for fresh and current settings paths.",
+      "acceptance_checks": [
+        "C-1"
+      ]
+    },
+    {
+      "id": "R-2",
+      "description": "Preserve legacy settings and reject ambiguous or unsafe paths.",
+      "acceptance_checks": [
+        "C-2"
+      ]
+    },
+    {
+      "id": "R-3",
+      "description": "Protect settings across exports and Git visibility.",
+      "acceptance_checks": [
+        "C-3"
+      ]
+    },
+    {
+      "id": "R-4",
+      "description": "Ship consistent current naming and preserved historical evidence.",
+      "acceptance_checks": [
+        "C-4"
+      ]
+    }
+  ],
+  "acceptance_checks": [
+    {
+      "id": "C-1",
+      "requirements": [
+        "R-1"
+      ],
+      "procedure": "Exercise install/config/task/host utility paths against .riff.",
+      "expected": "Fresh settings live only in .riff; all consumers agree."
+    },
+    {
+      "id": "C-2",
+      "requirements": [
+        "R-2"
+      ],
+      "procedure": "Exercise legacy-only config and host lookup, both-directory conflicts and invalid paths.",
+      "expected": "Legacy remains usable; conflicts fail before settings writes."
+    },
+    {
+      "id": "C-3",
+      "requirements": [
+        "R-3"
+      ],
+      "procedure": "Exercise exports into both settings trees and local/track/untrack behavior.",
+      "expected": "Neither settings tree is overwritten; Git scope preserves unrelated files."
+    },
+    {
+      "id": "C-4",
+      "requirements": [
+        "R-4"
+      ],
+      "procedure": "Run required suites, parity and skill checks, inspect current docs and compare historical file hashes.",
+      "expected": "Current docs use .riff; canonical/bundled code matches; old work is untouched."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-1",
+      "choice": "Use hidden .riff as canonical name under a disclosed naming assumption.",
+      "alternatives": [
+        "Visible riff directory"
+      ],
+      "criteria": [
+        "Preserve hidden-settings convention",
+        "Match plugin name"
+      ],
+      "consequences": [
+        "Canonical path changes for fresh installs"
+      ],
+      "owner": "user",
+      "reopen_if": "User chooses visible riff instead",
+      "requirements": [
+        "R-1",
+        "R-4"
+      ],
+      "evidence": [
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-2",
+      "choice": "Central resolver supports legacy-only projects; reject duplicates and unsafe directory paths.",
+      "alternatives": [
+        "Break legacy lookup",
+        "Automatically move settings"
+      ],
+      "criteria": [
+        "Preserve existing user configuration",
+        "Bounded naming refactor"
+      ],
+      "consequences": [
+        "Legacy remains supported until manual rename; no automatic moves or merges"
+      ],
+      "owner": "/root",
+      "reopen_if": "User requests automated migration",
+      "requirements": [
+        "R-1",
+        "R-2"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-3",
+      "choice": "Protect/exclude both namespaces without rewriting historical evidence.",
+      "alternatives": [
+        "Protect only canonical path",
+        "Rewrite old fingerprints"
+      ],
+      "criteria": [
+        "Preserve authoritative settings",
+        "Preserve existing evidence"
+      ],
+      "consequences": [
+        "Manual directory renames use normal freshness reconciliation"
+      ],
+      "owner": "/root",
+      "reopen_if": "Record or Git-visibility contracts change",
+      "requirements": [
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-1",
+      "kind": "source",
+      "source": "Configuration consumers, installer, Git visibility, CLI and tests",
+      "classification": "observed",
+      "revision": "fb3b6f11cd359982030c28ebeef586104a7c94ec"
+    },
+    {
+      "id": "E-2",
+      "kind": "user intent",
+      "source": "Current chat: rename settings directory to match Riff; leading dot retained as disclosed default assumption",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    }
+  ],
+  "reports": [],
+  "reviewed_artifacts": [
+    "plan.md"
+  ],
+  "source_manifest": {
+    "planning/riff_core/config.py": "c4883c2e3ef2d9f63f796456edc5e5be32837e8821bbcc09d909f728b1be0e37",
+    "distribution/install.py": "559b5d4f77a7bc4e6733ae0adabf34916abda9722166f6069899325c49102b63",
+    "distribution/riff.py": "3e6d1d7ad47431437619edbc6d02f8b2c24ed234fcecba1159b78c4ccce3dc37",
+    "distribution/commands.py": "bd41a3566f31b08c0d91075481703f5c06d7d36cad338147fababadbf0df84d1",
+    "distribution/task_commands.py": "6038fa4c369c86b09eb52ea9974dd8babbcb0d934c1a8a6dca6b0850efc0432b",
+    "distribution/git_visibility.py": "efe9b925d210d034137ac9ac498357914825a2e40d6c9afaa065f4b3efa7c72d",
+    "distribution/tests/test_cli.py": "5e507ec677ffecdc16a9ee34f0f44f9fbe0b98a0808e484023655849ff731afd",
+    "distribution/tests/test_install.py": "a2dcc2f4175ac9f294e4f0134bd47df960830f5fd086c6184ad0edbe7fe45ab1",
+    "distribution/tests/test_features.py": "fa68a65dfcacbea9b4f6687b07b13dc2e5b1ba2d09a36d9b0b1a7563390460a2",
+    "planning/tests/test_records.py": "d3e73f70256ccf14ea743f627f837c921e95392a51aeb05694dc0d0e55e73e5a",
+    "README.md": "5f98cd4e613e7d6895c71e88002b05d80de51dbc4f1246f554d2f0fc925484dc",
+    "docs/commands.md": "5988bc3342fa8378d99434129f411baac9cee233940f157f0be34933ec18e206",
+    "docs/architecture.md": "2f3d809c74d80fb5b993411bdb3f304963055d5a6cf7f190d4e09477b74b2091",
+    "docs/installation.md": "81b707f90bd78a39f94b01d70d99949955548ce49c7bf76b0566cc4febb14a52",
+    "distribution/INSTALL.md": "2c3fdaefd692f8cf463845e4ee89c75bdb3e711a1c29ec2a3b651229724198a6",
+    "distribution/skills/riff/SKILL.md": "7c23ee3f75c88b1e2e721586596dbdd1038dcbf9b29bb2ab83dbd1a1d434f37e",
+    "distribution/skills/riff/references/hosts.md": "ed18a6fb89c3bad693e966bd54e531fcf86ada43eaa0852c61718a6be0d64552",
+    "tools/pilot_features.py": "08339a363bf53a40bc527bbd4e4f4e80991e6039bffd8b08cedefedb98f91d3f",
+    "tools/verify_release.py": "60ff34f32cdc923fdd56429d5a32d31b57228cf1fe4ac11f8ed1d9df6aad61bf"
+  },
+  "behavior_config": {
+    "build_command": null,
+    "test_command": null,
+    "architecture_constraints": [],
+    "domain_invariants": [],
+    "sections": [
+      "boundaries",
+      "compatibility"
+    ],
+    "required_checks": [
+      "behavior preservation",
+      "regression"
+    ],
+    "debug_command_timeout": 60,
+    "debug_total_timeout": 300
+  },
+  "behavior_provenance": {
+    "build_command": "built-in",
+    "test_command": "built-in",
+    "architecture_constraints": "built-in",
+    "domain_invariants": "built-in",
+    "sections": "profile:refactor",
+    "required_checks": "profile:refactor",
+    "debug_command_timeout": "built-in",
+    "debug_total_timeout": "built-in"
+  },
+  "task_id": "riff-settings-directory",
+  "title": "Rename project settings to .riff",
+  "route": "standard",
+  "status": "READY",
+  "revision": 1,
+  "source_revision": "fb3b6f11cd359982030c28ebeef586104a7c94ec",
+  "requirements": [
+    "R-1",
+    "R-2",
+    "R-3",
+    "R-4"
+  ],
+  "unresolved_questions": [],
+  "reviews": [
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 1,
+      "source_revision": "fb3b6f11cd359982030c28ebeef586104a7c94ec",
+      "authored_digest": "35ed9d3fe3774997d70f53072de3f1e39d9cbad1b621552f7985234fa05a9b67",
+      "config_digest": "eb703b4d61c001244c16d5a8ee484d71757a51cb33f6e0cb9f45b7da52032726",
+      "plan_digest": "cbb6eac361e3de16d9890608de2baec4f8a526fdf04d1ca91e66a82fb97a9c11",
+      "evidence": "review.json: independent raw-plan/source review; no findings; .riff remains a disclosed default assumption"
+    }
+  ],
+  "profile": "refactor",
+  "outcome": "Use .riff for new project settings while preserving legacy-only projects.",
+  "scope": "Shared settings path resolution, consumers, compatibility checks, current guidance and distribution parity.",
+  "tasks": [
+    {
+      "id": "T-1",
+      "objective": "Use .riff for new project settings while preserving legacy-only projects.",
+      "inputs": [
+        "fb3b6f11cd359982030c28ebeef586104a7c94ec",
+        "plan.md"
+      ],
+      "dependencies": [],
+      "scope": [
+        "planning/riff_core/config.py",
+        "distribution/install.py",
+        "distribution/riff.py",
+        "distribution/commands.py",
+        "distribution/task_commands.py",
+        "distribution/git_visibility.py",
+        "distribution/tests/test_cli.py",
+        "distribution/tests/test_install.py",
+        "distribution/tests/test_features.py",
+        "planning/tests/test_records.py",
+        "README.md",
+        "docs/commands.md",
+        "docs/architecture.md",
+        "docs/installation.md",
+        "distribution/INSTALL.md",
+        "distribution/skills/riff/SKILL.md",
+        "distribution/skills/riff/references/hosts.md",
+        "tools/pilot_features.py",
+        "tools/verify_release.py",
+        "distribution/skills/riff/references/planning/riff_core/config.py"
+      ],
+      "outputs": [
+        "Shared resolver and updated consumers",
+        "Compatibility regression and review evidence"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-1",
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "verification": [
+        "C-1",
+        "C-2",
+        "C-3",
+        "C-4"
+      ],
+      "integration_order": 1
+    }
+  ],
+  "config_digest": "eb703b4d61c001244c16d5a8ee484d71757a51cb33f6e0cb9f45b7da52032726",
+  "authored_digest": "35ed9d3fe3774997d70f53072de3f1e39d9cbad1b621552f7985234fa05a9b67"
+}

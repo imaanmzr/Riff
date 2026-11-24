@@ -19,8 +19,8 @@ def main():
     results = []
     with tempfile.TemporaryDirectory(prefix='riff-pilots-') as temporary:
         project = Path(temporary)
-        (project / '.engineering-workflow').mkdir()
-        (project / '.engineering-workflow/project.json').write_text('{}')
+        (project / '.riff').mkdir()
+        (project / '.riff/project.json').write_text('{}')
         commands = []
         def cli(*args):
             started = time.monotonic()

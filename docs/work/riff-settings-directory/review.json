@@ -1,0 +1,38 @@
+{
+  "plan_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "verdict": "pass",
+    "revision": 1,
+    "source_revision": "fb3b6f11cd359982030c28ebeef586104a7c94ec",
+    "authored_digest": "35ed9d3fe3774997d70f53072de3f1e39d9cbad1b621552f7985234fa05a9b67",
+    "config_digest": "eb703b4d61c001244c16d5a8ee484d71757a51cb33f6e0cb9f45b7da52032726",
+    "plan_digest": "cbb6eac361e3de16d9890608de2baec4f8a526fdf04d1ca91e66a82fb97a9c11",
+    "evidence": "review.json: independent raw-plan/source review; no findings; .riff remains a disclosed default assumption"
+  },
+  "source_review": {
+    "reviewer": "/root/clarification_review",
+    "spec": "pass",
+    "quality": "pass",
+    "findings": [],
+    "evidence": "Independent raw source/diff and compatibility-test review; exact-candidate final review pending"
+  },
+  "final_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+    "verdict": "pass",
+    "evidence": "review.json final_review; independent live-source/hash verification, actual final/baseline logs and justified unaffected rendering-test exception in verification.json",
+    "manifest_digest": "31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+    "spec": "pass",
+    "quality": "pass",
+    "integration": "pass",
+    "findings": [],
+    "baseline_exception": "Pre-existing browser timeout accepted as unaffected by this directory refactor; remains explicitly unpassed",
+    "limitations": {
+      "distribution": "48 tests; three privilege-skipped subtests for .agents, .riff and .engineering-workflow symlinks",
+      "recovery": "13 tests; one privilege-skipped symlink test",
+      "planning": "41 selected tests pass; one unchanged baseline browser timeout explicitly excluded and unpassed"
+    }
+  }
+}

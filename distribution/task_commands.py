@@ -25,7 +25,10 @@ def export_text(path, content, directory, project, overwrite=False):
         if other.parent.is_symlink(): continue
         for name in core.records.load(other).get('source_manifest', {}):
             protected.add(core.records.relative_file(project, name).resolve())
-    if target.is_relative_to(commands.records_directory(project).resolve()) or target.is_relative_to((project / '.engineering-workflow').resolve()) or target in protected:
+    settings_roots = ((project / name).resolve() for name in core.config.SETTINGS_DIRECTORIES)
+    if (target.is_relative_to(commands.records_directory(project).resolve())
+            or any(target.is_relative_to(settings) for settings in settings_roots)
+            or target in protected):
         raise ValueError('Export must not overwrite authoritative task, settings or source records')
     if not path.parent.is_dir(): raise ValueError('Output directory does not exist')
     with path.open('w' if overwrite else 'x', encoding='utf-8', newline='\n') as stream:
@@ -132,7 +135,7 @@ def configuration(project, args):
         plan = core.records.load(commands.task_directory(project, args.task) / 'plan.json') if args.task else None
         emit(core.config.resolve(project, plan) if args.effective else core.config.settings(project), True)
         return 0
-    path = project / '.engineering-workflow' / 'project.json'
+    path = core.config.settings_directory(project) / 'project.json'
     if not path.exists(): raise ValueError('Run riff init before setting configuration')
     original = path.read_bytes()
     current = json.loads(original)

@@ -7,8 +7,10 @@ import subprocess
 
 if __package__:
     from .install import HOSTS, LEGACY_NAME, NAME
+    from .core import config as project_config
 else:
     from install import HOSTS, LEGACY_NAME, NAME
+    from core import config as project_config
 
 
 class GitVisibility:
@@ -118,7 +120,7 @@ class GitVisibility:
         if any(part.lower() == '.git' for part in record_path.parts):
             raise ValueError('Task records directory must be outside Git metadata')
         owned_paths = {
-            '.engineering-workflow',
+            *project_config.SETTINGS_DIRECTORIES,
             *(f'{folder}/skills/{name}' for folder in HOSTS.values()
               for name in (NAME, LEGACY_NAME)),
         }

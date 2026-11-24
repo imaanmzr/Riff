@@ -18,8 +18,8 @@ class Features(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        (self.root / '.engineering-workflow').mkdir()
-        (self.root / '.engineering-workflow/project.json').write_text('{}')
+        (self.root / '.riff').mkdir()
+        (self.root / '.riff/project.json').write_text('{}')
         (self.root / 'source.py').write_text('value = 1\n')
         self.cli('new', 'demo', '--title', 'Demo')
         self.task = self.root / 'docs/work/demo'
@@ -137,7 +137,7 @@ class Features(unittest.TestCase):
         self.assertEqual(before, (self.task / 'checkpoint.json').read_bytes())
 
     def test_profiles_and_configuration_preserve_unknowns(self):
-        path = self.root / '.engineering-workflow/project.json'
+        path = self.root / '.riff/project.json'
         path.write_text('{"custom": {"preserve": true}}')
         self.assertEqual(0, self.cli('config', 'set', 'profile', 'migration').returncode)
         self.assertTrue(json.loads(path.read_text())['custom']['preserve'])
@@ -149,6 +149,82 @@ class Features(unittest.TestCase):
         self.assertIn('Workflow profile: migration', self.cli('replan', 'migration-task', '--reason', 'New contract').stdout)
         self.assertEqual(0, self.cli('profile', 'show', 'research').returncode)
         self.assertNotEqual(0, self.cli('config', 'set', 'required_checks', 'false').returncode)
+
+    def test_legacy_settings_remain_usable_without_automatic_moves(self):
+        current = self.root / '.riff'
+        legacy = self.root / '.engineering-workflow'
+        current.rename(legacy)
+        settings = legacy / 'project.json'
+        settings.write_bytes(b'{"artifacts_directory":"notes/tasks","custom":true}')
+        self.assertEqual(0, self.cli('new', 'legacy-task').returncode)
+        self.assertTrue((self.root / 'notes/tasks/legacy-task/plan.json').is_file())
+        self.assertEqual(0, self.cli('plan', '--task', 'legacy-task').returncode)
+        self.assertEqual(0, self.cli('validate', 'legacy-task').returncode)
+        self.assertEqual(0, self.cli('config', 'set', 'profile', 'refactor').returncode)
+        self.assertTrue(json.loads(settings.read_text())['custom'])
+        self.assertEqual('refactor', json.loads(self.cli('config', 'show', '--effective').stdout)['profile'])
+        self.assertFalse(current.exists())
+
+    def test_duplicate_settings_reject_config_writes(self):
+        current = self.root / '.riff/project.json'
+        legacy = self.root / '.engineering-workflow/project.json'
+        legacy.parent.mkdir()
+        legacy.write_bytes(b'{"custom":"legacy"}')
+        before = (current.read_bytes(), legacy.read_bytes())
+        result = self.cli('config', 'set', 'profile', 'refactor')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('Both .riff and .engineering-workflow', result.stderr)
+        self.assertEqual(before, (current.read_bytes(), legacy.read_bytes()))
+
+    def test_exports_protect_current_and_legacy_settings_namespaces(self):
+        for active, other in (('.riff', '.engineering-workflow'), ('.engineering-workflow', '.riff')):
+            with self.subTest(active=active):
+                selected = self.root / active
+                if not selected.exists():
+                    (self.root / other).rename(selected)
+                path = selected / 'project.json'
+                before = path.read_bytes()
+                result = self.cli('render', 'demo', '--output', str(path), '--overwrite')
+                self.assertNotEqual(0, result.returncode)
+                self.assertEqual(before, path.read_bytes())
+                result = self.cli('render', 'demo', '--output', str(self.root / other), '--overwrite')
+                self.assertNotEqual(0, result.returncode)
+                self.assertIn('authoritative', result.stderr)
+                self.assertFalse((self.root / other).exists())
+
+    def test_routing_uses_selected_settings_and_host_specific_files(self):
+        plan = self.ready()
+        run = dict(authorized=True, plan_revision=plan['revision'], base_revision=plan['source_revision'],
+                   status='running', tasks={'T1': {'state': 'pending'}})
+        (self.task / 'run.json').write_text(json.dumps(run))
+        for name in ('.riff', '.engineering-workflow'):
+            with self.subTest(settings=name):
+                settings = self.root / name
+                if not settings.exists():
+                    (self.root / '.riff').rename(settings)
+                (settings / 'hosts').mkdir(exist_ok=True)
+                route = json.loads((ROOT / 'routing/config.json').read_text())
+                route.update(token_budget=4321, task_token_budget=1000,
+                             profiles={'fast':None,'coding':'fixture-model','deep_reasoning':None})
+                host = json.loads((ROOT / 'routing/host.example.json').read_text())
+                host.update(models={'fixture-model':['coding']},available_slots=1)
+                (settings / 'routing-codex.json').write_text(json.dumps(route))
+                (settings / 'hosts/codex.json').write_text(json.dumps(host))
+                # Invalid shared files ensure host-specific lookup really wins.
+                (settings / 'routing.json').write_text('invalid shared routing')
+                (settings / 'host.json').write_text('invalid shared host')
+                result = self.cli('route', 'demo', '--host', 'codex')
+                self.assertEqual(0, result.returncode, result.stderr)
+                value = json.loads(result.stdout)
+                self.assertEqual('fixture-model', value['assignments'][0]['proposed_model'])
+                self.assertEqual(3321, value['remaining_tokens'])
+                (settings / 'routing.json').write_text(json.dumps(route))
+                (settings / 'host.json').write_text(json.dumps(host))
+                (settings / 'routing-codex.json').unlink()
+                (settings / 'hosts/codex.json').unlink()
+                fallback = self.cli('route', 'demo', '--host', 'codex')
+                self.assertEqual(0, fallback.returncode, fallback.stderr)
+                self.assertEqual('fixture-model', json.loads(fallback.stdout)['assignments'][0]['proposed_model'])
 
     def test_gate_router_simulated_and_unbound_context(self):
         p = self.ready()

@@ -30,7 +30,9 @@ Their versions, checksums, and licenses are recorded with the assets.
 
 ## Project state
 
-Configuration lives in `.engineering-workflow/` in the target project. Task
+Configuration lives in `.riff/` in the target project; legacy-only
+`.engineering-workflow/` projects remain supported through the shared settings
+resolver. Duplicate settings directories are rejected without merging. Task
 records default to `docs/work/<task-id>/`:
 
 - `plan.md`: the authored specification and explanation.

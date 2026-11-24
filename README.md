@@ -50,7 +50,7 @@ riff init --project /path/to/your/project --host codex
 ```
 
 Choose `codex`, `cursor`, `vscode`, or `claude` for `--host`. The setup wizard
-saves project settings under `.engineering-workflow/` and lets you choose whether
+saves project settings under `.riff/` and lets you choose whether
 to keep Riff files local to your Git clone or track them with the project.
 Existing project instruction files are preserved.
 

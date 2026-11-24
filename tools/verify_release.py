@@ -42,8 +42,8 @@ def main():
             return result
         run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--target', str(installed), str(wheel)])
         project = folder / 'project'
-        (project / '.engineering-workflow').mkdir(parents=True)
-        (project / '.engineering-workflow/project.json').write_text('{}')
+        (project / '.riff').mkdir(parents=True)
+        (project / '.riff/project.json').write_text('{}')
         env = dict(os.environ, PYTHONPATH=str(installed))
         entry = [sys.executable, '-c', 'from distribution.riff import cli; cli()']
         for args in [('new', 'wheel-task'), ('show', 'wheel-task', '--json'),

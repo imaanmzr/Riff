@@ -1,0 +1,235 @@
+{
+  "candidate_revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+  "source_manifest": {
+    "README.md": "7216d83ee091fd1b04c205f4d3184a025ed356638a764f874e8b610840c31549",
+    "distribution/INSTALL.md": "c6ada9acdbd01d7700af5b0d2896fcecddda4b32840a153a58975a13eb5c6e9a",
+    "distribution/commands.py": "f70fc8e9f9c5746f5019205726ff4aeddbbc2787f83c2d1f9626a1a2ff042d27",
+    "distribution/git_visibility.py": "24068cf890bbc689422b8a75d0df93f0742178e522edadc9738eb10e94133d48",
+    "distribution/install.py": "32f1ab7325765a85e48b17d1063e6c3fbda5c5956e36a9f2e74dd83301285df4",
+    "distribution/riff.py": "f2ab0de7fc0bf50b5f2a501557bf41180a59eb862fca42825bff31faa4e46dd9",
+    "distribution/skills/riff/SKILL.md": "c9fb4a9aa94306928a4dc242e61f09345cc9d06b5d082c22b303a904f95065ec",
+    "distribution/skills/riff/references/hosts.md": "618c1298b66d444042fb18eff247bd0a14b08eac8107df5097f843272c42cdd6",
+    "distribution/skills/riff/references/planning/riff_core/config.py": "31a6fe276d00c5ef9a67e552a3ac6d8131bb2c4e88145d526a0cbf68711f8ef8",
+    "distribution/skills/riff/references/planning/tests/test_records.py": "04d79d0ad5a5440b6e2be73bc9b678d2663d5dd745c34318968da611cd0e1d03",
+    "distribution/task_commands.py": "ff269a9dd7dacfca739097d0e5763c5a009d0cce0e41c70b81eaf4e4bad05601",
+    "distribution/tests/test_cli.py": "d18d2d352939f265170e72302915799273250563844be9f1d46a8c99e9c155d1",
+    "distribution/tests/test_features.py": "1f9dc2ede5f057872472048bf44bfb785c9b501c6ef5debba4e020742d82db91",
+    "distribution/tests/test_install.py": "0e7ea1cca9a15a5c26005cac06851551acbf9ba45038731e46e9b0a46e13154c",
+    "docs/architecture.md": "4e4e3e18de26202709bab3c518c95357db4f0bc6009510eab59486d6ebb0424c",
+    "docs/commands.md": "c98200cc193c2f9592bee1f2a85eb979be03685ffc7afb3c3f68d98e75dea000",
+    "docs/installation.md": "51947353ea72fe01b97c2ccfb777f7338e449d17c7bc09d69f9348d28ed13dd5",
+    "planning/riff_core/config.py": "31a6fe276d00c5ef9a67e552a3ac6d8131bb2c4e88145d526a0cbf68711f8ef8",
+    "planning/tests/test_records.py": "04d79d0ad5a5440b6e2be73bc9b678d2663d5dd745c34318968da611cd0e1d03",
+    "tools/pilot_features.py": "2a0b60d12c3e17457adf7fa0eae1d96ed03452692bbf8ba05977440f0eb529f4",
+    "tools/verify_release.py": "74d92650ef1a3f67a9c6e3dd5b7d11df509899dd99313d5ef5a4d1ebd0011ad6"
+  },
+  "baseline": [
+    {
+      "command": "python -m unittest discover -s planning/tests -v",
+      "exit_code": 1,
+      "elapsed_seconds": 103.49,
+      "evidence": "build\\settings-directory-checks\\baseline-planning.log",
+      "summary": "Ran 38 tests in 102.489s\n\nFAILED (errors=1)"
+    },
+    {
+      "command": "python -m unittest discover -s execution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.66,
+      "evidence": "build\\settings-directory-checks\\baseline-execution.log",
+      "summary": "Ran 12 tests in 0.004s\n\nOK"
+    },
+    {
+      "command": "python -m unittest discover -s distribution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 73.5,
+      "evidence": "build\\settings-directory-checks\\baseline-distribution.log",
+      "summary": "Ran 42 tests in 72.312s\n\nOK (skipped=1)"
+    },
+    {
+      "command": "python -m unittest discover -s recovery/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 1.11,
+      "evidence": "build\\settings-directory-checks\\baseline-recovery.log",
+      "summary": "Ran 13 tests in 0.135s\n\nOK (skipped=1)"
+    },
+    {
+      "command": "python -m unittest discover -s routing/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.72,
+      "evidence": "build\\settings-directory-checks\\baseline-routing.log",
+      "summary": "Ran 28 tests in 0.037s\n\nOK"
+    }
+  ],
+  "baseline_browser_issue": {
+    "description": "Unchanged offline rendering browser test timed out in the initial unmodified planning suite and a serial Chrome retry; same test also timed out using supported Edge. Test processes were explicitly stopped and their exits verified.",
+    "evidence": [
+      "build/settings-directory-checks/baseline-planning.log",
+      "build/settings-directory-checks/baseline-browser-retry.log",
+      "build/settings-directory-checks/edge-browser.log"
+    ],
+    "unchanged_rendering_inputs": {
+      "planning/tests/test_presentation.py": {
+        "baseline_sha256": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d",
+        "current_sha256": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d"
+      },
+      "planning/riff_core/presentation.py": {
+        "baseline_sha256": "0ab4cb7ce5ffff2c507bae1dd2ad117e23187b7b5968f751feb7bd99b238335e",
+        "current_sha256": "0ab4cb7ce5ffff2c507bae1dd2ad117e23187b7b5968f751feb7bd99b238335e"
+      },
+      "planning/riff_core/diagnostic_runner.py": {
+        "baseline_sha256": "a4a2bdd868a4030173b69b322327888e3f39e7dc28cf1075ec440c5ab9b7ad9b",
+        "current_sha256": "a4a2bdd868a4030173b69b322327888e3f39e7dc28cf1075ec440c5ab9b7ad9b"
+      },
+      "planning/riff_core/records.py": {
+        "baseline_sha256": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c",
+        "current_sha256": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c"
+      },
+      "distribution/assets/mermaid.min.js": {
+        "baseline_sha256": "07e37dfa97b337ccc85365d57eddf99b9706f09db3b59b260d0333b23b343c4b",
+        "current_sha256": "07e37dfa97b337ccc85365d57eddf99b9706f09db3b59b260d0333b23b343c4b"
+      },
+      "distribution/assets/markdown-it.min.js": {
+        "baseline_sha256": "38c70a1e7ca91ab40e2d9e6e60129851a717ed1c7d4acbbdd41bf9503791cf68",
+        "current_sha256": "38c70a1e7ca91ab40e2d9e6e60129851a717ed1c7d4acbbdd41bf9503791cf68"
+      }
+    },
+    "handling": "Exclude only this reproduced pre-existing browser timeout from final planning regression selection; do not represent it as passed. All settings tests and non-browser checks remain required. Independent integration reviewer must assess this baseline exception."
+  },
+  "historical_evidence": {
+    "files_verified": 18,
+    "unchanged": true
+  },
+  "checks": [
+    {
+      "command": "Python unittest discovery planning/tests excluding only reproduced pre-existing offline_browser timeout (see baseline evidence)",
+      "exit_code": 0,
+      "elapsed_seconds": 4.3,
+      "evidence": "build/settings-directory-checks/final-planning.log",
+      "excluded": [
+        "test_presentation.PresentationTests.test_offline_browser_and_hostile_input"
+      ],
+      "summary": "Ran 41 tests in 3.602s\n\nOK",
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -m unittest discover -s execution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.52,
+      "evidence": "build/settings-directory-checks/final-execution.log",
+      "excluded": [],
+      "summary": "Ran 12 tests in 0.006s\n\nOK",
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -m unittest discover -s recovery/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.76,
+      "evidence": "build/settings-directory-checks/final-recovery.log",
+      "excluded": [],
+      "summary": "Ran 13 tests in 0.132s\n\nOK (skipped=1)",
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -m unittest discover -s routing/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.52,
+      "evidence": "build/settings-directory-checks/final-routing.log",
+      "excluded": [],
+      "summary": "Ran 28 tests in 0.032s\n\nOK",
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation",
+        "regression"
+      ]
+    },
+    {
+      "command": "python tools/sync_references.py --check",
+      "exit_code": 0,
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "regression"
+      ],
+      "evidence": "Canonical references match installable bundle"
+    },
+    {
+      "command": "quick_validate.py distribution/skills/riff using existing isolated PyYAML path",
+      "exit_code": 0,
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "regression"
+      ],
+      "evidence": "Skill is valid!"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "regression"
+      ],
+      "evidence": "No whitespace errors; normal Git checkout CRLF warnings"
+    },
+    {
+      "command": "Compare historical work artifact SHA256 hashes to saved initial inventory",
+      "exit_code": 0,
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation"
+      ],
+      "evidence": "18 historical evidence/plan artifacts unchanged; build/settings-directory-checks/historical-hashes.json"
+    },
+    {
+      "command": "python -m unittest discover -s distribution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 63.04,
+      "evidence": "build/settings-directory-checks/final-distribution.log",
+      "excluded": [],
+      "summary": "Ran 48 tests in 62.460s\n\nOK (skipped=3)",
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation",
+        "regression"
+      ]
+    },
+    {
+      "command": "Isolated public resolver/installer probe with only Path.is_symlink OS-metadata boundary stubbed",
+      "exit_code": 0,
+      "scope": "Exercises real guard and no-write behavior; not a successful real Windows symlink test. Actual symlink creation remains privilege-skipped.",
+      "results": [
+        {
+          "settings": ".riff",
+          "outcome": "Resolver and public installer reject symlink metadata before any writes; existing bytes preserved"
+        },
+        {
+          "settings": ".engineering-workflow",
+          "outcome": "Resolver and public installer reject symlink metadata before any writes; existing bytes preserved"
+        }
+      ],
+      "revision": "sha256:31d8b43569c0a418a7e9de790947278f51a3469b4db7f95fbd0cbd7914a7d54f",
+      "obligations": [
+        "behavior preservation"
+      ],
+      "evidence": "build/settings-directory-checks/symlink-boundary.json"
+    }
+  ],
+  "regression_scope": "All selected final suites return OK; Windows real-symlink cases remain skipped and a bounded OS-metadata probe supplies actual guard/no-write evidence without claiming real-link coverage. The unchanged reproduced browser failure remains explicitly unpassed, separately documented and independently assessed as unaffected by the directory refactor.",
+  "skip_accounting": {
+    "distribution": "48 tests; three privilege-skipped subtests for .agents, .riff and .engineering-workflow symlinks",
+    "recovery": "13 tests; one privilege-skipped symlink test",
+    "planning": "41 selected tests pass; one unchanged baseline browser timeout explicitly excluded and unpassed"
+  },
+  "completion": "Integrated locally under the unchanged reviewed content fingerprint; no external installation, automatic directory move or historical evidence rewrite.",
+  "process_cleanup": "All started test/browser processes exited. Exact-profile inventories were checked against actual process handles; remaining cached CIM entries had no corresponding live process."
+}

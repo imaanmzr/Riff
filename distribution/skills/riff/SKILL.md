@@ -14,9 +14,12 @@ project artifact paths. On Windows use `py -3` or `python` for `python3` example
 Inspect the target project, and save its state there.
 
 Read applicable project instructions and obey host instruction precedence.
-Optional settings live under PROJECT_ROOT/.engineering-workflow/:
+Optional settings live under PROJECT_ROOT/.riff/:
 project.json, routing-<host>.json, and hosts/<host>.json. The CLI falls back to
 shared routing.json and host.json when host-specific files are absent.
+Legacy-only PROJECT_ROOT/.engineering-workflow/ settings remain supported.
+Use one settings directory: if both names exist, resolve the duplicate without
+merging or overwriting user files. No automatic directory move is performed.
 Task records default to PROJECT_ROOT/docs/work/<id>/.
 Use plan.md, plan.json and run.json so the CLI can find them.
 

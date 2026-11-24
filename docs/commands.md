@@ -52,7 +52,7 @@ With the default settings this creates the following files in your project.
 
 ```text
 your-project/
-  .engineering-workflow/
+  .riff/
     project.json
   docs/
     work/
@@ -69,7 +69,7 @@ uses these filenames, with its ID distinguishing its directory. For instance,
 `T1` will not select that task. Internal `T1`/`T2` IDs identify steps inside its plan.
 
 The directory prefix comes from `artifacts_directory` in
-`.engineering-workflow/project.json`, which setup normally sets to `docs/work`.
+`.riff/project.json`, which setup normally sets to `docs/work`.
 `riff config show` displays this saved project setting. Run `riff status` to
 list saved task IDs, including records created by an agent. Ask the agent to save
 its work in that configured directory with both `plan.md` and `plan.json` so the

@@ -9,8 +9,10 @@ from pathlib import Path
 
 if __package__:
     from .install import HOSTS, NAME
+    from .core import config as project_config
 else:
     from install import HOSTS, NAME
+    from core import config as project_config
 
 REFERENCES = Path(__file__).resolve().parent / 'skills' / NAME / 'references'
 
@@ -38,7 +40,7 @@ def load(path):
 
 
 def records_directory(project):
-    settings = project / '.engineering-workflow' / 'project.json'
+    settings = project_config.settings_directory(project) / 'project.json'
     config = load(settings)
     return resolve_records_directory(project, config.get('artifacts_directory', 'docs/work'))
 
@@ -153,7 +155,6 @@ def status(project, args):
 
 def doctor(project, args):
     issues = []
-    settings = project / '.engineering-workflow'
     try:
         records_directory(project)
         print('Project configuration: OK')
@@ -187,7 +188,7 @@ def run_utility(project, args):
         arguments = [str(plan)] + ([str(run)] if args.execution else [])
     else:
         script = REFERENCES / 'routing/router.py'
-        settings = project / '.engineering-workflow'
+        settings = project_config.settings_directory(project)
         config = settings / f'routing-{args.host}.json'
         host = settings / 'hosts' / f'{args.host}.json'
         if not config.exists():

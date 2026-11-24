@@ -117,7 +117,7 @@ riff configure --git track
 ```
 
 `local` adds repository-local Git exclusions for the Riff skill folders,
-`.engineering-workflow/`, and the entire configured task-record folder
+`.riff/`, and the entire configured task-record folder
 (`docs/work/` by default). Choose a dedicated folder for task records.
 The rules live in Git's `info/exclude` file. They stay in this clone and
 also apply to linked worktrees of the same clone. Changing the task-record
@@ -194,8 +194,17 @@ You can add a reference to the skill in the instruction file your team uses.
 If you already installed the skill as `engineering-workflow`, run the update
 command for that project. Riff replaces the previous installation if its files
 match the installer manifest. Update any project instructions that reference
-the old skill command or path. Project configuration still lives in
-`.engineering-workflow/`.
+the old skill command or path.
+
+New projects store configuration in `.riff/`. Existing projects with only
+`.engineering-workflow/` remain supported, including configuration writes and
+skill updates. To adopt the new name, stop active Riff work and rename that
+directory to `.riff/`. Riff does not move or merge settings automatically; if
+both names exist, preserve your files and resolve the duplicate before running
+configuration commands. Reviewed plans that fingerprint the old settings path
+need the usual freshness review/reconciliation after a manual rename.
+Git local mode covers both names; rerun `riff configure --git local` to refresh
+exclusions after renaming a project configured with an older Riff version.
 
 ## Invoke
 
@@ -228,8 +237,8 @@ coordinators against the same task at once.
 
 ## Model settings
 
-`.engineering-workflow/routing-<host>.json` maps capability profiles to model
-IDs. `.engineering-workflow/hosts/<host>.json` records capabilities the host
+`.riff/routing-<host>.json` maps capability profiles to model
+IDs. `.riff/hosts/<host>.json` records capabilities the host
 makes available. The CLI asks these details only when configuring routing.
 These values do not grant provider access. Select the main model in the host UI.
 
@@ -237,7 +246,7 @@ These values do not grant provider access. Select the main model in the host UI.
 
 Remove the installed `riff` folder from the host's `.agents/skills`,
 `.cursor/skills`, `.github/skills`, or `.claude/skills` directory. Keep
-`.engineering-workflow/` and task records if you want to retain configuration
+`.riff/` and task records if you want to retain configuration
 and history. Remove any instruction-file reference you added yourself.
 
 For a CLI installed with `install_cli.py`, remove only these managed paths under

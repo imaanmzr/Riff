@@ -7,6 +7,11 @@ from pathlib import Path
 import shutil
 import tempfile
 
+if __package__:
+    from .core import config as project_config
+else:
+    from core import config as project_config
+
 NAME = 'riff'
 LEGACY_NAME = 'engineering-workflow'
 HOSTS={'codex':'.agents','cursor':'.cursor','claude':'.claude','vscode':'.github'}
@@ -26,8 +31,7 @@ def install(project, update=False, host="codex"):
                 if (existing / 'SKILL.md').is_file():
                     native_host = 'codex' if other == '.agents' else 'claude'
                     raise ValueError(f'Cursor can already discover {existing}. Update it using --host {native_host}.')
-    settings=project/'.engineering-workflow'
-    if settings.is_symlink(): raise ValueError('Refusing symlinked project settings')
+    settings=project_config.settings_directory(project)
     parent=project/HOSTS[host]/'skills'
     legacy = parent / LEGACY_NAME
     for p in (project / HOSTS[host], parent, parent / NAME, legacy):
@@ -54,8 +58,7 @@ def install(project, update=False, host="codex"):
         except BaseException:
             if backup.exists(): backup.rename(installed)
             raise
-    settings=project/'.engineering-workflow'
-    if settings.is_symlink(): raise ValueError('Refusing symlinked project settings')
+    settings=project_config.settings_directory(project)
     settings.mkdir(exist_ok=True)
     templates={'project.json':'planning/templates/project.json','routing.json':'routing/config.json','host.json':'routing/host.example.json'}
     for name,rel in templates.items():

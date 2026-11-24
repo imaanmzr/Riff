@@ -22,7 +22,7 @@ not execute them. Canceling configuration leaves the skill installed.
 The skill is installed under `.agents/skills/riff` for Codex,
 `.cursor/skills/riff` for Cursor, `.github/skills/riff` for VS Code Copilot, or
 `.claude/skills/riff` for Claude Code. Project settings live in
-`.engineering-workflow/`. Existing instruction files are preserved.
+`.riff/`. Existing instruction files are preserved.
 
 Cursor can also discover Codex and Claude skill paths. When either is already
 installed, Riff directs you to use that copy and update it with its original
@@ -82,17 +82,24 @@ The installer does not add this reference automatically.
 
 The wizard writes these files in the target project:
 
-- `.engineering-workflow/project.json`: build/test commands, task-record
+- `.riff/project.json`: build/test commands, task-record
   directory, and project constraints.
-- `.engineering-workflow/routing-<host>.json`: model mappings, concurrency, and
+- `.riff/routing-<host>.json`: model mappings, concurrency, and
   token budgets.
-- `.engineering-workflow/hosts/<host>.json`: declared host models and capabilities.
+- `.riff/hosts/<host>.json`: declared host models and capabilities.
 
 The CLI prefers host-specific routing and capability files and falls back to
 shared `routing.json` and `host.json` when they are absent. Model mappings must
 match the active host. Empty mappings disable routing; planning can still run in
 the current agent. Token budgets guide assignments and do not cap provider bills.
 Task records default to `docs/work/<task-id>/`.
+
+Existing projects using only `.engineering-workflow/` keep using that directory
+until you rename it to `.riff/`. No automatic move or merge is performed. If both
+directories exist, resolve the duplicate while preserving your settings. Stop
+active work before renaming, refresh older Git local exclusions with
+`riff configure --git local`, and reconcile reviewed source fingerprints that
+refer to the previous settings path.
 
 ## Update
 
@@ -112,7 +119,7 @@ removed. The CLI still needs this distribution directory or an installed copy.
 
 Delete `riff` from the skill directory used by your host. If Cursor uses an
 existing Codex or Claude copy, remove that copy only when no host needs it.
-Keep `.engineering-workflow/` and task records to retain configuration and history.
+Keep `.riff/` and task records to retain configuration and history.
 Remove any instruction-file reference you added yourself.
 
 ## Verification and license

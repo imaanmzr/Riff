@@ -25,7 +25,8 @@ class InstallTests(unittest.TestCase):
             skill=root/'.agents/skills/riff'
             self.assertTrue((skill/'SKILL.md').exists())
             self.assertTrue((skill/'references/routing/router.py').exists())
-            config=root/'.engineering-workflow/project.json'; config.write_text('{"custom":true}')
+            self.assertFalse((root / '.engineering-workflow').exists())
+            config=root/'.riff/project.json'; config.write_text('{"custom":true}')
             install(root,True)
             self.assertEqual('{"custom":true}',config.read_text())
             self.assertEqual('keep project rules',(root/'AGENTS.md').read_text())
@@ -40,15 +41,44 @@ class InstallTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             install(d)
             with self.assertRaises(ValueError): install(d)
+    def test_legacy_settings_are_preserved_on_install_and_update(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            settings = project / '.engineering-workflow'
+            (settings / 'hosts').mkdir(parents=True)
+            originals = {'project.json': b'{"artifacts_directory":"notes/tasks","custom":true}',
+                         'routing-codex.json': b'{"profiles":{"coding":"custom-model"}}',
+                         'hosts/codex.json': b'{"custom_capability":true}'}
+            for name, content in originals.items():
+                (settings / name).write_bytes(content)
+            install(project)
+            install(project, update=True)
+            self.assertFalse((project / '.riff').exists())
+            for name, content in originals.items():
+                self.assertEqual(content, (settings / name).read_bytes())
+
+    def test_duplicate_settings_are_rejected_before_installing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            for name in ('.riff', '.engineering-workflow'):
+                settings = project / name
+                settings.mkdir()
+                (settings / 'project.json').write_bytes(b'{"preserve":true}')
+            with self.assertRaisesRegex(ValueError, 'Both .riff and .engineering-workflow'):
+                install(project)
+            self.assertFalse((project / '.agents').exists())
+            for name in ('.riff', '.engineering-workflow'):
+                self.assertEqual(b'{"preserve":true}', (project / name / 'project.json').read_bytes())
     def test_symlink_refusal(self):
-        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as other:
-            try:
-                (Path(d)/'.agents').symlink_to(other, target_is_directory=True)
-            except OSError as exc:
-                if getattr(exc, 'winerror', None) == 1314:
-                    self.skipTest('Creating a Windows symlink requires additional privileges')
-                raise
-            with self.assertRaises(ValueError): install(d)
+        for name in ('.agents', '.riff', '.engineering-workflow'):
+            with self.subTest(path=name), tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as other:
+                try:
+                    (Path(d) / name).symlink_to(other, target_is_directory=True)
+                except OSError as exc:
+                    if getattr(exc, 'winerror', None) == 1314:
+                        self.skipTest('Creating a Windows symlink requires additional privileges')
+                    raise
+                with self.assertRaises(ValueError): install(d)
     def test_skill_frontmatter_and_links(self):
         root=Path(__file__).resolve().parents[1]/'skills/riff'
         s=(root/'SKILL.md').read_text()
@@ -99,7 +129,7 @@ class MultiHostTests(unittest.TestCase):
                 metadata = json.loads(metadata_file.read_text())
                 metadata['hashes'] = hashes(skill)
                 metadata_file.write_text(json.dumps(metadata))
-                settings = project / '.engineering-workflow/project.json'
+                settings = project / '.riff/project.json'
                 settings.write_text('{"custom": true}')
                 install(project, update=True, host=host)
                 self.assertEqual(settings.read_text(), '{"custom": true}')
@@ -121,7 +151,7 @@ class MultiHostTests(unittest.TestCase):
             install(project)
             skill = project / '.agents/skills/riff'
             legacy = skill.rename(skill.with_name('engineering-workflow'))
-            config = project / '.engineering-workflow/project.json'
+            config = project / '.riff/project.json'
             config.write_text('{"custom": true}')
 
             install(project, update=True)

@@ -19,10 +19,16 @@ ASSETS = ROOT / 'distribution' / 'assets'
 _BROWSER_CHECK = r"""
 const fs = require('fs'), path = require('path'), cp = require('child_process');
 const [browser, file, profile, screenshot] = process.argv.slice(1);
-const child = cp.spawn(browser, ['--headless=new', '--disable-gpu', '--disable-extensions',
+const launch = ['--headless=new', '--disable-gpu', '--disable-extensions',
   '--disable-background-networking', '--disable-component-update', '--disable-sync',
   '--no-first-run', '--no-default-browser-check', '--remote-debugging-port=0',
-  '--user-data-dir=' + profile, 'about:blank'], {stdio:'ignore', windowsHide:true});
+  '--user-data-dir=' + profile];
+// GitHub-hosted Ubuntu rejects Chrome's sandbox and can omit DevToolsActivePort.
+if (process.platform !== 'win32') launch.push('--no-sandbox', '--disable-dev-shm-usage');
+launch.push('about:blank');
+let browserLog = '';
+const child = cp.spawn(browser, launch, {stdio:['ignore','ignore','pipe'], windowsHide:true});
+child.stderr.on('data', chunk => { browserLog = (browserLog + chunk.toString()).slice(-4000); });
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 let ws;
 const timeout = setTimeout(() => { console.error('Browser check timed out'); cleanup(); process.exit(1); }, 60000);
@@ -36,7 +42,11 @@ function cleanup() {
 }
 (async () => {
   const portFile=path.join(profile, 'DevToolsActivePort');
-  for(let i=0;i<200&&!fs.existsSync(portFile);i++) await sleep(50);
+  for(let i=0;i<400&&!fs.existsSync(portFile);i++) {
+    if (child.exitCode !== null) break;
+    await sleep(50);
+  }
+  if (!fs.existsSync(portFile)) throw new Error('Browser did not open a debugging port.\n' + browserLog);
   const port=fs.readFileSync(portFile,'utf8').split('\n')[0];
   const targets=await (await fetch('http://127.0.0.1:'+port+'/json')).json();
   const target=targets.find(t=>t.type==='page');
@@ -69,12 +79,13 @@ function cleanup() {
   if(screenshot){const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});fs.writeFileSync(screenshot,Buffer.from(shot.data,'base64'));}
   await call('Emulation.setScriptExecutionDisabled',{value:true});
   await call('Page.reload');await sleep(500);
-  const snapshot=await call('DOMSnapshot.captureSnapshot',{computedStyles:[]});
-  // In script-disabled mode the static fallback remains in the document.
-  result.staticFallback=snapshot.documents.some(doc=>doc.nodes.attributes.some(indices=>{
-    const attrs={};for(let i=0;i<indices.length;i+=2)attrs[snapshot.strings[indices[i]]]=snapshot.strings[indices[i+1]];
-    return attrs.id==='riff-fallback'&&!Object.hasOwn(attrs,'hidden');
-  }));
+  // Page scripts stay disabled. The debugger can still read the parsed document.
+  result.staticFallback=await evaluate(`(() => {
+    const fallback=document.getElementById('riff-fallback');
+    const rendered=document.getElementById('riff-rendered');
+    return !!(fallback && fallback.hidden===false && rendered && rendered.hidden===true
+      && document.documentElement.dataset.riffRendered===undefined);
+  })()`);
   console.log(JSON.stringify(result));
   // Browser.close can terminate the debugger before it sends a response.
   ws.send(JSON.stringify({id:++sequence,method:'Browser.close'}));

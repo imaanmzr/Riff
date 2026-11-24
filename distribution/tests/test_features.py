@@ -136,6 +136,32 @@ class Features(unittest.TestCase):
         self.assertEqual('blocked', json.loads(proposal.stdout)['run']['status'])
         self.assertEqual(before, (self.task / 'checkpoint.json').read_bytes())
 
+    def test_cli_migration_manifest_explains_remaining_work_and_keeps_run_untouched(self):
+        legacy = dict(route='critical', status='READY', revision=4, source_revision='original-baseline',
+                      requirements=['R1'], tasks=[], reviews=[dict(verdict='pass')])
+        self.save(legacy)
+        (self.task / 'run.json').write_bytes(b'{"authorized":true,"plan_revision":4}')
+        (self.task / 'checkpoint.json').write_bytes(b'{"generation":9}')
+        manifest = self.root / 'sources.json'
+        manifest.write_text('["source.py"]')
+        original = (self.task / 'plan.json').read_bytes()
+        preview = self.cli('migrate','demo','--manifest',str(manifest))
+        self.assertEqual(0,preview.returncode,preview.stderr)
+        report = json.loads(preview.stdout)
+        self.assertTrue(report['guidance']['remaining_errors'])
+        self.assertIn('demo',' '.join(report['guidance']['next_steps']))
+        self.assertEqual(original,(self.task / 'plan.json').read_bytes())
+        result = self.cli('migrate','demo','--apply','--manifest',str(manifest))
+        self.assertEqual(0,result.returncode,result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(original,Path(report['backup']).read_bytes())
+        self.assertEqual('original-baseline',report['plan']['source_revision'])
+        self.assertEqual('DRAFT',report['plan']['status'])
+        self.assertEqual(hashlib.sha256((self.root/'source.py').read_bytes()).hexdigest(),
+                         report['plan']['source_manifest']['source.py'])
+        self.assertEqual(b'{"authorized":true,"plan_revision":4}',(self.task / 'run.json').read_bytes())
+        self.assertEqual(b'{"generation":9}',(self.task / 'checkpoint.json').read_bytes())
+
     def test_profiles_and_configuration_preserve_unknowns(self):
         path = self.root / '.riff/project.json'
         path.write_text('{"custom": {"preserve": true}}')

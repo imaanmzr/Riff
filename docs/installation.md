@@ -191,6 +191,16 @@ unmanaged installed skill files. Back up and reconcile local changes before
 updating. The installer does not alter `AGENTS.md`, `CLAUDE.md`, or Cursor rules.
 You can add a reference to the skill in the instruction file your team uses.
 
+Use `riff doctor --host cursor` to inspect every copy Cursor can discover. Doctor
+shows versions/integrity and reports conflicting bundles instead of selecting a
+healthy-looking copy. Equivalent copies are listed so they can be kept in sync.
+`riff update --host cursor` updates a direct `.cursor` copy when one exists. If
+there is no direct copy and both Codex and Claude copies exist, choose the native
+host explicitly; other installations are never silently replaced or deleted.
+LF/CRLF-only differences in known UTF-8 managed text are accepted on update.
+Substantive edits, extra/missing files, symlinks and binary changes still require
+preservation/reconciliation before updating.
+
 If you already installed the skill as `engineering-workflow`, run the update
 command for that project. Riff replaces the previous installation if its files
 match the installer manifest. Update any project instructions that reference

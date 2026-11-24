@@ -1,0 +1,630 @@
+{
+  "workflow_version": "0.2",
+  "authorized": true,
+  "authorization": "User requested all assessed fixes and richer status, then assigned priority/ownership to this chat for concurrent status work.",
+  "plan_revision": 1,
+  "base_revision": "31a9da52895babae6620622d7f827b97f72b7350",
+  "head_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+  "integration_owner": "/root",
+  "status": "complete",
+  "blockers": [],
+  "tasks": {
+    "T-1": {
+      "state": "integrated",
+      "agent": "/root",
+      "checks": [
+        {
+          "command": "python tools/sync_references.py --check",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "Canonical/bundled parity passed"
+        },
+        {
+          "command": "quick_validate.py distribution/skills/riff with existing isolated PyYAML path",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "Skill is valid!"
+        },
+        {
+          "command": "Actual isolated wheel/sdist/fresh skill/standalone CLI verification",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "build/status-and-upgrades-checks/packaging.json"
+        },
+        {
+          "command": "Read-only Orkestra status and conflicting-install diagnostics assertions",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "build/status-and-upgrades-checks/orkestra-readonly.json"
+        },
+        {
+          "command": "Historical artifact SHA256 preservation",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "23 existing work artifacts unchanged; build/status-and-upgrades-checks/historical-hashes.json"
+        },
+        {
+          "command": "Python unittest discovery planning/tests excluding reproduced baseline offline-browser timeout",
+          "exit_code": 0,
+          "elapsed_seconds": 3.55,
+          "evidence": "build/status-and-upgrades-checks/planning.log",
+          "excluded": [
+            "test_presentation.PresentationTests.test_offline_browser_and_hostile_input"
+          ],
+          "summary": "Ran 52 tests in 2.648s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s execution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.55,
+          "evidence": "build/status-and-upgrades-checks/execution.log",
+          "excluded": [],
+          "summary": "Ran 12 tests in 0.004s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s distribution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 77.94,
+          "evidence": "build/status-and-upgrades-checks/distribution.log",
+          "excluded": [],
+          "summary": "Ran 61 tests in 77.694s\n\nOK (skipped=3)",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s recovery/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.86,
+          "evidence": "build/status-and-upgrades-checks/recovery.log",
+          "excluded": [],
+          "summary": "Ran 13 tests in 0.096s\n\nOK (skipped=1)",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s routing/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.59,
+          "evidence": "build/status-and-upgrades-checks/routing.log",
+          "excluded": [],
+          "summary": "Ran 28 tests in 0.038s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        }
+      ],
+      "reviews": [
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+          "kind": "spec"
+        },
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+          "kind": "quality"
+        }
+      ],
+      "candidate_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "integration_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e"
+    },
+    "T-2": {
+      "state": "integrated",
+      "agent": "/root",
+      "checks": [
+        {
+          "command": "python tools/sync_references.py --check",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "Canonical/bundled parity passed"
+        },
+        {
+          "command": "quick_validate.py distribution/skills/riff with existing isolated PyYAML path",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "Skill is valid!"
+        },
+        {
+          "command": "Actual isolated wheel/sdist/fresh skill/standalone CLI verification",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "build/status-and-upgrades-checks/packaging.json"
+        },
+        {
+          "command": "Read-only Orkestra status and conflicting-install diagnostics assertions",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "build/status-and-upgrades-checks/orkestra-readonly.json"
+        },
+        {
+          "command": "Historical artifact SHA256 preservation",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "23 existing work artifacts unchanged; build/status-and-upgrades-checks/historical-hashes.json"
+        },
+        {
+          "command": "Python unittest discovery planning/tests excluding reproduced baseline offline-browser timeout",
+          "exit_code": 0,
+          "elapsed_seconds": 3.55,
+          "evidence": "build/status-and-upgrades-checks/planning.log",
+          "excluded": [
+            "test_presentation.PresentationTests.test_offline_browser_and_hostile_input"
+          ],
+          "summary": "Ran 52 tests in 2.648s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s execution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.55,
+          "evidence": "build/status-and-upgrades-checks/execution.log",
+          "excluded": [],
+          "summary": "Ran 12 tests in 0.004s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s distribution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 77.94,
+          "evidence": "build/status-and-upgrades-checks/distribution.log",
+          "excluded": [],
+          "summary": "Ran 61 tests in 77.694s\n\nOK (skipped=3)",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s recovery/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.86,
+          "evidence": "build/status-and-upgrades-checks/recovery.log",
+          "excluded": [],
+          "summary": "Ran 13 tests in 0.096s\n\nOK (skipped=1)",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s routing/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.59,
+          "evidence": "build/status-and-upgrades-checks/routing.log",
+          "excluded": [],
+          "summary": "Ran 28 tests in 0.038s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        }
+      ],
+      "reviews": [
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+          "kind": "spec"
+        },
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+          "kind": "quality"
+        }
+      ],
+      "candidate_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "integration_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e"
+    },
+    "T-3": {
+      "state": "integrated",
+      "agent": "/root",
+      "checks": [
+        {
+          "command": "python tools/sync_references.py --check",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "Canonical/bundled parity passed"
+        },
+        {
+          "command": "quick_validate.py distribution/skills/riff with existing isolated PyYAML path",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "Skill is valid!"
+        },
+        {
+          "command": "Actual isolated wheel/sdist/fresh skill/standalone CLI verification",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "build/status-and-upgrades-checks/packaging.json"
+        },
+        {
+          "command": "Read-only Orkestra status and conflicting-install diagnostics assertions",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "build/status-and-upgrades-checks/orkestra-readonly.json"
+        },
+        {
+          "command": "Historical artifact SHA256 preservation",
+          "exit_code": 0,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ],
+          "evidence": "23 existing work artifacts unchanged; build/status-and-upgrades-checks/historical-hashes.json"
+        },
+        {
+          "command": "Python unittest discovery planning/tests excluding reproduced baseline offline-browser timeout",
+          "exit_code": 0,
+          "elapsed_seconds": 3.55,
+          "evidence": "build/status-and-upgrades-checks/planning.log",
+          "excluded": [
+            "test_presentation.PresentationTests.test_offline_browser_and_hostile_input"
+          ],
+          "summary": "Ran 52 tests in 2.648s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s execution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.55,
+          "evidence": "build/status-and-upgrades-checks/execution.log",
+          "excluded": [],
+          "summary": "Ran 12 tests in 0.004s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s distribution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 77.94,
+          "evidence": "build/status-and-upgrades-checks/distribution.log",
+          "excluded": [],
+          "summary": "Ran 61 tests in 77.694s\n\nOK (skipped=3)",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s recovery/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.86,
+          "evidence": "build/status-and-upgrades-checks/recovery.log",
+          "excluded": [],
+          "summary": "Ran 13 tests in 0.096s\n\nOK (skipped=1)",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        },
+        {
+          "command": "python -B -m unittest discover -s routing/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.59,
+          "evidence": "build/status-and-upgrades-checks/routing.log",
+          "excluded": [],
+          "summary": "Ran 28 tests in 0.038s\n\nOK",
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "obligations": [
+            "acceptance",
+            "regression"
+          ]
+        }
+      ],
+      "reviews": [
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+          "kind": "spec"
+        },
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+          "kind": "quality"
+        }
+      ],
+      "candidate_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "integration_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e"
+    }
+  },
+  "final": {
+    "requirements": [
+      "R-1",
+      "R-2",
+      "R-3",
+      "R-4",
+      "R-5",
+      "R-6"
+    ],
+    "checks": [
+      {
+        "command": "python tools/sync_references.py --check",
+        "exit_code": 0,
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ],
+        "evidence": "Canonical/bundled parity passed"
+      },
+      {
+        "command": "quick_validate.py distribution/skills/riff with existing isolated PyYAML path",
+        "exit_code": 0,
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ],
+        "evidence": "Skill is valid!"
+      },
+      {
+        "command": "Actual isolated wheel/sdist/fresh skill/standalone CLI verification",
+        "exit_code": 0,
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ],
+        "evidence": "build/status-and-upgrades-checks/packaging.json"
+      },
+      {
+        "command": "Read-only Orkestra status and conflicting-install diagnostics assertions",
+        "exit_code": 0,
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ],
+        "evidence": "build/status-and-upgrades-checks/orkestra-readonly.json"
+      },
+      {
+        "command": "Historical artifact SHA256 preservation",
+        "exit_code": 0,
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ],
+        "evidence": "23 existing work artifacts unchanged; build/status-and-upgrades-checks/historical-hashes.json"
+      },
+      {
+        "command": "Python unittest discovery planning/tests excluding reproduced baseline offline-browser timeout",
+        "exit_code": 0,
+        "elapsed_seconds": 3.55,
+        "evidence": "build/status-and-upgrades-checks/planning.log",
+        "excluded": [
+          "test_presentation.PresentationTests.test_offline_browser_and_hostile_input"
+        ],
+        "summary": "Ran 52 tests in 2.648s\n\nOK",
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ]
+      },
+      {
+        "command": "python -B -m unittest discover -s execution/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 0.55,
+        "evidence": "build/status-and-upgrades-checks/execution.log",
+        "excluded": [],
+        "summary": "Ran 12 tests in 0.004s\n\nOK",
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ]
+      },
+      {
+        "command": "python -B -m unittest discover -s distribution/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 77.94,
+        "evidence": "build/status-and-upgrades-checks/distribution.log",
+        "excluded": [],
+        "summary": "Ran 61 tests in 77.694s\n\nOK (skipped=3)",
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ]
+      },
+      {
+        "command": "python -B -m unittest discover -s recovery/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 0.86,
+        "evidence": "build/status-and-upgrades-checks/recovery.log",
+        "excluded": [],
+        "summary": "Ran 13 tests in 0.096s\n\nOK (skipped=1)",
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ]
+      },
+      {
+        "command": "python -B -m unittest discover -s routing/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 0.59,
+        "evidence": "build/status-and-upgrades-checks/routing.log",
+        "excluded": [],
+        "summary": "Ran 28 tests in 0.038s\n\nOK",
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "obligations": [
+          "acceptance",
+          "regression"
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "reviewer": "/root/clarification_review",
+        "independent": true,
+        "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+        "verdict": "pass",
+        "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+        "kind": "integration"
+      }
+    ]
+  },
+  "source_manifest": {
+    "CHANGELOG.md": "b82de5e70171900ae61852dc220df05464ff25dd865416e9349f8fc782218bf7",
+    "README.md": "c539f3447fbf8ee39495919dde64a4b816b5f2d4171bc983f1a26b21a351209a",
+    "distribution/INSTALL.md": "0a07ea05b26651918cd7e53ff7e59e7a87249f6d9b17be335f9162280da1dd1e",
+    "distribution/commands.py": "f75f995b31d9f9d7629e52fcfe16a26126869b4387a1b9cf05ef3d2d3e047385",
+    "distribution/core.py": "ccafb3bfc2b5bce17f8c0c072eb4ee7fc0908144fa7cc25d3a1786ded743f8c4",
+    "distribution/install.py": "0816d1cea3d3d20af65e81d5edb6149a7b4892b7773383cd06b9f068f59e3647",
+    "distribution/riff.py": "bcf32a65a41b403321277c2c830a83598c0987c2cb888a2ff0d0972bb959e92b",
+    "distribution/skills/riff/SKILL.md": "a2263f3cc4dc8cd0d23fee34ae58a838cd340a79daaec73ca54a77ddbab31ac7",
+    "distribution/skills/riff/references/planning/RECORDS.md": "ee0b3651f67f36f0afef9dd8454dacbb742c3f87c7972028436ce2fe49974785",
+    "distribution/skills/riff/references/planning/riff_core/presentation.py": "c5140ee23e7740fdf9ff9c108f511524ef822722fb8b3742f1582b3c05354ecd",
+    "distribution/skills/riff/references/planning/riff_core/progress.py": "6c4e975d2b9a0ade2fcd858f05ab73d469ee7bd380350f33a7cb9622610234bc",
+    "distribution/skills/riff/references/planning/riff_core/storage.py": "bf74faa43785fe034b3c072f847887c0d788cefbc1c50d3b2f708347d14fde92",
+    "distribution/skills/riff/references/planning/tests/test_progress.py": "a1d49482097cf30ba026ecddb094ff16f92f7630b3310972df726ee7422068cb",
+    "distribution/skills/riff/references/planning/tests/test_records.py": "9878582c037918c0b88c78807185e72035b53474db34ee09fcc794eb4dd4b521",
+    "distribution/skills/riff/references/recovery/WORKFLOW.md": "1bbc6aa3fa3c165c8118ba75db5c70fadade1b4cc5e389bd16e365a41aed0759",
+    "distribution/status_view.py": "144737183fce336eb0045ca5faddbc60607790fe0ba2cf0c9e0b01f3e26b1a60",
+    "distribution/task_commands.py": "9512976aa7f4c255c021849147f4ebcf87c3ce75cc53f3f102c821d39017db7b",
+    "distribution/tests/test_cli.py": "d18d2d352939f265170e72302915799273250563844be9f1d46a8c99e9c155d1",
+    "distribution/tests/test_features.py": "adfe18b3fa2faa053a1d52685e20b1b6c6f2275ba10024cbb6cf13fb845d35af",
+    "distribution/tests/test_install.py": "0e7ea1cca9a15a5c26005cac06851551acbf9ba45038731e46e9b0a46e13154c",
+    "distribution/tests/test_status.py": "85c669c5bde3a31f8b0b194a205eac353d588ecd29a328b843a52e113c7e08a8",
+    "distribution/tests/test_upgrades.py": "e06f10064b0e18410d64d301eb6fe8eb1310c6b0bb2417025c2c6a5ecc063fbd",
+    "docs/commands.md": "973ff1ec7c1b365d4f67c04f698772f8a15ee8bdb8a710d13b6dda0ab56b6786",
+    "docs/features.md": "3ff731c2fd2428c04e9520a90f4d970e976ec5405d8d0532964c27d76931e5b8",
+    "docs/installation.md": "ca2fbf39edfaea73fb22c28ab81194813b5f2af464a476999348a43751a5ffc1",
+    "execution/gates.py": "ebfe401a20d33f9a6feace9e880776130f4a1e3734def7cbef710e25576a0796",
+    "planning/RECORDS.md": "ee0b3651f67f36f0afef9dd8454dacbb742c3f87c7972028436ce2fe49974785",
+    "planning/riff_core/diagnostics.py": "95c5a820f35ffbd129ae59e8f0bd673896067ab9150fc7b54b23f6e068ed5ea1",
+    "planning/riff_core/presentation.py": "c5140ee23e7740fdf9ff9c108f511524ef822722fb8b3742f1582b3c05354ecd",
+    "planning/riff_core/progress.py": "6c4e975d2b9a0ade2fcd858f05ab73d469ee7bd380350f33a7cb9622610234bc",
+    "planning/riff_core/records.py": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c",
+    "planning/riff_core/storage.py": "bf74faa43785fe034b3c072f847887c0d788cefbc1c50d3b2f708347d14fde92",
+    "planning/tests/test_progress.py": "a1d49482097cf30ba026ecddb094ff16f92f7630b3310972df726ee7422068cb",
+    "planning/tests/test_records.py": "9878582c037918c0b88c78807185e72035b53474db34ee09fcc794eb4dd4b521",
+    "recovery/WORKFLOW.md": "1bbc6aa3fa3c165c8118ba75db5c70fadade1b4cc5e389bd16e365a41aed0759"
+  },
+  "source_manifest_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+    "verdict": "pass",
+    "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+    "manifest_digest": "10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e"
+  },
+  "record_validation": {
+    "command": "python execution/gates.py docs/work/status-and-upgrades/plan.json docs/work/status-and-upgrades/run.json --project .",
+    "errors": []
+  }
+}

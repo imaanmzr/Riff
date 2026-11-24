@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Show live readiness, task progress, current/historical reviews, dependency waits
+  and next continuation actions in `riff status`; share current handoffs with exports.
+- Detect conflicting host skill copies, target direct Cursor updates correctly,
+  and accept LF/CRLF-only managed text while preserving substantive/binary edits.
+- Add actionable legacy migration guidance and optional explicit source-manifest binding.
+- Clarify missing product intent and important edge cases through focused planning questions.
+- Use `.riff/` for new project settings while preserving legacy-only settings.
+
 - Adopt the MIT License and include license notices in CLI and skill packages.
 - Revise setup, contributor, architecture, and workflow documentation for the
   public repository; remove obsolete installation status and test counts.

@@ -38,6 +38,20 @@ def render_markdown(plan, authored, diagnostics, detail='full', diagrams='auto')
              f"- **Next action:** {_plain(diagnostics.get('next_action', plan.get('next_action', 'Inspect the plan and its evidence.')))}", '']
     if plan.get('scope'):
         lines += [f"**Scope:** {_plain(plan['scope'])}", '']
+    current = diagnostics.get('progress')
+    if current:
+        counts = current['progress']
+        lines += ['## Current execution', '',
+                  f"{counts['integrated']}/{counts['total']} tasks recorded integrated; execution {_plain(current['execution_status'])}.",
+                  f"Current phase: {_plain(current['phase'])}.", '']
+        if current.get('next_command'):
+            lines += ['Continuation command: `' + current['next_command'] + '`', '']
+        lines += ['| Task | Recorded state | Current next step |', '| --- | --- | --- |']
+        shown_tasks = current['tasks'][:5] if detail == 'concise' else current['tasks']
+        lines += [f"| {_cell(t['id'])} | {_cell(t['state'])} | {_cell(t['next_action'])} |" for t in shown_tasks]
+        if len(shown_tasks) < len(current['tasks']):
+            lines += ['', 'Use `riff status TASK --details` for the remaining current task and review states.']
+        lines += ['', 'The authored specification below retains its reviewed wording; the generated current state above is derived from plan/run evidence.', '']
     issues = diagnostics.get('issues', [])
     if issues:
         shown = issues[:3] if detail == 'concise' else issues

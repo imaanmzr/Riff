@@ -1,0 +1,362 @@
+{
+  "candidate_revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+  "source_manifest": {
+    "CHANGELOG.md": "b82de5e70171900ae61852dc220df05464ff25dd865416e9349f8fc782218bf7",
+    "README.md": "c539f3447fbf8ee39495919dde64a4b816b5f2d4171bc983f1a26b21a351209a",
+    "distribution/INSTALL.md": "0a07ea05b26651918cd7e53ff7e59e7a87249f6d9b17be335f9162280da1dd1e",
+    "distribution/commands.py": "f75f995b31d9f9d7629e52fcfe16a26126869b4387a1b9cf05ef3d2d3e047385",
+    "distribution/core.py": "ccafb3bfc2b5bce17f8c0c072eb4ee7fc0908144fa7cc25d3a1786ded743f8c4",
+    "distribution/install.py": "0816d1cea3d3d20af65e81d5edb6149a7b4892b7773383cd06b9f068f59e3647",
+    "distribution/riff.py": "bcf32a65a41b403321277c2c830a83598c0987c2cb888a2ff0d0972bb959e92b",
+    "distribution/skills/riff/SKILL.md": "a2263f3cc4dc8cd0d23fee34ae58a838cd340a79daaec73ca54a77ddbab31ac7",
+    "distribution/skills/riff/references/planning/RECORDS.md": "ee0b3651f67f36f0afef9dd8454dacbb742c3f87c7972028436ce2fe49974785",
+    "distribution/skills/riff/references/planning/riff_core/presentation.py": "c5140ee23e7740fdf9ff9c108f511524ef822722fb8b3742f1582b3c05354ecd",
+    "distribution/skills/riff/references/planning/riff_core/progress.py": "6c4e975d2b9a0ade2fcd858f05ab73d469ee7bd380350f33a7cb9622610234bc",
+    "distribution/skills/riff/references/planning/riff_core/storage.py": "bf74faa43785fe034b3c072f847887c0d788cefbc1c50d3b2f708347d14fde92",
+    "distribution/skills/riff/references/planning/tests/test_progress.py": "a1d49482097cf30ba026ecddb094ff16f92f7630b3310972df726ee7422068cb",
+    "distribution/skills/riff/references/planning/tests/test_records.py": "9878582c037918c0b88c78807185e72035b53474db34ee09fcc794eb4dd4b521",
+    "distribution/skills/riff/references/recovery/WORKFLOW.md": "1bbc6aa3fa3c165c8118ba75db5c70fadade1b4cc5e389bd16e365a41aed0759",
+    "distribution/status_view.py": "144737183fce336eb0045ca5faddbc60607790fe0ba2cf0c9e0b01f3e26b1a60",
+    "distribution/task_commands.py": "9512976aa7f4c255c021849147f4ebcf87c3ce75cc53f3f102c821d39017db7b",
+    "distribution/tests/test_cli.py": "d18d2d352939f265170e72302915799273250563844be9f1d46a8c99e9c155d1",
+    "distribution/tests/test_features.py": "adfe18b3fa2faa053a1d52685e20b1b6c6f2275ba10024cbb6cf13fb845d35af",
+    "distribution/tests/test_install.py": "0e7ea1cca9a15a5c26005cac06851551acbf9ba45038731e46e9b0a46e13154c",
+    "distribution/tests/test_status.py": "85c669c5bde3a31f8b0b194a205eac353d588ecd29a328b843a52e113c7e08a8",
+    "distribution/tests/test_upgrades.py": "e06f10064b0e18410d64d301eb6fe8eb1310c6b0bb2417025c2c6a5ecc063fbd",
+    "docs/commands.md": "973ff1ec7c1b365d4f67c04f698772f8a15ee8bdb8a710d13b6dda0ab56b6786",
+    "docs/features.md": "3ff731c2fd2428c04e9520a90f4d970e976ec5405d8d0532964c27d76931e5b8",
+    "docs/installation.md": "ca2fbf39edfaea73fb22c28ab81194813b5f2af464a476999348a43751a5ffc1",
+    "execution/gates.py": "ebfe401a20d33f9a6feace9e880776130f4a1e3734def7cbef710e25576a0796",
+    "planning/RECORDS.md": "ee0b3651f67f36f0afef9dd8454dacbb742c3f87c7972028436ce2fe49974785",
+    "planning/riff_core/diagnostics.py": "95c5a820f35ffbd129ae59e8f0bd673896067ab9150fc7b54b23f6e068ed5ea1",
+    "planning/riff_core/presentation.py": "c5140ee23e7740fdf9ff9c108f511524ef822722fb8b3742f1582b3c05354ecd",
+    "planning/riff_core/progress.py": "6c4e975d2b9a0ade2fcd858f05ab73d469ee7bd380350f33a7cb9622610234bc",
+    "planning/riff_core/records.py": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c",
+    "planning/riff_core/storage.py": "bf74faa43785fe034b3c072f847887c0d788cefbc1c50d3b2f708347d14fde92",
+    "planning/tests/test_progress.py": "a1d49482097cf30ba026ecddb094ff16f92f7630b3310972df726ee7422068cb",
+    "planning/tests/test_records.py": "9878582c037918c0b88c78807185e72035b53474db34ee09fcc794eb4dd4b521",
+    "recovery/WORKFLOW.md": "1bbc6aa3fa3c165c8118ba75db5c70fadade1b4cc5e389bd16e365a41aed0759"
+  },
+  "historical_evidence": {
+    "unchanged": true,
+    "files_verified": 23
+  },
+  "baseline_exception": {
+    "scope": "Previously reproduced Chrome/Edge offline-browser timeout remains explicitly unpassed. render_markdown changed for current handoffs; the browser test directly calls unchanged render_html with fixed Markdown, so its executed helpers/bootstrap/test/assets remain unchanged.",
+    "prior_evidence": "docs/work/riff-settings-directory/verification.json",
+    "unchanged_browser_ast_sha256": {
+      "_script": "16a35099b84e146e1b252a157a88d7f2f81d46802313e1a2d6bfcf328afc092d",
+      "_hash": "a4734923e245f37b30e154c17b7f1a1d53ca22368809cc8f041d57a0ff50c98b",
+      "_assets": "1956dee9e343d3d84113f984570735c99ef62d43f475bcf230de189ecb2391bf",
+      "_BOOTSTRAP": "3df8df45347e6a59cccd50e82274a5b358bac355af6776ac86ff8bbdf5fa797f",
+      "render_html": "1d370bdc188d31f8a4a419d90283676d1e7c3991b47d294b5162a47f6063f592"
+    }
+  },
+  "checks": [
+    {
+      "command": "python tools/sync_references.py --check",
+      "exit_code": 0,
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ],
+      "evidence": "Canonical/bundled parity passed"
+    },
+    {
+      "command": "quick_validate.py distribution/skills/riff with existing isolated PyYAML path",
+      "exit_code": 0,
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ],
+      "evidence": "Skill is valid!"
+    },
+    {
+      "command": "Actual isolated wheel/sdist/fresh skill/standalone CLI verification",
+      "exit_code": 0,
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ],
+      "evidence": "build/status-and-upgrades-checks/packaging.json"
+    },
+    {
+      "command": "Read-only Orkestra status and conflicting-install diagnostics assertions",
+      "exit_code": 0,
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ],
+      "evidence": "build/status-and-upgrades-checks/orkestra-readonly.json"
+    },
+    {
+      "command": "Historical artifact SHA256 preservation",
+      "exit_code": 0,
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ],
+      "evidence": "23 existing work artifacts unchanged; build/status-and-upgrades-checks/historical-hashes.json"
+    },
+    {
+      "command": "Python unittest discovery planning/tests excluding reproduced baseline offline-browser timeout",
+      "exit_code": 0,
+      "elapsed_seconds": 3.55,
+      "evidence": "build/status-and-upgrades-checks/planning.log",
+      "excluded": [
+        "test_presentation.PresentationTests.test_offline_browser_and_hostile_input"
+      ],
+      "summary": "Ran 52 tests in 2.648s\n\nOK",
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -B -m unittest discover -s execution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.55,
+      "evidence": "build/status-and-upgrades-checks/execution.log",
+      "excluded": [],
+      "summary": "Ran 12 tests in 0.004s\n\nOK",
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -B -m unittest discover -s distribution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 77.94,
+      "evidence": "build/status-and-upgrades-checks/distribution.log",
+      "excluded": [],
+      "summary": "Ran 61 tests in 77.694s\n\nOK (skipped=3)",
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -B -m unittest discover -s recovery/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.86,
+      "evidence": "build/status-and-upgrades-checks/recovery.log",
+      "excluded": [],
+      "summary": "Ran 13 tests in 0.096s\n\nOK (skipped=1)",
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ]
+    },
+    {
+      "command": "python -B -m unittest discover -s routing/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.59,
+      "evidence": "build/status-and-upgrades-checks/routing.log",
+      "excluded": [],
+      "summary": "Ran 28 tests in 0.038s\n\nOK",
+      "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+      "obligations": [
+        "acceptance",
+        "regression"
+      ]
+    }
+  ],
+  "skip_accounting": {
+    "planning": "52 selected tests passed; one pre-existing browser timeout excluded/unpassed",
+    "distribution": "61 tests OK; three real-symlink privilege subtest skips",
+    "execution": "12 passed",
+    "recovery": "13 tests OK; one real-symlink privilege skip",
+    "routing": "28 passed"
+  },
+  "packaging": {
+    "status": "passed",
+    "scope": "Isolated actual wheel/sdist/fresh skill/standalone CLI; no external project update",
+    "required_members": [
+      "distribution/status_view.py",
+      "distribution/install.py",
+      "distribution/skills/riff/references/planning/riff_core/progress.py",
+      "distribution/skills/riff/references/planning/riff_core/storage.py"
+    ],
+    "artifacts": {
+      "riff_workflow-0.8.0-py3-none-any.whl": "77c6e7976f96170597faa33d2c9f14d25f43d537242c0bd55fa9b279c2335094",
+      "riff_workflow-0.8.0.tar.gz": "80cd53826f08d75caafb37f6bf7487603729e9dcf19d0027bfef0f791f79dd2a"
+    },
+    "commands": [
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-m",
+          "pip",
+          "install",
+          "--disable-pip-version-check",
+          "--no-deps",
+          "--no-compile",
+          "--target",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\wheel",
+          "C:\\repos\\Personals\\Riff\\build\\status-and-upgrades-checks\\packages\\riff_workflow-0.8.0-py3-none-any.whl"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-c",
+          "from distribution.riff import cli;cli()",
+          "new",
+          "sample",
+          "--project",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-c",
+          "from distribution.riff import cli;cli()",
+          "status",
+          "sample",
+          "--json",
+          "--project",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-c",
+          "from distribution.riff import cli;cli()",
+          "render",
+          "sample",
+          "--format",
+          "html",
+          "--output",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\handoff.html",
+          "--project",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-c",
+          "from distribution.install import install;import sys;install(sys.argv[1])",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-c",
+          "from distribution.riff import cli;cli()",
+          "doctor",
+          "--host",
+          "codex",
+          "--project",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "-c",
+          "from distribution.riff import cli;cli()",
+          "migrate",
+          "sample",
+          "--apply",
+          "--manifest",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\sources.json",
+          "--project",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "C:\\repos\\Personals\\Riff\\install_cli.py",
+          "--prefix",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\standalone"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+          "-B",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "status",
+          "sample",
+          "--json",
+          "--project",
+          "C:\\Users\\mazreati.iman\\AppData\\Local\\Temp\\riff-status-release-0gguvduh\\project"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "real_project_smoke": [
+    {
+      "argv": [
+        "doctor",
+        "--host",
+        "cursor"
+      ],
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "summary": "Project configuration: OK\ncursor: C:\\repos\\Personals\\Orkestra\\.cursor\\skills\\riff (version 0.7.0; integrity newline-only)\n  18 text file(s) differ only in LF/CRLF; managed update is supported.\ncodex: C:\\repos\\Personals\\Orkestra\\.agents\\skills\\riff (version 0.8.0; integrity unchanged)\nConflicting Riff copies have different versions or bundle contents. Choose the intended copy and update each native host explicitly; no copy is removed automatically.\nModel availability and live editor discovery require confirmation in the host.\n"
+    },
+    {
+      "argv": [
+        "status",
+        "v1-storage-authority",
+        "--json"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "summary": {
+        "task": "v1-storage-authority",
+        "recorded": "READY",
+        "evaluated": "BLOCKED",
+        "progress": {
+          "integrated": 2,
+          "running": 0,
+          "review": 1,
+          "blocked": 0,
+          "pending": 5,
+          "not started": 0,
+          "total": 8
+        },
+        "phase": "migration",
+        "next_action": "Preview the legacy-to-v2 upgrade; complete its bindings and review/reconcile before resuming implementation.",
+        "next_command": "riff migrate v1-storage-authority --project 'C:\\repos\\Personals\\Orkestra'"
+      }
+    }
+  ],
+  "source_inventory_note": "Rebuilt after packaging staging directory was removed; generated sdist staging files are excluded. No source file changes followed the passing final suites.",
+  "late_integrity_fix": "F-4: nested files named .installation.json now count as user content; only root metadata is excluded. New preservation regression, refreshed full suites and rebuilt package smoke all pass.",
+  "completion": "T-1/T-2/T-3 integrated locally with current independent review and all required obligations covered; global CLI/project installs were not changed. Orkestra diagnostics were read-only.",
+  "process_cleanup": "All started regression, package-build, pip smoke and validation processes exited; actual process handles checked after completion."
+}

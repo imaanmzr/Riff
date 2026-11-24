@@ -1,0 +1,78 @@
+{
+  "plan_review_rounds": [
+    {
+      "verdict": "fail",
+      "finding": "F-1 concurrent status inputs omitted; resolved by documenting, fingerprinting and assigning inputs"
+    },
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 1,
+      "source_revision": "31a9da52895babae6620622d7f827b97f72b7350",
+      "authored_digest": "df89d2a946f5788371f7c815a670077d220a85bcbf9a027ec8a152ea454e64a3",
+      "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+      "plan_digest": "2b33b7a5cf058b8bf09ccd152d612b0b43b56c4e2ab46871e8a7ebdba7d37c79",
+      "evidence": "review.json: independent plan review; F-1 resolved, no outstanding findings"
+    }
+  ],
+  "source_review_rounds": [
+    {
+      "verdict": "changes-required",
+      "findings": [
+        "F-2 blocked authorization advice",
+        "F-3 ungated task integration advice"
+      ]
+    },
+    {
+      "reviewer": "/root/clarification_review",
+      "spec": "pass",
+      "quality": "pass",
+      "findings": [],
+      "evidence": "Corrected source reviewed; independent nine-progress-test rerun/parity/whitespace passed"
+    }
+  ],
+  "superseded_integration_review": {
+    "reviewer": "/root/clarification_review",
+    "revision": "sha256:671419873128ed00aa3872b0b656c743e65106d1967835c42f4585ac7c250b0d",
+    "verdict": "pass",
+    "superseded_by": "F-4 root-metadata-only integrity correction and new regression"
+  },
+  "incremental_review": {
+    "reviewer": "/root/clarification_review",
+    "spec": "pass",
+    "quality": "pass",
+    "findings": [],
+    "evidence": "Independent review of F-4 correction; final binding pending"
+  },
+  "final_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "sha256:10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+    "verdict": "pass",
+    "evidence": "review.json final_review; independent source/spec/incremental integrity review, final live hashes, all refreshed suites/packages and preserved historical records verified",
+    "manifest_digest": "10d8fe7c807226eb5538bbd53f50622b5831c375156a0bb273fcd32550f9b04e",
+    "tasks": [
+      "T-1",
+      "T-2",
+      "T-3"
+    ],
+    "spec": "pass",
+    "quality": "pass",
+    "integration": "pass",
+    "findings": [],
+    "resolved_findings": [
+      "F-1",
+      "F-2",
+      "F-3",
+      "F-4"
+    ],
+    "limitations": {
+      "planning": "52 selected tests passed; one pre-existing browser timeout excluded/unpassed",
+      "distribution": "61 tests OK; three real-symlink privilege subtest skips",
+      "execution": "12 passed",
+      "recovery": "13 tests OK; one real-symlink privilege skip",
+      "routing": "28 passed"
+    }
+  }
+}

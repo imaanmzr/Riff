@@ -122,6 +122,48 @@ riff execute refunds --host codex
 
 Use your host name in place of `codex` where appropriate.
 
+## Current status
+
+```bash
+riff status
+riff status refunds
+riff status refunds --details
+riff status refunds --json
+```
+
+The default evaluates current evidence and shows each plan's route/revision/schema,
+recorded and evaluated readiness, execution authorization, task progress, current
+reviews, blockers and next action. A selected task lists all of its implementation
+tasks; `--details` adds review history, candidate revisions and full gate findings.
+Current-candidate reviews and checks are separated from historical or unbound
+records. Integrated counts describe recorded task states, not independently proven
+product correctness. `status` returns nonzero for unreadable records; use `check`
+when an automation needs a nonzero exit for blocked or unknown readiness.
+
+JSON remains an array with the existing `task`, `plan_status`, `execution_status`
+and `blockers` fields. Additions include `progress`, `tasks`, `reviews`,
+`evaluation`, `phase`, `next_action`, `next_command` and `next_command_argv`.
+The same current action appears in `show`, `explain` and generated exports.
+Inspection never edits the reviewed plan, migrates records or starts agent work.
+
+## Migration guidance
+
+```bash
+riff migrate old-task
+riff migrate old-task --manifest source-files.json
+riff migrate old-task --apply --manifest source-files.json
+```
+
+Migration keeps its JSON result and adds `guidance.remaining_errors` and concrete
+`next_steps`. The optional manifest is a nonempty JSON array of project-relative
+source files, such as `["src/service.py", ".riff/project.json"]`. It captures
+actual source, authored and effective-configuration fingerprints during a legacy
+upgrade. It rejects traversal and self-binding to plan/run/checkpoint state.
+Preview writes nothing; apply backs up the exact old plan and leaves DRAFT with
+old reviews archived. Complete missing requirements/checks, obtain current review,
+and reconcile old execution/checkpoints before resuming. Already-v2 binding changes
+belong in a reviewed replan.
+
 ## Render options
 
 ```text

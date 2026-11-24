@@ -6,7 +6,7 @@ REFERENCES = Path(__file__).resolve().parent / 'skills' / 'riff' / 'references'
 for phase in ('planning', 'execution', 'recovery', 'routing'):
     sys.path.insert(0, str(REFERENCES / phase))
 
-from riff_core import records, config, diagnostics, storage
+from riff_core import records, config, diagnostics, storage, progress
 import gates
 import state as recovery
 
@@ -24,4 +24,6 @@ def inspect(directory, project):
         except ValueError:
             pass  # The execution error above remains visible and blocking.
     report = diagnostics.evaluate(plan, ctx, run, errors, eligible)
+    current = progress.summarize(directory, plan, run or {}, report, project=project)
+    report.update(next_action=current['next_action'], next_command=current['next_command'], progress=current)
     return plan, run, report

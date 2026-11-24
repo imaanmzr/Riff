@@ -22,6 +22,9 @@ Use one settings directory: if both names exist, resolve the duplicate without
 merging or overwriting user files. No automatic directory move is performed.
 Task records default to PROJECT_ROOT/docs/work/<id>/.
 Use plan.md, plan.json and run.json so the CLI can find them.
+Use `riff doctor --host HOST` to detect conflicting discoverable skill copies.
+Use `riff status TASK --details` for current task/review progress and the generated
+next action; retain authored specifications without copying stale handoff prose.
 
 ## Select guidance
 - Plan: read [Planning](references/planning/WORKFLOW.md), including its default
@@ -62,6 +65,9 @@ Validators check records and freshness; inspect the actual source and evidence.
 
 For v2 artifacts, live binding and migration read [Records](references/planning/RECORDS.md).
 Use `riff show`, `explain`, `check`, `graph`, `render` and `diff` for inspection.
+Legacy upgrade previews include remaining v2 gaps and next steps; optional
+`riff migrate TASK --manifest PATH` captures explicit source/config/authored
+bindings, without approving the plan or changing execution/checkpoint records.
 Unknown freshness cannot establish readiness. Read [Hosts](references/hosts.md)
 for invocation, handoffs and verified capabilities. The host supplies model access.
 Publication, deployment and installing external workflow packs require authority

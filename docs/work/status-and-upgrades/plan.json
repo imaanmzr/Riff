@@ -1,0 +1,375 @@
+{
+  "schema_version": 2,
+  "requirement_details": [
+    {
+      "id": "R-1",
+      "description": "Discover conflicting copies and select update targets explicitly",
+      "acceptance_checks": [
+        "C-1"
+      ]
+    },
+    {
+      "id": "R-2",
+      "description": "Accept only newline-equivalent managed text without weakening integrity",
+      "acceptance_checks": [
+        "C-1"
+      ]
+    },
+    {
+      "id": "R-3",
+      "description": "Provide explicit migration guidance and optional verifiable bindings",
+      "acceptance_checks": [
+        "C-2"
+      ]
+    },
+    {
+      "id": "R-4",
+      "description": "Show rich live status with compatible machine output",
+      "acceptance_checks": [
+        "C-3"
+      ]
+    },
+    {
+      "id": "R-5",
+      "description": "Share generated progress and next actions across inspection and handoffs",
+      "acceptance_checks": [
+        "C-3"
+      ]
+    },
+    {
+      "id": "R-6",
+      "description": "Ship consistent guidance and verified installed behavior",
+      "acceptance_checks": [
+        "C-4"
+      ]
+    }
+  ],
+  "acceptance_checks": [
+    {
+      "id": "C-1",
+      "requirements": [
+        "R-1",
+        "R-2"
+      ],
+      "procedure": "Run isolated multi-copy, line-ending and integrity regressions against real installer/CLI entrypoints.",
+      "expected": "Conflicts are reported; explicit updates preserve other copies/settings; only newline variants accepted."
+    },
+    {
+      "id": "C-2",
+      "requirements": [
+        "R-3"
+      ],
+      "procedure": "Run migration preview/apply/binding/CAS/preservation regressions.",
+      "expected": "Facts captured honestly, backup/reviews preserved, no automatic readiness or run mutation."
+    },
+    {
+      "id": "C-3",
+      "requirements": [
+        "R-4",
+        "R-5"
+      ],
+      "procedure": "Exercise lifecycle, review binding, malformed records, JSON compatibility and generated handoff next-action scenarios.",
+      "expected": "Accurate current states, blockers, dependencies and actionable next steps without writes."
+    },
+    {
+      "id": "C-4",
+      "requirements": [
+        "R-6"
+      ],
+      "procedure": "Run five suite directories, reference parity, skill validation, whitespace, installed smoke and historical hash preservation.",
+      "expected": "Required checks and review pass with baseline browser/Windows limitations explicit."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-1",
+      "choice": "Use a shared read-only progress projection across status/explain/show/render.",
+      "alternatives": [
+        "Independent status summary",
+        "Rewrite authored plan prose"
+      ],
+      "criteria": [
+        "Current consistent output",
+        "Preserve review hashes"
+      ],
+      "consequences": [
+        "Runtime state supersedes stale authored next-action text in generated views"
+      ],
+      "owner": "/root",
+      "reopen_if": "A required lifecycle case cannot be represented accurately",
+      "requirements": [
+        "R-4",
+        "R-5"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-2",
+      "choice": "Accept CRLF/LF equivalence only for known UTF-8 text; preserve strict integrity elsewhere.",
+      "alternatives": [
+        "Raw-only hashes",
+        "Broad whitespace normalization"
+      ],
+      "criteria": [
+        "Safe updates",
+        "No concealed edits"
+      ],
+      "consequences": [
+        "Old native manifest keys supported; actual edits and binary changes remain protected"
+      ],
+      "owner": "/root",
+      "reopen_if": "A tested case masks a substantive change",
+      "requirements": [
+        "R-1",
+        "R-2"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-3",
+      "choice": "Retain explicit migration with optional manifest binding and actionable gap reporting.",
+      "alternatives": [
+        "Silently migrate on status",
+        "Keep opaque scaffold-only output"
+      ],
+      "criteria": [
+        "Preserve state and authority",
+        "Usable upgrade path"
+      ],
+      "consequences": [
+        "DRAFT and archived reviews remain; run/checkpoint require reviewed reconciliation"
+      ],
+      "owner": "/root",
+      "reopen_if": "User requests a different explicit migration interaction",
+      "requirements": [
+        "R-3",
+        "R-5"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-1",
+      "kind": "source",
+      "source": "Inspected Riff installation, migration and inspection consumers at baseline",
+      "classification": "observed",
+      "revision": "31a9da52895babae6620622d7f827b97f72b7350"
+    },
+    {
+      "id": "E-2",
+      "kind": "user intent",
+      "source": "Current chat: implement assessed fixes and richer status; Orkestra inspection demonstrated version/schema/handoff drift",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    }
+  ],
+  "reports": [],
+  "reviewed_artifacts": [
+    "plan.md"
+  ],
+  "source_manifest": {
+    "distribution/install.py": "32f1ab7325765a85e48b17d1063e6c3fbda5c5956e36a9f2e74dd83301285df4",
+    "distribution/commands.py": "5178fa4847bdd35df3276a671c7b920b0b8eb66b8dd4c8f16b5e39d848d45a6c",
+    "distribution/riff.py": "bd18f3f510f8b0959bcd017d3f877b16449c75b2c8d85af7603bf47ddcbe1553",
+    "distribution/core.py": "b6cbbdc541e13ddaf57f0902ae383c965291caad925218516342f483763b415d",
+    "distribution/task_commands.py": "ff269a9dd7dacfca739097d0e5763c5a009d0cce0e41c70b81eaf4e4bad05601",
+    "planning/riff_core/diagnostics.py": "95c5a820f35ffbd129ae59e8f0bd673896067ab9150fc7b54b23f6e068ed5ea1",
+    "planning/riff_core/storage.py": "afbb38124a924ea8dc56a0c8ca3b6809a07a35ca37d7747a451de02a6a642b30",
+    "planning/riff_core/presentation.py": "0ab4cb7ce5ffff2c507bae1dd2ad117e23187b7b5968f751feb7bd99b238335e",
+    "planning/riff_core/progress.py": null,
+    "planning/tests/test_progress.py": null,
+    "distribution/tests/test_install.py": "0e7ea1cca9a15a5c26005cac06851551acbf9ba45038731e46e9b0a46e13154c",
+    "distribution/tests/test_cli.py": "d18d2d352939f265170e72302915799273250563844be9f1d46a8c99e9c155d1",
+    "distribution/tests/test_features.py": "1f9dc2ede5f057872472048bf44bfb785c9b501c6ef5debba4e020742d82db91",
+    "planning/tests/test_records.py": "04d79d0ad5a5440b6e2be73bc9b678d2663d5dd745c34318968da611cd0e1d03",
+    "README.md": "7216d83ee091fd1b04c205f4d3184a025ed356638a764f874e8b610840c31549",
+    "docs/commands.md": "c98200cc193c2f9592bee1f2a85eb979be03685ffc7afb3c3f68d98e75dea000",
+    "docs/features.md": "18da31116b152661eaf50a153668bc4a8b12ab0ce3685745cefb97ba29b99da1",
+    "docs/installation.md": "51947353ea72fe01b97c2ccfb777f7338e449d17c7bc09d69f9348d28ed13dd5",
+    "CHANGELOG.md": "533dcf4515946ecb49bd9a659ac41d12bde32790a4e01d067bc36412e3020c8f",
+    "distribution/INSTALL.md": "c6ada9acdbd01d7700af5b0d2896fcecddda4b32840a153a58975a13eb5c6e9a",
+    "distribution/skills/riff/SKILL.md": "c9fb4a9aa94306928a4dc242e61f09345cc9d06b5d082c22b303a904f95065ec",
+    "planning/RECORDS.md": "496b417fcf8c277abff40b03ffc71ac3eed5b8d085a4c0e85a79878685726335",
+    "recovery/WORKFLOW.md": "63a36ea7a2e6d73929663e3c5048e2e8944515dd9658212829f80a543bcb1835",
+    "distribution/status_view.py": "fc3d4bdc535eefd4817fc15da56bb97b4bc646b6c4285807e80dec1cf50545f7",
+    "distribution/tests/test_status.py": "85c669c5bde3a31f8b0b194a205eac353d588ecd29a328b843a52e113c7e08a8",
+    "execution/gates.py": "ebfe401a20d33f9a6feace9e880776130f4a1e3734def7cbef710e25576a0796",
+    "planning/riff_core/records.py": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c"
+  },
+  "behavior_config": {
+    "build_command": null,
+    "test_command": null,
+    "architecture_constraints": [],
+    "domain_invariants": [],
+    "sections": [
+      "problem",
+      "behavior",
+      "contracts"
+    ],
+    "required_checks": [
+      "acceptance",
+      "regression"
+    ],
+    "debug_command_timeout": 60,
+    "debug_total_timeout": 300
+  },
+  "behavior_provenance": {
+    "build_command": "built-in",
+    "test_command": "built-in",
+    "architecture_constraints": "built-in",
+    "domain_invariants": "built-in",
+    "sections": "profile:feature",
+    "required_checks": "profile:feature",
+    "debug_command_timeout": "built-in",
+    "debug_total_timeout": "built-in"
+  },
+  "task_id": "status-and-upgrades",
+  "title": "Reliable upgrades and current workflow status",
+  "route": "standard",
+  "status": "READY",
+  "revision": 1,
+  "source_revision": "31a9da52895babae6620622d7f827b97f72b7350",
+  "requirements": [
+    "R-1",
+    "R-2",
+    "R-3",
+    "R-4",
+    "R-5",
+    "R-6"
+  ],
+  "unresolved_questions": [],
+  "reviews": [
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 1,
+      "source_revision": "31a9da52895babae6620622d7f827b97f72b7350",
+      "authored_digest": "df89d2a946f5788371f7c815a670077d220a85bcbf9a027ec8a152ea454e64a3",
+      "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+      "plan_digest": "2b33b7a5cf058b8bf09ccd152d612b0b43b56c4e2ab46871e8a7ebdba7d37c79",
+      "evidence": "review.json: independent plan review; F-1 resolved, no outstanding findings"
+    }
+  ],
+  "outcome": "Show trustworthy current plan/task/review progress and next actions, with safe installation and migration fixes.",
+  "scope": "Riff only: installation, migration, inspection views, current guidance and focused regressions; Orkestra remains unchanged.",
+  "tasks": [
+    {
+      "id": "T-1",
+      "objective": "Reliable installation inventory and managed updates",
+      "inputs": [
+        "31a9da52895babae6620622d7f827b97f72b7350",
+        "plan.md"
+      ],
+      "dependencies": [],
+      "scope": [
+        "distribution/install.py",
+        "distribution/commands.py",
+        "distribution/riff.py",
+        "distribution/tests"
+      ],
+      "outputs": [
+        "Reliable installation inventory and managed updates",
+        "Focused verification evidence"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-1",
+        "R-2"
+      ],
+      "verification": [
+        "C-1"
+      ],
+      "integration_order": 1
+    },
+    {
+      "id": "T-2",
+      "objective": "Actionable explicit schema migration",
+      "inputs": [
+        "31a9da52895babae6620622d7f827b97f72b7350",
+        "plan.md"
+      ],
+      "dependencies": [],
+      "scope": [
+        "planning/riff_core/storage.py",
+        "distribution/task_commands.py",
+        "distribution/riff.py",
+        "planning/tests",
+        "distribution/tests"
+      ],
+      "outputs": [
+        "Actionable explicit schema migration",
+        "Focused verification evidence"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-3"
+      ],
+      "verification": [
+        "C-2"
+      ],
+      "integration_order": 2
+    },
+    {
+      "id": "T-3",
+      "objective": "Current status and generated handoffs",
+      "inputs": [
+        "31a9da52895babae6620622d7f827b97f72b7350",
+        "plan.md"
+      ],
+      "dependencies": [],
+      "scope": [
+        "planning/riff_core/progress.py",
+        "planning/riff_core/diagnostics.py",
+        "planning/riff_core/presentation.py",
+        "distribution/core.py",
+        "distribution/commands.py",
+        "planning/tests",
+        "distribution/tests",
+        "docs",
+        "README.md",
+        "CHANGELOG.md",
+        "distribution/skills/riff",
+        "distribution/INSTALL.md",
+        "planning/RECORDS.md",
+        "recovery/WORKFLOW.md",
+        "distribution/status_view.py",
+        "distribution/tests/test_status.py"
+      ],
+      "outputs": [
+        "Current status and generated handoffs",
+        "Focused verification evidence"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-4",
+        "R-5",
+        "R-6"
+      ],
+      "verification": [
+        "C-3",
+        "C-4"
+      ],
+      "integration_order": 3
+    }
+  ],
+  "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+  "authored_digest": "df89d2a946f5788371f7c815a670077d220a85bcbf9a027ec8a152ea454e64a3",
+  "existing_work": "Concurrent status edits appeared after initial clean discovery; user explicitly assigned priority/ownership to this chat. Original bytes preserved under build/status-and-upgrades-checks/existing-status-work."
+}

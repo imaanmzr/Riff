@@ -73,6 +73,19 @@ reconcile old execution/checkpoint bindings. No multi-file transaction is claime
 Before restoring a backup, compare the current file with the migration output;
 do not overwrite later user edits. Retain backups until recovery is verified.
 
+Migration results include remaining v2 errors and next steps. Optional
+`riff migrate TASK --manifest PATH` captures current source fingerprints from an
+explicit project-relative file array plus authored/effective-config digests during
+a legacy upgrade; preview still writes nothing. Original source_revision and
+execution authorization are not advanced. Missing requirements/reviews remain
+missing. Apply archives reviews, leaves DRAFT, and preserves run/checkpoint bytes
+for reviewed reconciliation. For already-v2 binding changes use replan.
+
+Use `riff status TASK` for a current generated handoff: plan/run-derived progress,
+candidate-bound review results and next action. `show`, `explain` and exports use
+the same projection. Authored plan next-action prose may describe the initial
+handoff and is not rewritten merely because execution progressed.
+
 ## Execution freshness
 
 The original plan source_revision never moves merely to make validation pass.

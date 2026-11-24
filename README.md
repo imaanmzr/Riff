@@ -70,11 +70,17 @@ writes the plan, and completes the review required by the task's risk.
 Inspect the saved plan:
 
 ```bash
+riff status retry-fix
+riff status retry-fix --details
 riff show retry-fix
 riff explain retry-fix
 riff check retry-fix
 riff render retry-fix --format html --output retry-fix.html
 ```
+
+`status` shows recorded and evaluated readiness, task progress, current versus
+historical reviews, dependency waits, and the next action with a continuation
+command. Use it for the current handoff as execution advances.
 
 Open `retry-fix.html` in a browser to read the plan offline. Drafts can be
 exported too; `check` reports missing evidence until the plan is ready.

@@ -39,7 +39,11 @@ def task_operation(project, args):
     directory = commands.task_directory(project, args.task)
     operation = args.action
     if operation == 'migrate':
-        emit(core.storage.migrate(directory / 'plan.json', apply=args.apply), True)
+        manifest = json.loads(Path(args.manifest).read_text(encoding='utf-8')) if getattr(args, 'manifest', None) else None
+        result = core.storage.migrate(directory / 'plan.json', apply=args.apply, project=project, manifest=manifest)
+        # Keep the existing JSON result, with concrete task IDs in new guidance.
+        result['guidance']['next_steps'] = [step.replace('TASK', args.task) for step in result['guidance']['next_steps']]
+        emit(result, True)
         return 0
     if operation in ('checkpoint', 'reconcile'):
         return recovery_operation(project, directory, args)

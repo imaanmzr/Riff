@@ -216,6 +216,41 @@ class MigrationTests(unittest.TestCase):
             storage.migrate(self.path, apply=True)
         self.assertEqual('{"schema_version":99}', self.path.read_text())
 
+    def test_manifest_preview_and_apply_bind_facts_but_preserve_execution_and_authority(self):
+        root = self.path.parent
+        (root / '.riff').mkdir()
+        (root / '.riff/project.json').write_text('{"profile":"refactor"}')
+        (root / 'source.py').write_bytes(b'value = 42\n')
+        (root / 'plan.md').write_text('# Existing accepted intent\n')
+        (root / 'run.json').write_bytes(b'{"authorized":true,"plan_revision":3}')
+        (root / 'checkpoint.json').write_bytes(b'{"generation":7}')
+        legacy = json.loads(self.original)
+        legacy.update(route='critical', source_revision='original-baseline', requirements=['R1'], tasks=[])
+        self.path.write_text(json.dumps(legacy))
+        original = self.path.read_bytes()
+        preview = storage.migrate(self.path, project=root, manifest=['source.py'])
+        self.assertEqual(original, self.path.read_bytes())
+        self.assertEqual(hashlib.sha256(b'value = 42\n').hexdigest(), preview['plan']['source_manifest']['source.py'])
+        self.assertTrue(preview['plan']['authored_digest'])
+        self.assertEqual(config.resolve(root)['digest'], preview['plan']['config_digest'])
+        self.assertTrue(preview['guidance']['execution_reconciliation_required'])
+        self.assertTrue(preview['guidance']['remaining_errors'])
+        applied = storage.migrate(self.path, apply=True, project=root, manifest=['source.py'])
+        self.assertEqual(original, Path(applied['backup']).read_bytes())
+        self.assertEqual('DRAFT', applied['plan']['status'])
+        self.assertEqual('original-baseline', applied['plan']['source_revision'])
+        self.assertEqual([], applied['plan']['reviews'])
+        self.assertEqual([{'verdict':'pass'}], applied['plan']['review_history'][-1]['reviews'])
+        self.assertEqual(b'{"authorized":true,"plan_revision":3}', (root / 'run.json').read_bytes())
+        self.assertEqual(b'{"generation":7}', (root / 'checkpoint.json').read_bytes())
+
+    def test_invalid_or_self_binding_manifests_cannot_modify_plan(self):
+        root = self.path.parent
+        for manifest in ([], ['../outside'], ['plan.json'], ['run.json'], ['checkpoint.json'], ['.']):
+            with self.subTest(manifest=manifest), self.assertRaises(ValueError):
+                storage.migrate(self.path, apply=True, project=root, manifest=manifest)
+            self.assertEqual(self.original, self.path.read_bytes())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -80,6 +80,12 @@ The installer does not add this reference automatically.
 
 ## Configuration
 
+Run `riff doctor --host cursor` to check all copies discoverable by Cursor,
+including their versions and managed-file integrity. Conflicting bundles make the
+check fail. A Cursor update prefers its direct `.cursor` copy; ambiguous shared
+Codex/Claude copies require an explicit native host. Updates accept LF/CRLF-only
+managed text differences while protecting actual edits and binary bytes.
+
 The wizard writes these files in the target project:
 
 - `.riff/project.json`: build/test commands, task-record
@@ -93,6 +99,11 @@ shared `routing.json` and `host.json` when they are absent. Model mappings must
 match the active host. Empty mappings disable routing; planning can still run in
 the current agent. Token budgets guide assignments and do not cap provider bills.
 Task records default to `docs/work/<task-id>/`.
+
+Use `riff status TASK` for current plan/readiness, task progress, review results
+and the next continuation command. `--details` includes full history and findings;
+`--json` preserves old fields and adds the richer current state. Generated exports
+use the same current next action without rewriting authored plans.
 
 Existing projects using only `.engineering-workflow/` keep using that directory
 until you rename it to `.riff/`. No automatic move or merge is performed. If both

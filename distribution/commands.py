@@ -8,10 +8,10 @@ import tempfile
 from pathlib import Path
 
 if __package__:
-    from .install import HOSTS, NAME
+    from .install import HOSTS, NAME, installations
     from .core import config as project_config
 else:
-    from install import HOSTS, NAME
+    from install import HOSTS, NAME, installations
     from core import config as project_config
 
 REFERENCES = Path(__file__).resolve().parent / 'skills' / NAME / 'references'
@@ -110,6 +110,10 @@ def new_task(project, args):
 
 
 def status(project, args):
+    if __package__:
+        from . import core, status_view
+    else:
+        import core, status_view
     root = records_directory(project)
     if args.task:
         directories = [task_directory(project, args.task)]
@@ -122,20 +126,10 @@ def status(project, args):
         if directory.is_symlink():
             continue
         try:
-            plan = load(directory / 'plan.json')
-            run_path = directory / 'run.json'
-            run = load(run_path) if run_path.exists() else {}
-            item = dict(task=directory.name, plan_status=plan.get('status', 'unknown'),
-                        execution_status=run.get('status', 'not started'),
-                        blockers=run.get('blockers', []) + plan.get('blockers', []))
-            if getattr(args, 'details', False):
-                if __package__:
-                    from . import core
-                else:
-                    import core
-                item['evaluation'] = core.inspect(directory, project)[2]
+            plan, run, evaluation = core.inspect(directory, project)
+            item = status_view.summarize(directory, plan, run or {}, evaluation)
             results.append(item)
-        except (OSError, ValueError, TypeError, AttributeError) as exc:
+        except (OSError, ValueError, TypeError, AttributeError, KeyError) as exc:
             results.append(dict(task=directory.name, error=str(exc)))
     if args.json:
         print(json.dumps(results, indent=2))
@@ -146,10 +140,7 @@ def status(project, args):
             if 'error' in result:
                 print(f"{result['task']}: unreadable record — {result['error']}")
             else:
-                print(f"{result['task']}: plan={result['plan_status']}, execution={result['execution_status']}, blockers={len(result['blockers'])}")
-                if 'evaluation' in result:
-                    print('  Evaluated: ' + result['evaluation']['evaluated_status'])
-                    for issue in result['evaluation']['issues']: print('  - ' + issue['message'])
+                print(status_view.render(result, getattr(args, 'details', False), all_tasks=bool(args.task)))
     return int(any('error' in result for result in results))
 
 
@@ -160,18 +151,24 @@ def doctor(project, args):
         print('Project configuration: OK')
     except (OSError, ValueError) as exc:
         issues.append(f'Project configuration: {exc}. Run riff init.')
-    hosts = [args.host] if args.host else list(HOSTS)
-    found = False
-    for host in hosts:
-        folders = [HOSTS[host]]
-        if host == 'cursor':
-            folders += ['.agents', '.claude']
-        paths = [project / folder / 'skills' / NAME / 'SKILL.md' for folder in folders]
-        installed = [path for path in paths if path.is_file()]
-        if installed:
-            found = True
-            print(f'{host}: {installed[0]}')
-    if not found:
+    copies = installations(project, args.host)
+    for copy in copies:
+        print(f"{copy['host']}: {copy['path']} (version {copy['version']}; integrity {copy['integrity']})")
+        if copy['integrity'] not in ('unchanged', 'newline-only'):
+            issues.append(f"Preserve and reconcile {copy['integrity']} files in {copy['path']} before updating.")
+        if copy['newline_only_files']:
+            print(f"  {len(copy['newline_only_files'])} text file(s) differ only in LF/CRLF; managed update is supported.")
+        if copy['changed_files']:
+            print('  Changed files: ' + ', '.join(copy['changed_files']))
+        if copy.get('error'):
+            print('  ' + copy['error'])
+    digests = {copy['bundle_digest'] for copy in copies if copy['bundle_digest']}
+    if len(copies) > 1:
+        if len(digests) > 1:
+            issues.append('Conflicting Riff copies have different versions or bundle contents. Choose the intended copy and update each native host explicitly; no copy is removed automatically.')
+        else:
+            print('Multiple equivalent Riff copies found; keep them synchronized for host handoffs.')
+    if not copies:
         issues.append('No Riff skill found for the selected host(s). Run riff init.')
     for issue in issues:
         print(issue)

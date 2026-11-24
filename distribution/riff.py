@@ -6,11 +6,11 @@ from pathlib import Path
 if __package__:
     from . import commands, task_commands, core
     from .git_visibility import GitVisibility
-    from .install import HOSTS, LEGACY_NAME, NAME, install
+    from .install import HOSTS, LEGACY_NAME, NAME, install, installation_host
 else:
     import commands, task_commands, core
     from git_visibility import GitVisibility
-    from install import HOSTS, LEGACY_NAME, NAME, install
+    from install import HOSTS, LEGACY_NAME, NAME, install, installation_host
 
 
 def ask(label, default='', choices=None):
@@ -124,7 +124,7 @@ def build_parser():
         if action == 'status':
             command.add_argument('task', nargs='?', help='Task ID (default: all tasks)')
             command.add_argument('--json', action='store_true', help='Emit machine-readable JSON')
-            command.add_argument('--details', action='store_true', help='Evaluate current readiness and explain blockers')
+            command.add_argument('--details', action='store_true', help='Show every task, review history, and gate issue (default: progress summary)')
         if action == 'prompt':
             command.add_argument('--action', dest='operation', choices=['plan', 'execute', 'resume', 'audit'], default='plan')
         if action == 'validate':
@@ -169,7 +169,9 @@ def build_parser():
             command.add_argument('--overwrite', action='store_true')
         if action == 'render': command.add_argument('--format', choices=['markdown', 'html'], default='markdown')
         if action == 'diff': command.add_argument('--against', required=True)
-        if action == 'migrate': command.add_argument('--apply', action='store_true')
+        if action == 'migrate':
+            command.add_argument('--apply', action='store_true')
+            command.add_argument('--manifest', help='Optional JSON array of project-relative source files to bind during a legacy upgrade')
         if action in ('checkpoint', 'reconcile'): command.add_argument('--manifest', required=True)
         if action == 'checkpoint': command.add_argument('--expected-generation', required=True, type=nonnegative)
     config = subparsers.add_parser('config', help='Inspect or set validated project settings')
@@ -244,13 +246,7 @@ def main():
     host=args.host or ask('Agent app','codex',sorted(HOSTS))
     if args.action in ('init','update'):
         # Cursor can reuse native Codex/Claude copies without duplicate skills.
-        target=host
-        if host=='cursor':
-            for other in ('codex','claude'):
-                skills = project / HOSTS[other] / 'skills'
-                if any((skills / name / 'SKILL.md').is_file() for name in (NAME, LEGACY_NAME)):
-                    target = other
-                    break
+        target=installation_host(project, host)
         dest = project / HOSTS[target] / 'skills' / NAME
         if args.action=='update' or not dest.exists(): install(project,args.action=='update',target)
         else: print('Using existing installation:',dest)

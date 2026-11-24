@@ -24,6 +24,9 @@ replacement protect one checkpoint file; they are not a distributed transaction.
 1. Read current instructions, saved plan, task records and evidence. Inspect live
    agents and worktrees; do not launch duplicate work while an agent may remain
    active. Reconcile any external operation through its actual recorded outcome.
+   Use `riff status TASK --details` for the generated current handoff rather than
+   assuming an older authored next-action sentence is still current. Recorded
+   task/review states and computed readiness still require inspection of evidence.
 2. Rebuild the source/evidence manifest and run state.py resume. It emits a
    proposed reconciled checkpoint to stdout; it never writes or executes changes.
 3. Compare plan content even when its author forgot to increment the revision.

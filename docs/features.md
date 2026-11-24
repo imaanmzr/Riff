@@ -40,7 +40,15 @@ riff export retry-bug --format html --output readable-plan.html
 actions. `check` evaluates structure, consistency, live review bindings, freshness
 and execution eligibility, returning nonzero if required evidence fails or is
 unknown. These checks cannot prove semantic correctness or review independence.
-`status` keeps its existing fields; `--details` adds current evaluation.
+`status` evaluates current evidence by default and shows progress, candidate-bound
+reviews, dependency waits and a next action/command. Select a task to see every
+implementation task; `--details` adds full review history and gate findings. JSON
+keeps the existing fields and adds the richer current projection. Stored plan/run
+claims remain distinct from evaluated readiness. Status is read-only.
+
+Generated `show`/`render` handoffs use that same current action and task state.
+The authored specification retains its reviewed wording, so an old handwritten
+"next action" cannot replace the generated current handoff.
 
 A plan can still say READY after the evidence behind that status becomes stale.
 `check` evaluates the current files: changes to source, authored documents, or
@@ -125,6 +133,12 @@ Reconcile only prints a proposal and never adopts it or replays external actions
 Migration previews by default. Applying writes only plan.json, preserves exact
 backup bytes and extension fields, archives reviews, increments revision and
 sets DRAFT. Old execution bindings remain stale until reviewed reconciliation.
+The JSON result includes remaining v2 errors and concrete next steps. Optional
+`--manifest source-files.json` captures current source/authored/configuration
+bindings from an explicit file inventory during a legacy upgrade, including during
+read-only preview. It neither invents missing requirements/reviews nor changes
+the original source baseline. Reconcile existing run/checkpoint records after
+review; those files are not changed by migration.
 Read [Record contracts](../planning/RECORDS.md) for schema and review binding details.
 
 ## Token usage and budgets

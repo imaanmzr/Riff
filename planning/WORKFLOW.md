@@ -1,6 +1,6 @@
 # Engineering workflow 0.1 — Planning
 
-Status: project-local implementation; personal skill installation unavailable.
+The canonical planning instructions are bundled with the installed Riff skill.
 
 ## Scope
 Turn a software request into a reviewable execution plan. Support plan, resume,

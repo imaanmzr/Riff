@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Adopt the MIT License and include license notices in CLI and skill packages.
+- Revise setup, contributor, architecture, and workflow documentation for the
+  public repository; remove obsolete installation status and test counts.
+- Update package links and citation metadata.
+
 ## 0.8.0 — 2026-11-16
 
 - Add v2 structured plans, live prose/config/source review bindings, explicit

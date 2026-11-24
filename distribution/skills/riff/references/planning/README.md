@@ -1,26 +1,51 @@
-# Planning workflow 0.1
+# Planning
 
-This project-local workflow is usable through the root AGENTS.md. It is not an
-installed personal skill. Personal skill installation was blocked by a read-only
-installation location and unavailable network connection.
+The planning workflow turns a software request into a reviewed specification and
+task plan. Read [WORKFLOW.md](WORKFLOW.md) for the procedure, risk routes, and
+readiness requirements. Planning stops before implementation.
 
-Ask: "Use planning/WORKFLOW.md to plan <feature>. Stop after plan review."
-For another repository, reference this workflow by absolute path and use that
-repository's instructions and real source as context. Copy project.json only
-when configuration helps; fill unknown commands from repository evidence.
+## Use
 
-Use plan.md for human-readable records; plan.json is a structural example, not
-a finished plan. Replace example values. Reviews start empty: only record a
-review that actually happened. validate.py checks structure, not truth.
+With the Riff skill installed, ask your agent:
 
-Implemented: risk routing; evidence and decisions; specification audit;
-dependency-aware assignments; capability profiles; independent review rules;
-revision-bound readiness; bounded escalation; planning-only handoff.
+```text
+$riff Plan the retry fix. Stop after plan review.
+```
 
-Validation: eight structural regression tests passed. One independent behavioral
-trial correctly classified payment capture with unknown provider semantics as
-critical/BLOCKED and did not claim exactly-once guarantees. Other scenarios in
-tests/scenarios.md remain future evaluation coverage.
+Use `/riff` in Cursor, VS Code Copilot, or Claude Code. When working directly in
+this repository, the root `AGENTS.md` points to the same workflow.
 
-Next: install as a personal skill when installation access is restored, then
-pilot against a real repository. Product implementation remains outside 0.1.
+## Records and guides
+
+Store the human-readable plan in `plan.md` and structured data in `plan.json`.
+Use the [templates](templates/plan.md) as starting points and replace example
+values with evidence from the target project. New CLI tasks use schema v2;
+[Record contracts](RECORDS.md) explains fields and review bindings.
+
+Choose supporting guides for the work at hand:
+
+- [Requirements and design](DESIGN.md): clarify behavior and compare approaches.
+- [Research](RESEARCH.md): investigate a question and record sources and uncertainty.
+- [Debugging](DEBUG.md): reproduce a problem and test diagnostic hypotheses.
+- [Documentation](DOCUMENTATION.md): verify and update reader-facing instructions.
+- [Replanning](REPLAN.md): revise a plan while preserving decisions and history.
+
+A Small-route plan permits labeled self-review. Standard, Complex, and Critical
+plans require independent review before they are ready. Record only reviews
+that actually took place.
+
+## Validation
+
+From the repository root:
+
+```bash
+python3 planning/validate.py path/to/plan.json
+python3 planning/tests/test_validate.py
+python3 planning/tests/test_records.py
+python3 planning/tests/test_reports.py
+python3 planning/tests/test_presentation.py
+```
+
+Validation checks structure and, for v2 READY plans, current review bindings.
+It cannot establish the truth of recorded evidence. The
+[behavioral scenarios](tests/scenarios.md) provide additional evaluation cases.

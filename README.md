@@ -1,272 +1,161 @@
 # Riff
 
-Riff is a local, model-independent workflow for taking software changes from
-uncertain idea to reviewed implementation. It guides an agent through discovery,
-research, decisions, specifications, task planning, implementation, verification,
-and recovery across Codex, Cursor, VS Code with GitHub Copilot, and Claude Code.
+[MIT license](LICENSE) · [Installation](docs/installation.md) ·
+[Commands](docs/commands.md) · [Contributing](CONTRIBUTING.md)
 
-The workflow is delivered as a repository skill and installed with a short CLI.
-Plans, decisions, execution state, and evidence live with the project so another
-agent session can resume the work.
+Riff is a local workflow and CLI for planning, implementing, reviewing, and
+resuming software changes with coding agents. It supports project skills for
+Codex, Cursor, VS Code with GitHub Copilot, and Claude Code.
 
-## What it does
+Plans, decisions, checks, and execution state stay in your project as Markdown
+and JSON. An agent can use those records to continue work in a later session or
+another supported host.
 
-- **Research** — investigate a question, record sources and alternatives, and
-  explain uncertainty in structured and readable reports.
-- **Design & Architecture** — compare interfaces and prioritize architecture improvements.
-- **Documentation** — review or update project docs based on what readers need to do.
-- **Plan** — classify risk, inspect the codebase, gather evidence, record
-  decisions, clarify missing intent and important edge cases through focused
-  questions, write acceptance criteria, and build a reviewed task plan.
-- **Readable plans** — present summaries, decisions, acceptance checks, and task
-  dependencies. Export Markdown or offline HTML with Mermaid diagrams, including
-  authored flows and sequence diagrams.
-- **Debug** — guide bounded reproduction and diagnosis, record hypotheses and
-  actual results, and propose a fix for review.
-- **Replan** — preserve earlier decisions and snapshots while revising tasks and
-  invalidating stale reviews.
-- **Execute** — dispatch dependency-ready tasks, verify changes, review them, and
-  integrate work against the plan.
-- **Recover** — checkpoint task state and identify stale decisions or reviews
-  after interruption or code changes.
-- **Route** — propose model/task assignments based on capability, scope overlap,
-  concurrency, and token budgets.
-- **Inspect** — show plans, explain blockers, compare snapshots, and check current
-  evidence against saved status.
-- **Configure** — use profiles for features, bugs, refactoring, migrations,
-  documentation, architecture, and research. Inspect effective settings and
-  change supported settings from the terminal.
+## Quick start
 
-New plans use schema v2 for requirements, acceptance checks, decisions, evidence,
-and report references. Reviews bind to plan content, authored documents,
-configuration, and source fingerprints. Existing plans remain readable, with
-explicit migration available when you want the new record format.
+You need Python 3.10 or newer, Git, and a supported coding agent. Clone Riff:
 
-Riff provides instructions and local validation utilities. The active agent host
-provides model access, tools, and any subagent execution. Riff does not itself
-call provider APIs or launch models.
+```bash
+git clone https://github.com/imaanmzr/Riff.git
+cd Riff
+```
 
-## Install the terminal utility
+On Linux or macOS, install the CLI:
 
-### Windows
+```bash
+python3 install_cli.py
+export PATH="$HOME/.local/bin:$PATH"
+riff --version
+```
 
-From the repository root, run this in PowerShell with Python 3.10 or newer.
-The installer prints the actual launcher directory, including when Microsoft
-Store Python redirects the installation.
+Add the PATH line to your shell configuration for future terminals.
+
+On Windows, run in PowerShell:
 
 ```powershell
 $riffBin = py -3 .\install_cli.py --print-bin-path
 if ($LASTEXITCODE -ne 0) { throw 'Riff installation failed' }
 $env:Path = "$riffBin;$env:Path"
 riff --version
-riff init
 ```
 
-If Python is installed through the Microsoft Store, use `python3` or
-`python` in place of `py -3`. The example enables `riff` for this terminal.
-Follow the [Windows installation guide](docs/installation.md#windows) to
-save the directory to your user PATH for future terminals.
+Use `python` or `python3` in place of `py -3` if needed. See the
+[installation guide](docs/installation.md) for persistent Windows PATH setup,
+a custom installation prefix, and installation with pipx.
 
-### Linux and macOS
-
-Run these commands from the repository root.
+Next, install the skill in the project where you want to use it:
 
 ```bash
-python3 install_cli.py
-export PATH="$HOME/.local/bin:$PATH"
-riff --version
-riff init
+riff init --project /path/to/your/project --host codex
 ```
 
-Add the PATH line to your shell configuration for future terminals. You can also
-install into a chosen prefix with `python3 install_cli.py --prefix /path/to/prefix`.
-Re-running this installer updates the managed terminal utility.
+Choose `codex`, `cursor`, `vscode`, or `claude` for `--host`. The setup wizard
+saves project settings under `.engineering-workflow/` and lets you choose whether
+to keep Riff files local to your Git clone or track them with the project.
+Existing project instruction files are preserved.
 
-With pipx available, the Python package can be installed directly from this checkout.
+## Plan and implement a change
+
+Run these commands from your target project's root:
 
 ```bash
-pipx install .
+riff new retry-fix --title "Fix duplicate retries" --profile bug
+riff plan --task retry-fix --host codex
 ```
 
-## Install
+`new` creates `docs/work/retry-fix/plan.md` and `plan.json`. `plan` prints a prompt
+to paste into your coding agent's chat. The agent investigates the request,
+writes the plan, and completes the review required by the task's risk.
 
-After installing the terminal utility, start the interactive setup:
+Inspect the saved plan:
 
 ```bash
-riff init
+riff show retry-fix
+riff explain retry-fix
+riff check retry-fix
+riff render retry-fix --format html --output retry-fix.html
 ```
 
-The wizard asks which project and agent host to configure. It supports Codex,
-Cursor, VS Code with GitHub Copilot, and Claude Code. It adds the skill to the
-host's project skill directory and initializes `.engineering-workflow/` settings
-while preserving existing project instructions and configuration.
+Open `retry-fix.html` in a browser to read the plan offline. Drafts can be
+exported too; `check` reports missing evidence until the plan is ready.
 
-Pass the project and host to skip those initial questions. The configuration
-wizard still asks about project settings and whether to save them.
+When you want the agent to implement the reviewed plan, generate an execution
+prompt and send it in the agent chat:
 
 ```bash
-riff init --project /path/to/project --host codex
-riff init --project /path/to/project --host cursor
-riff init --project /path/to/project --host vscode
-riff init --project /path/to/project --host claude
+riff execute retry-fix --host codex
 ```
 
-In a Git project, choose whether to keep Riff files local during setup. Use
-`riff init --host codex --git local` to select local mode, or switch an existing
-project with `riff configure --git local` or `riff configure --git track`.
+Workflow commands print prompts. They do not call a model or start agent work
+from the terminal.
 
-For Cursor, Riff reuses an existing Codex or Claude skill installation when
-available. To edit settings later, run `riff configure`. To update the
-installed skill, run `riff update --host codex` with the project path
-as prompted, or pass `--project /path/to/project`.
-
-See [Installation and use](docs/installation.md) for setup, model configuration,
-updates, and troubleshooting.
-
-## Update an existing project
-
-From the latest Riff checkout, re-run the CLI installer for your platform. Then
-update the skill in each project using its configured host.
-
-```bash
-riff --version
-riff update --project /path/to/project --host codex
-```
-
-The update installs the skill before opening the configuration wizard. Answer
-`no` at `Save configuration?` to retain existing settings. Existing task records
-stay in their current format. Use `riff migrate TASK` in the target project to
-preview a schema upgrade. See [upgrading to 0.8.0](docs/installation.md#upgrade-to-080)
-for platform commands and migration details.
-
-## Use
-
-Invoke the skill in the target project:
+You can also invoke the skill directly in chat. Use `$riff` in Codex and `/riff`
+in Cursor, VS Code Copilot, or Claude Code:
 
 ```text
-$riff Design the refund retry interface.
-$riff Audit architecture in the installer.
-$riff Update the VS Code setup docs.
-$riff Plan partial refunds. Stop after plan review.
-$riff Execute the reviewed plan at docs/work/partial-refunds/.
-$riff Resume the task at docs/work/partial-refunds/.
+$riff Plan a fix for duplicate retries. Stop after plan review.
+$riff Execute the reviewed plan at docs/work/retry-fix/.
+$riff Resume the task at docs/work/retry-fix/.
 ```
 
-Use `/riff` in Cursor, VS Code Copilot, and Claude Code. Riff scales the
-workflow from one compact task for a local fix to deeper verification and
-review when uncertainty or consequences warrant it.
+## What Riff provides
 
-## Your first task
+- **Planning:** code investigation, requirements, design decisions, acceptance
+  checks, task dependencies, and review before implementation.
+- **Implementation and review:** task records tied to source revisions, checks,
+  and review evidence. Small local changes use a compact plan and self-review;
+  higher-risk work requires independent review.
+- **Research and debugging:** prompts and record formats for comparing options,
+  testing hypotheses, and recording results and unresolved questions.
+- **Inspection and exports:** readable plans, readiness explanations, snapshot
+  comparisons, and offline HTML with Mermaid diagrams.
+- **Recovery:** checkpoints and file fingerprints that help an agent identify
+  interrupted work or evidence made stale by source changes.
+- **Routing:** proposed task and model assignments based on configured host
+  capabilities, file conflicts, concurrency, and token budgets.
 
-Run these commands in the project where you installed Riff. Choose a short ID
-for the work, such as `refunds`, when you create it.
+See [features and examples](docs/features.md) for profiles, migration, recovery,
+and budget accounting. Use `riff --help` or `riff COMMAND --help` for CLI usage.
+
+## Update
+
+Update your Riff checkout and rerun `install_cli.py` using the same installation
+prefix. Then refresh each project's skill:
 
 ```bash
-riff new refunds --title "Partial refunds"
-riff plan --task refunds
+riff update --project /path/to/your/project --host codex
 ```
 
-`refunds` is the task ID. `Partial refunds` is its display title. Riff creates
-`docs/work/refunds/plan.md` and `docs/work/refunds/plan.json` by default. Each task
-has its own folder containing those filenames. The `plan` command prints a
-prompt to paste into your agent chat. The agent fills in and reviews the plan.
-After initial discovery, it asks a few focused questions at a time where material
-details are missing, then turns your answers into requirements and acceptance
-examples. Clear requests need no extra interview. Unanswered material questions
-remain blockers rather than silently becoming assumptions.
+The skill is updated before the configuration wizard opens. Answer `no` at
+`Save configuration?` to retain existing settings. Updates refuse to overwrite
+locally edited skill files. See the [upgrade guide](docs/installation.md#upgrade-to-080)
+for platform commands and optional task-record migration.
 
-Read or export that same task by its ID.
+## Scope and limitations
 
-```bash
-riff status
-riff show refunds
-riff render refunds --format html --output refunds.html
-```
+Riff runs locally and uses Python's standard library. It includes no provider API
+integration, background scheduler, or automatic retry engine. Routing budgets
+guide assignments; they do not cap provider billing.
 
-Open the exported `refunds.html` in your browser. The output filename is your
-choice. To export Markdown instead, use `--format markdown --output refunds.md`.
-You can render a draft to read it, and the export shows its current status.
+Validators check record structure, source fingerprints, and review bindings.
+They cannot establish that a review was independent or that a change is correct.
+The coordinator must inspect the underlying code and evidence.
 
-The usual syntax is `riff COMMAND ARGUMENTS --option VALUE --flag`.
-Options follow the command. `--format html` selects a value, while `--overwrite`
-is a flag you add when replacing an existing export. Find all saved task IDs with
-`riff status`. Use `riff render --help` for that command's options.
+Installer and regression tests cover the supported host paths. Live workflow
+sessions in Cursor and Claude Code have not been verified. The bundled host
+adapter is a simulation for contract testing. Token savings, cost reductions,
+and quality improvements have not been measured.
 
-For a full explanation of IDs, folders, commands, and every supported option, see
-the [command guide](docs/commands.md#command-syntax).
+## Documentation and development
 
-## Everyday commands
-
-Riff 0.8 adds readable plans, offline HTML/Mermaid exports, explainable checks,
-research/debug/replan workflows, profiles and explicit migration/recovery commands.
-See [Readable plans and investigation workflows](docs/features.md) for examples.
-
-```bash
-riff --help
-riff doctor --host cursor
-riff design "Compare retry interfaces" --host cursor
-riff docs "Update the setup guide"
-riff new refunds --title "Partial refunds" --route critical
-riff plan --task refunds --host cursor
-riff status
-riff validate refunds
-riff show refunds
-riff explain refunds
-riff check refunds
-riff render refunds --format html --output refunds.html
-riff research "Compare retry strategies"
-riff debug "Retries duplicate an action"
-riff replan refunds --reason "New compatibility requirement"
-```
-
-Each command includes help through `riff COMMAND --help`. See the
-[command reference](docs/commands.md) for execution validation, routing, JSON
-status output, and prompts for resuming or reviewing work.
-
-## Development
-
-Riff selects engineering guides when the task needs them. Requirements/design,
-debugging, implementation/testing, and review guidance help agents choose concrete
-examples, investigate causes, and verify changed behavior. Small changes retain
-compact plans. See [selective guidance and token usage](docs/features.md#token-usage-and-budgets).
-
-Riff uses Python's standard library. Run its regression tests from the repository
-root:
-
-```bash
-python3 planning/tests/test_validate.py
-python3 execution/tests/test_gates.py
-python3 recovery/tests/test_state.py
-python3 routing/tests/test_router.py
-python3 distribution/tests/test_install.py
-python3 distribution/tests/test_cli.py
-python3 planning/tests/test_records.py
-python3 planning/tests/test_reports.py
-python3 planning/tests/test_presentation.py
-python3 distribution/tests/test_features.py
-python3 routing/tests/test_adapters.py
-python3 tools/sync_references.py --check
-```
-
-Read [Architecture](docs/architecture.md) for phase boundaries and current
-limitations. See [Contributing](CONTRIBUTING.md) for changes and release work.
-
-## Project status
-
-Riff 0.8.0 has regression coverage for the CLI, records, workflows, recovery,
-routing, and offline rendering. Release verification recorded 131 passed tests
-and two Windows symlink tests skipped for missing privileges. Four local pilots
-covered a small documentation plan, a feature plan, inconclusive research, and a
-reproduced bug. Fresh wheel, standalone CLI, and skill installations were checked.
-
-Human readability feedback and live sessions in Cursor and Claude Code remain
-to be evaluated. Host adapter contracts currently use a simulated adapter.
-Comparative token savings, provider cost, and quality improvements have not been
-measured. See [release evidence](docs/work/riff-expansion/execution-log.md) and
-[token usage](docs/features.md#token-usage-and-budgets).
+- [Installation](docs/installation.md): setup, configuration, updates, and removal.
+- [Command reference](docs/commands.md): task IDs, options, and end-to-end examples.
+- [Features](docs/features.md): exports, investigations, profiles, and recovery.
+- [Architecture](docs/architecture.md): source layout, records, and phase boundaries.
+- [Contributing](CONTRIBUTING.md): development checks and release verification.
+- [Changelog](CHANGELOG.md): release history.
 
 ## License
 
-No license has been selected yet. Until one is added, do not assume the code is
-licensed for reuse. Choose and add a license before publishing a public GitHub
-repository if you want others to reuse it.
+Riff is licensed under the [MIT License](LICENSE). Bundled rendering libraries
+retain their own MIT notices; see [asset provenance](distribution/assets/README.md).

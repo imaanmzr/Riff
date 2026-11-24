@@ -1,30 +1,53 @@
-# Routing 0.4
+# Routing
 
-Ask: "Route the ready tasks using routing/WORKFLOW.md."
+Routing proposes model assignments for eligible implementation tasks. It uses
+configured capabilities, task dependencies, file conflicts, concurrency limits,
+token reservations, and dispatch attempt limits. Read [WORKFLOW.md](WORKFLOW.md)
+for the dispatch protocol and accounting rules.
 
-Configure profiles with real host model IDs and capabilities. Defaults have no
-models, so they cannot accidentally pretend a model is available. Budget values
-are editable initial defaults, not recommended spending or provider limits.
+## Configure
 
-    python3 routing/router.py --plan plan.json --run run.json --config routing/config.json --host host.json
+Set model IDs and capabilities to values available in your current agent host.
+Default mappings are empty. Budget defaults are editable planning values; they
+are not provider billing limits or recommended spending.
 
-Per-task additions: capability (fast/coding/deep_reasoning), write_paths (literal
-relative paths), optional token_budget. Running task records must contain
-routing.reserved_tokens; record routing.attempts for attempts already launched.
-Run-level routing.spent_tokens tracks charged/observed usage. The coordinator
-must maintain accounting and checkpoint reservations before launching anything.
-Review/research scheduling remains coordinator-managed under the same budget;
-the router's output is for pending implementation tasks only.
+Use `riff configure --host HOST` to save host-specific mappings. From the target
+project, request a proposal for a saved task:
 
-Version 0.4 adds deterministic model selection with upward fallback, critical and
-retry escalation, dependency gating, conflict-aware concurrency, budget and
-attempt limits, plus a snapshot hash for detecting stale proposals. This is a
-proposal tool, not a provider integration or multi-coordinator scheduler.
+```bash
+riff route retry-fix --host codex
+```
 
-Validation: 50 regressions across all phases; routing contributes 18. A CLI test
-checks two independent assignments and an exhausted-budget result. Performance,
-cost and quality improvements are not yet measured. Use evaluation-template.json
-for matched baseline/routed trials on real features before making those claims.
+For direct use from the Riff repository:
 
-Existing planning-only and recovery behavior remains unchanged. All four phases
-are project-local; personal skill installation remains outside this release.
+```bash
+python3 routing/router.py --plan path/to/plan.json --run path/to/run.json --config path/to/routing.json --host path/to/host.json
+```
+
+## Records and dispatch
+
+Tasks declare a capability profile (`fast`, `coding`, or `deep_reasoning`),
+project-relative `write_paths`, and an optional token budget. The execution
+record tracks reserved tokens and dispatch attempts per task, plus observed
+usage for the run. The coordinator must persist reservations before launching
+work and update accounting from host-reported usage.
+
+The router proposes assignments for pending implementation tasks. Research and
+review scheduling remains the coordinator's responsibility under the same
+budget. Routing does not call provider APIs, launch agents, or maintain a shared
+scheduler. The [adapter contract](ADAPTERS.md) includes a simulated adapter for
+contract tests; no live provider adapter is shipped.
+
+## Validation and evaluation
+
+From the repository root:
+
+```bash
+python3 routing/tests/test_router.py
+python3 routing/tests/test_adapters.py
+```
+
+Tests cover dependency gating, capability selection, file conflicts, budget
+exhaustion, stale proposals, and simulated results. Use
+[evaluation-template.json](evaluation-template.json) to record matched trials
+before making claims about performance, cost, or quality improvements.

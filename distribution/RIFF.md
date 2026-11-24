@@ -1,37 +1,37 @@
-# Riff
-An engineering workflow for design, documentation, planning, execution,
-review, and recovery. Invoke the installed skill as `$riff` in Codex or
-`/riff` in Cursor, VS Code Copilot, and Claude Code.
+# Riff distribution
 
-Riff 0.8.0 also includes research/debug/replan workflows, profile settings,
-live evidence checks, and offline HTML exports with Mermaid diagrams.
-Choose a task ID when creating records, then reuse it in commands.
+This directory contains the CLI, installable skill, and offline rendering assets.
+Python 3.10 or newer is required. See [INSTALL.md](INSTALL.md) for project setup,
+configuration, updates, and removal.
 
-    ./riff new refunds --title "Partial refunds"
-    ./riff plan --task refunds
-    ./riff status
-    ./riff render refunds --format html --output refunds.html
+## Run the CLI
 
-The ID `refunds` selects `docs/work/refunds/` by default. That folder contains
-plan.md and plan.json. The `plan` command prints a prompt for your agent chat.
-The `render` command writes an export to the selected output path. Open the HTML
-file in your browser. Use `./riff render --help` for its options.
+From this directory:
 
-From this extracted directory:
+```bash
+python3 riff.py --help
+python3 riff.py init --project /path/to/project --host codex
+```
 
-    ./riff init
-    ./riff configure --project /path/to/project --host cursor
-    ./riff update --project /path/to/project --host claude
+The `riff` launcher also works on Linux and macOS when executable permissions
+are preserved. Keep this directory's contents together; the CLI loads its
+bundled skill and assets by relative path.
 
-If archive extraction loses executable permissions, use python3 riff.py.
-To invoke from anywhere, add this extracted directory to PATH. Keep the whole
-package together: the CLI loads the bundled skills alongside itself.
+## Use a project skill
 
-The wizard asks project/app, build and test commands, records directory,
-concurrency and dispatch budget. Model IDs and host capabilities are optional.
-Defaults do not establish real host access. Budgets are estimates enforced at
-dispatch, not provider billing caps. Configuration commands are never executed.
-It preserves existing project instructions and settings keys. Update refuses
-modified skill files. Initialization installs the skill before configuring it;
-canceling configuration does not uninstall it. Run one wizard per project at a time.
-No package registry publication or global shell installation has been performed.
+After installation, open the target project in your agent host. Invoke `$riff`
+in Codex or `/riff` in Cursor, VS Code Copilot, or Claude Code.
+
+```text
+$riff Plan a fix for duplicate retries. Stop after plan review.
+$riff Execute the reviewed plan at docs/work/retry-fix/.
+```
+
+The host supplies model access and agent tools. Terminal workflow commands print
+prompts to paste into the agent chat. Project settings, plans, and execution
+records stay in the target project.
+
+## License
+
+Riff is distributed under the [MIT License](LICENSE). Bundled browser libraries
+retain their own notices; see [asset provenance](assets/README.md).

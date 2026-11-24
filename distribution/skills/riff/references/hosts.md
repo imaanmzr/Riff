@@ -17,13 +17,14 @@ native copies, update them together from the same package; Cursor may discover
 both. Select the intended copy and keep their versions identical.
 
 ## Host configuration
-Use PROJECT_ROOT/.engineering-workflow/hosts/<host>.json for host-specific
-capabilities and routing-<host>.json for profile mappings when multiple hosts are
-used. These are optional files created by the user/agent from host.json and
-routing.json templates, not automatically detected configuration. Pass their
-absolute paths explicitly to router.py --host and --config. Prefer these files
-when present; otherwise use shared host.json and routing.json. Do not overwrite
-another host's capabilities during a handoff. Store no API keys in these files.
+The setup wizard writes host-specific capabilities to
+`PROJECT_ROOT/.engineering-workflow/hosts/<host>.json` and model mappings to
+`PROJECT_ROOT/.engineering-workflow/routing-<host>.json`. The CLI prefers these
+files and falls back to shared `host.json` and `routing.json` when they are absent.
+When calling `router.py` directly, pass the chosen files by absolute path with
+`--host` and `--config`. Verify declared capabilities in the active host before
+dispatch. Preserve other hosts' settings during a handoff. Store no API keys in
+these files.
 
 ## Models
 Select the main model through the host UI/configuration. The skill follows that

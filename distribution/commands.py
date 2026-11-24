@@ -237,7 +237,13 @@ def workflow_options(args, project, plan=None):
     if operation in ('plan', 'replan'):
         sections = ', '.join(settings['sections']) or 'standard plan sections'
         checks = ', '.join(settings['required_checks']) or 'project-required checks'
-        return (guidance + f"\nWorkflow profile: {resolved['profile']}. Emphasize {sections}. "
+        clarification = (
+            '\nAfter initial discovery, assess missing intent and important edge cases. '
+            'Ask a few focused questions at a time about material gaps before settling dependent decisions; '
+            'wait for answers and reuse earlier answers. Record answers in requirements and acceptance examples, '
+            'disclose assumptions, and keep unanswered material questions blocking READY. '
+            'A clear request needs no manufactured questions.')
+        return (guidance + clarification + f"\nWorkflow profile: {resolved['profile']}. Emphasize {sections}. "
                 f"Cover these verification obligations: {checks}. Assess risk independently.")
     if operation == 'debug':
         command_timeout = args.command_timeout or settings['debug_command_timeout']

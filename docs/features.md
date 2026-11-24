@@ -6,6 +6,23 @@ by default. Later commands use `retry-bug` to find that folder. List existing ID
 with `riff status`. See [command syntax and task IDs](commands.md#command-syntax)
 for a walkthrough and [render options](commands.md#render-options) for exports.
 
+## Clarify before finalizing a plan
+
+`riff plan "Add partial refunds"` prints a prompt for the host agent. After
+inspecting the project, the agent checks missing intent, business rules and
+important edge cases, then asks a few focused questions at a time. For example,
+it may ask what happens when a refund exceeds the remaining refundable amount
+or when the same request is repeated, if existing requirements do not settle it.
+Questions explain the consequence and offer useful choices when appropriate.
+
+Answers become requirements and success, boundary or failure acceptance examples
+in the plan. Unanswered material questions stay blocking; independent discovery
+can continue while the agent waits. Clear requests and previously answered details
+do not require another interview. If you skip questions, the agent labels safe
+assumptions and keeps consequential unresolved choices visible. Planning still
+stops after review. The same guidance applies to saved-task planning and replan,
+which reuse answers unless changed intent or evidence makes them stale.
+
 ## Read, explain, and export
 
 ```bash

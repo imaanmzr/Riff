@@ -16,7 +16,8 @@ agent session can resume the work.
 - **Design & Architecture** — compare interfaces and prioritize architecture improvements.
 - **Documentation** — review or update project docs based on what readers need to do.
 - **Plan** — classify risk, inspect the codebase, gather evidence, record
-  decisions, write acceptance criteria, and build a reviewed task plan.
+  decisions, clarify missing intent and important edge cases through focused
+  questions, write acceptance criteria, and build a reviewed task plan.
 - **Readable plans** — present summaries, decisions, acceptance checks, and task
   dependencies. Export Markdown or offline HTML with Mermaid diagrams, including
   authored flows and sequence diagrams.
@@ -169,6 +170,10 @@ riff plan --task refunds
 `docs/work/refunds/plan.md` and `docs/work/refunds/plan.json` by default. Each task
 has its own folder containing those filenames. The `plan` command prints a
 prompt to paste into your agent chat. The agent fills in and reviews the plan.
+After initial discovery, it asks a few focused questions at a time where material
+details are missing, then turns your answers into requirements and acceptance
+examples. Clear requests need no extra interview. Unanswered material questions
+remain blockers rather than silently becoming assumptions.
 
 Read or export that same task by its ID.
 

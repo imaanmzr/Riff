@@ -1,0 +1,302 @@
+{
+  "schema_version": 2,
+  "requirement_details": [
+    {
+      "id": "R-1",
+      "description": "Assess missing intent and important edge cases in every planning entry point.",
+      "acceptance_checks": [
+        "C-1"
+      ]
+    },
+    {
+      "id": "R-2",
+      "description": "Resolve questions into observable requirements without redundant interviews.",
+      "acceptance_checks": [
+        "C-2"
+      ]
+    },
+    {
+      "id": "R-3",
+      "description": "Preserve CLI prompt contracts across free-text, task and legacy invocations.",
+      "acceptance_checks": [
+        "C-3"
+      ]
+    },
+    {
+      "id": "R-4",
+      "description": "Deliver verified canonical and packaged guidance.",
+      "acceptance_checks": [
+        "C-4"
+      ]
+    }
+  ],
+  "acceptance_checks": [
+    {
+      "id": "C-1",
+      "requirements": [
+        "R-1"
+      ],
+      "procedure": "Review canonical/packaged guidance and try an ambiguous feature request.",
+      "expected": "Focused questions follow discovery and precede final decisions."
+    },
+    {
+      "id": "C-2",
+      "requirements": [
+        "R-2"
+      ],
+      "procedure": "Exercise clear, ambiguous, answered, skipped and deferred-question scenarios.",
+      "expected": "Answers map to acceptance examples; unresolved material intent blocks READY."
+    },
+    {
+      "id": "C-3",
+      "requirements": [
+        "R-3"
+      ],
+      "procedure": "Run focused CLI regressions and compare task bytes before/after.",
+      "expected": "Host, location, profile and prompt equivalence survive; no record mutation."
+    },
+    {
+      "id": "C-4",
+      "requirements": [
+        "R-4"
+      ],
+      "procedure": "Run planning/execution/distribution tests, parity, skill validation and independent review.",
+      "expected": "All required checks pass and fresh installs contain updated guidance."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-1",
+      "choice": "Make missing-intent assessment part of every plan.",
+      "alternatives": [
+        "Optional design guide only",
+        "Mandatory interview on every task"
+      ],
+      "criteria": [
+        "Discoverability",
+        "Proportional effort"
+      ],
+      "consequences": "Clear requests need no question quota; material gaps are assessed by default.",
+      "owner": "/root",
+      "reopen_if": "Reopen if actual use still omits material clarification.",
+      "requirements": [
+        "R-1",
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-2",
+      "choice": "Use focused rounds, normally one to three related questions.",
+      "alternatives": [
+        "Exhaustive upfront questionnaire",
+        "Finalize draft then collect questions"
+      ],
+      "criteria": [
+        "User-selected interaction",
+        "Dependent decisions wait for answers"
+      ],
+      "consequences": "Further rounds address remaining material gaps without overwhelming the user.",
+      "owner": "/root",
+      "reopen_if": "Reopen if real planning interactions leave users unable to express relevant intent.",
+      "requirements": [
+        "R-1",
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-3",
+      "choice": "Reuse authored plan questions and existing unresolved_questions.",
+      "alternatives": [
+        "Introduce a new structured question schema",
+        "Keep questions only in chat"
+      ],
+      "criteria": [
+        "Compatibility",
+        "Durable traceability",
+        "Minimal runtime scope"
+      ],
+      "consequences": "No migration; authored answers link to requirements and checks while unresolved blockers remain machine-visible.",
+      "owner": "/root",
+      "reopen_if": "Reopen if automated question lifecycle tooling is requested.",
+      "requirements": [
+        "R-1",
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    },
+    {
+      "id": "D-4",
+      "choice": "Preserve readiness, authority and review rules.",
+      "alternatives": [
+        "Assume unanswered consequential details",
+        "Block on all optional future ideas"
+      ],
+      "criteria": [
+        "No invented intent",
+        "Existing readiness semantics"
+      ],
+      "consequences": "Material unanswered decisions block READY; excluded/deferred ideas with rationale do not.",
+      "owner": "/root",
+      "reopen_if": "Reopen if an actual decision cannot fit existing draft/blocked/conditional readiness semantics.",
+      "requirements": [
+        "R-1",
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1",
+        "E-2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-1",
+      "kind": "source",
+      "source": "planning/WORKFLOW.md; planning/DESIGN.md; planning/templates/plan.md; distribution/commands.py; distribution/skills/riff/SKILL.md",
+      "classification": "observed",
+      "revision": "eee5f1e5492e4b74dead818da3972a75671994cd"
+    },
+    {
+      "id": "E-2",
+      "kind": "user intent",
+      "source": "Current chat: feature request and selected focused clarification rounds",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    }
+  ],
+  "reports": [],
+  "reviewed_artifacts": [
+    "plan.md"
+  ],
+  "source_manifest": {
+    "planning/WORKFLOW.md": "d3b6ab537032fd940efc92ff970cbf0e7b92e59301c982a58f926825d40629a2",
+    "planning/DESIGN.md": "ce1f0b3cc96a2e3b8ccad1c4288b06a251828b5e6bc63f8b9b6dd9ec1ea36cda",
+    "planning/templates/plan.md": "b1073d7a7824d4fcef0e30b0a18b5a527b7e1e354203de5ac8aa556959feb083",
+    "planning/tests/scenarios.md": "7c974e43fd1a3d9dc912727fef5454b20b8b96787ce119b3422872aa960d6db3",
+    "distribution/commands.py": "bc722caebc5f8a692ae924b422555aed9e9fd9d0fa0a6a0fdcbdcc0004d5b4c5",
+    "distribution/skills/riff/SKILL.md": "8b319bdeb9ae50091c50e0c1a07be8d10fdbf6131e479fee8e10e830dbc6855e",
+    "distribution/tests/test_cli.py": "5e507ec677ffecdc16a9ee34f0f44f9fbe0b98a0808e484023655849ff731afd",
+    "README.md": "f94a0c4468f3c43ece0e76b2331964523879c14d9d7b3406b8eaa3fcacc2d76f",
+    "docs/features.md": "b572932a98ee5f4792b5c4d0a8998015e5b9d6e299c1eb6d87d9a5d25c54cbcb"
+  },
+  "behavior_config": {
+    "build_command": null,
+    "test_command": null,
+    "architecture_constraints": [],
+    "domain_invariants": [],
+    "sections": [
+      "problem",
+      "behavior",
+      "contracts"
+    ],
+    "required_checks": [
+      "acceptance",
+      "regression"
+    ],
+    "debug_command_timeout": 60,
+    "debug_total_timeout": 300
+  },
+  "behavior_provenance": {
+    "build_command": "built-in",
+    "test_command": "built-in",
+    "architecture_constraints": "built-in",
+    "domain_invariants": "built-in",
+    "sections": "profile:feature",
+    "required_checks": "profile:feature",
+    "debug_command_timeout": "built-in",
+    "debug_total_timeout": "built-in"
+  },
+  "task_id": "planning-clarification",
+  "title": "Focused clarification during Riff planning",
+  "route": "standard",
+  "status": "READY",
+  "revision": 1,
+  "source_revision": "eee5f1e5492e4b74dead818da3972a75671994cd",
+  "requirements": [
+    "R-1",
+    "R-2",
+    "R-3",
+    "R-4"
+  ],
+  "unresolved_questions": [],
+  "reviews": [
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 1,
+      "source_revision": "eee5f1e5492e4b74dead818da3972a75671994cd",
+      "authored_digest": "d634805681bd28c10afe5fd29e3a003bb5a3363f1e056eeea64420dbf69a9367",
+      "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+      "plan_digest": "a9f0ed828425777e8acf8acecf5d984f7c1d63b15132303a1b91433739d54f17",
+      "evidence": "review.json: independent plan review; F-1 resolved and no outstanding findings"
+    }
+  ],
+  "outcome": "Resolve material missing intent and edge cases through focused questions before finalizing a plan.",
+  "scope": "Planning guidance, prompt generation, existing template, docs, packaged mirrors and verification.",
+  "tasks": [
+    {
+      "id": "T-1",
+      "objective": "Resolve material missing intent and edge cases through focused questions before finalizing a plan.",
+      "inputs": [
+        "eee5f1e5492e4b74dead818da3972a75671994cd",
+        "plan.md",
+        "User-selected focused clarification rounds"
+      ],
+      "dependencies": [],
+      "scope": [
+        "planning/WORKFLOW.md",
+        "planning/DESIGN.md",
+        "planning/templates/plan.md",
+        "planning/tests/scenarios.md",
+        "distribution/commands.py",
+        "distribution/skills/riff/SKILL.md",
+        "distribution/tests/test_cli.py",
+        "README.md",
+        "docs/features.md",
+        "distribution/skills/riff/references/planning/"
+      ],
+      "outputs": [
+        "Clarification guidance and prompts",
+        "Verification and review evidence"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-1",
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "verification": [
+        "C-1",
+        "C-2",
+        "C-3",
+        "C-4"
+      ],
+      "integration_order": 1
+    }
+  ],
+  "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+  "authored_digest": "d634805681bd28c10afe5fd29e3a003bb5a3363f1e056eeea64420dbf69a9367"
+}

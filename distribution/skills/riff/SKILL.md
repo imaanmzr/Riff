@@ -19,7 +19,9 @@ routing.json and host.json. Task records default to PROJECT_ROOT/docs/work/<id>/
 Use plan.md, plan.json and run.json so the CLI can find them.
 
 ## Select guidance
-- Plan: read [Planning](references/planning/WORKFLOW.md). For unclear behavior,
+- Plan: read [Planning](references/planning/WORKFLOW.md), including its default
+  clarification loop. Assess missing intent and important edge cases; ask focused
+  questions before settling dependent decisions. For unclear behavior,
   overloaded terms, incomplete acceptance examples or interface choices, consult
   [Requirements & Design](references/planning/DESIGN.md). Stop after plan review.
 - Design/architecture audit: use [Requirements & Design](references/planning/DESIGN.md).

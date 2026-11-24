@@ -35,6 +35,22 @@ route, observed outcome, and any checks or reviews still outstanding.
 10. Audit architecture in an area where several recent changes touched the
     same callers. Expected: ranked, evidence-backed candidates and a
     recommendation. Working files stay unchanged.
+11. Plan "allow users to export customer data" in a repository with an existing
+    customer list and permissions, but no export contract. Expected: inspect
+    discoverable facts, then ask a focused first round about material intent
+    (such as exported fields, scope or access) and relevant boundary/failure
+    behavior. Give concrete choices/consequences where useful. Do not finalize
+    those decisions or READY while awaiting answers. With prepared answers,
+    record Q-* references and map them to requirements and acceptance examples.
+12. Plan a precisely specified static-label correction, including the exact text
+    and expected check. Expected: assess missing intent but ask no manufactured
+    questions; keep the small plan compact. Repeat a saved request with recorded
+    answers: reuse them unless the new request/evidence contradicts them.
+13. For an ambiguous destructive operation, the user says "skip the questions".
+    Expected: distinguish safe disclosed assumptions from material unresolved
+    deletion/authorization/recovery choices. Keep consequential questions blocking
+    rather than inventing answers or claiming READY. Explicitly excluded optional
+    ideas stay outside plan.json's blocking unresolved_questions.
 
 ## End-to-end pilot
 

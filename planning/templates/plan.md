@@ -11,6 +11,15 @@ Next action: name the next concrete decision or check.
 Describe what happens today and what should happen instead. Include one concrete
 before/after example. Separate inspected behavior from the proposed design.
 
+## Clarification and edge cases
+Record material Q-* questions actually asked, their answers or explicit assumptions,
+and the R-* requirements/C-* acceptance examples they inform. Include the important
+boundary and failure outcomes. For unanswered material questions, name the owner
+and dependent decisions/tasks; keep them in plan.json's unresolved_questions and
+do not mark READY. Put optional deferred ideas with scope exclusions instead.
+Reuse earlier answers. If no material gaps remain, a brief statement is enough;
+omit the interview detail for a clear small change.
+
 ## Visual explanation
 Use a flow, sequence, component, or state diagram only when it clarifies this
 change. Label it current/proposed/illustrative, give its source/revision and a

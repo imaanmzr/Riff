@@ -12,12 +12,15 @@ read-only by default. A clear local change can use its existing contract directl
    Inspect relevant tests and project terminology. Distinguish inspected behavior
    from the user's intended change.
 2. Investigate repository facts first. Ask focused questions about remaining
-   product intent that changes behavior or checks. Give concrete consequences
-   for plausible interpretations. Reuse recorded answers.
+   product intent that changes behavior or checks, using the planning workflow's
+   [clarification loop](WORKFLOW.md#clarify-intended-behavior). Give concrete
+   consequences for plausible interpretations and recommend an option when the
+   evidence supports it. Reuse recorded answers rather than restarting discovery.
 3. Work through a successful example and the failure or boundary case most likely
    to change the design. For numbers, include units and boundary values. For
    asynchronous work, consider repetition, interruption and partial completion
-   when relevant. Resolve material uncertainty.
+   when relevant. Ask which outcome is intended when an unspecified boundary
+   would require choosing a user-visible policy. Resolve material uncertainty.
 4. Turn the examples into observable requirements and checks in the existing plan.
    Record assumptions explicitly. Use the project's established terms. Resolve
    confusing terms in its current glossary or specification; create durable docs

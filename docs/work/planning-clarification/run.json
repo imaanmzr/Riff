@@ -1,0 +1,242 @@
+{
+  "workflow_version": "0.2",
+  "authorized": true,
+  "authorization": "User request to add focused planning clarification, with selected question-round preference in this chat.",
+  "plan_revision": 1,
+  "base_revision": "eee5f1e5492e4b74dead818da3972a75671994cd",
+  "head_revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+  "integration_owner": "/root",
+  "status": "complete",
+  "blockers": [],
+  "tasks": {
+    "T-1": {
+      "state": "integrated",
+      "agent": "/root",
+      "checks": [
+        {
+          "command": "python -m unittest discover -s planning/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 24.73,
+          "evidence": "build/planning-clarification-checks/planning.log",
+          "summary": "Ran 38 tests in 23.788s\n\nOK",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "python -m unittest discover -s execution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 0.57,
+          "evidence": "build/planning-clarification-checks/execution.log",
+          "summary": "Ran 12 tests in 0.006s\n\nOK",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "python -m unittest discover -s distribution/tests -v",
+          "exit_code": 0,
+          "elapsed_seconds": 87.25,
+          "evidence": "build/planning-clarification-checks/distribution.log",
+          "summary": "Ran 42 tests in 86.511s\n\nOK (skipped=1)",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "python tools/sync_references.py --check",
+          "exit_code": 0,
+          "evidence": "Canonical/bundled parity verified",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "quick_validate.py distribution/skills/riff (isolated PyYAML path)",
+          "exit_code": 0,
+          "evidence": "Skill is valid!; validation dependency installed only in ignored build/planning-clarification-checks/deps",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "Isolated four-host CLI prompt probe",
+          "exit_code": 0,
+          "evidence": "build/planning-clarification-checks/prompt-contracts.json; 16 prompts, common guidance, saved/legacy equivalence, replan, no project mutations",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "git diff --check",
+          "exit_code": 0,
+          "evidence": "No whitespace errors; Git emitted its existing LF/CRLF normalization warning for docs/features.md",
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "regression"
+          ]
+        },
+        {
+          "command": "Python assertions over all four actual installed-skill trial outcomes and original fixture source contents",
+          "exit_code": 0,
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "obligations": [
+            "acceptance"
+          ],
+          "evidence": "verification.json behavioral_trials and referenced actual artifact snapshots: clear, ambiguous, skipped, answered; source/configuration unchanged"
+        }
+      ],
+      "reviews": [
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/diff/hash review, actual regression logs, 16 CLI prompts and four installed-skill behavioral outcomes in verification.json",
+          "kind": "spec"
+        },
+        {
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+          "verdict": "pass",
+          "evidence": "review.json final_review; independent source/diff/hash review, actual regression logs, 16 CLI prompts and four installed-skill behavioral outcomes in verification.json",
+          "kind": "quality"
+        }
+      ],
+      "candidate_revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "integration_revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b"
+    }
+  },
+  "final": {
+    "requirements": [
+      "R-1",
+      "R-2",
+      "R-3",
+      "R-4"
+    ],
+    "checks": [
+      {
+        "command": "python -m unittest discover -s planning/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 24.73,
+        "evidence": "build/planning-clarification-checks/planning.log",
+        "summary": "Ran 38 tests in 23.788s\n\nOK",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "python -m unittest discover -s execution/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 0.57,
+        "evidence": "build/planning-clarification-checks/execution.log",
+        "summary": "Ran 12 tests in 0.006s\n\nOK",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "python -m unittest discover -s distribution/tests -v",
+        "exit_code": 0,
+        "elapsed_seconds": 87.25,
+        "evidence": "build/planning-clarification-checks/distribution.log",
+        "summary": "Ran 42 tests in 86.511s\n\nOK (skipped=1)",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "python tools/sync_references.py --check",
+        "exit_code": 0,
+        "evidence": "Canonical/bundled parity verified",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "quick_validate.py distribution/skills/riff (isolated PyYAML path)",
+        "exit_code": 0,
+        "evidence": "Skill is valid!; validation dependency installed only in ignored build/planning-clarification-checks/deps",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "Isolated four-host CLI prompt probe",
+        "exit_code": 0,
+        "evidence": "build/planning-clarification-checks/prompt-contracts.json; 16 prompts, common guidance, saved/legacy equivalence, replan, no project mutations",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0,
+        "evidence": "No whitespace errors; Git emitted its existing LF/CRLF normalization warning for docs/features.md",
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "regression"
+        ]
+      },
+      {
+        "command": "Python assertions over all four actual installed-skill trial outcomes and original fixture source contents",
+        "exit_code": 0,
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "obligations": [
+          "acceptance"
+        ],
+        "evidence": "verification.json behavioral_trials and referenced actual artifact snapshots: clear, ambiguous, skipped, answered; source/configuration unchanged"
+      }
+    ],
+    "reviews": [
+      {
+        "reviewer": "/root/clarification_review",
+        "independent": true,
+        "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+        "verdict": "pass",
+        "evidence": "review.json final_review; independent source/diff/hash review, actual regression logs, 16 CLI prompts and four installed-skill behavioral outcomes in verification.json",
+        "kind": "integration"
+      }
+    ]
+  },
+  "source_manifest": {
+    "README.md": "07e37b46b85121a66cd943d4d204b516b55268212db2296aa532a2b830db7b40",
+    "distribution/commands.py": "bd41a3566f31b08c0d91075481703f5c06d7d36cad338147fababadbf0df84d1",
+    "distribution/skills/riff/SKILL.md": "0e092225b743338b5f9a0dd57d778288cb72f056b8238b92ea2502938e653401",
+    "distribution/skills/riff/references/planning/DESIGN.md": "91d7c8a1db77bdb1fbe62bce1f62aa70c7a92b52988fd13dd307665c494b18ae",
+    "distribution/skills/riff/references/planning/WORKFLOW.md": "48cf58e83bcc3edbe4d902b65a71c5a8033d50fc390046996862fb7a47158d00",
+    "distribution/skills/riff/references/planning/templates/plan.md": "2fe9a77079454193899b83705ab3c956928ae30602424e3f38fef57f45194844",
+    "distribution/skills/riff/references/planning/tests/scenarios.md": "03c578979576d254d530cd2e667a19081dcda46ad86b972cbf2e932aba51996a",
+    "distribution/tests/test_cli.py": "5e507ec677ffecdc16a9ee34f0f44f9fbe0b98a0808e484023655849ff731afd",
+    "docs/features.md": "17a1e6881167185f5afcf71567ebbe5f277e6919fba1e0a17cdfef787243b5d0",
+    "planning/DESIGN.md": "91d7c8a1db77bdb1fbe62bce1f62aa70c7a92b52988fd13dd307665c494b18ae",
+    "planning/WORKFLOW.md": "48cf58e83bcc3edbe4d902b65a71c5a8033d50fc390046996862fb7a47158d00",
+    "planning/templates/plan.md": "2fe9a77079454193899b83705ab3c956928ae30602424e3f38fef57f45194844",
+    "planning/tests/scenarios.md": "03c578979576d254d530cd2e667a19081dcda46ad86b972cbf2e932aba51996a"
+  },
+  "source_manifest_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+    "verdict": "pass",
+    "evidence": "review.json final_review; independent source/diff/hash review, actual regression logs, 16 CLI prompts and four installed-skill behavioral outcomes in verification.json",
+    "manifest_digest": "a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b"
+  },
+  "record_validation": {
+    "command": "python execution/gates.py docs/work/planning-clarification/plan.json docs/work/planning-clarification/run.json --project .",
+    "errors": []
+  }
+}

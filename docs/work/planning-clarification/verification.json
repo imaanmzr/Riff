@@ -1,0 +1,172 @@
+{
+  "baseline": {
+    "source_revision": "eee5f1e5492e4b74dead818da3972a75671994cd",
+    "checks": [
+      {
+        "command": "python -m unittest discover -s planning/tests -v",
+        "exit_code": 0,
+        "tests": 38,
+        "passed": 38,
+        "skipped": 0
+      },
+      {
+        "command": "python -m unittest discover -s execution/tests -v",
+        "exit_code": 0,
+        "tests": 12,
+        "passed": 12,
+        "skipped": 0
+      },
+      {
+        "command": "python -m unittest discover -s distribution/tests -v",
+        "exit_code": 0,
+        "tests": 42,
+        "passed": 41,
+        "skipped": 1
+      }
+    ],
+    "skip_reason": "Creating a Windows symlink requires additional privileges; baseline test_install.InstallTests.test_symlink_refusal skipped."
+  },
+  "candidate_revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+  "source_manifest": {
+    "README.md": "07e37b46b85121a66cd943d4d204b516b55268212db2296aa532a2b830db7b40",
+    "distribution/commands.py": "bd41a3566f31b08c0d91075481703f5c06d7d36cad338147fababadbf0df84d1",
+    "distribution/skills/riff/SKILL.md": "0e092225b743338b5f9a0dd57d778288cb72f056b8238b92ea2502938e653401",
+    "distribution/skills/riff/references/planning/DESIGN.md": "91d7c8a1db77bdb1fbe62bce1f62aa70c7a92b52988fd13dd307665c494b18ae",
+    "distribution/skills/riff/references/planning/WORKFLOW.md": "48cf58e83bcc3edbe4d902b65a71c5a8033d50fc390046996862fb7a47158d00",
+    "distribution/skills/riff/references/planning/templates/plan.md": "2fe9a77079454193899b83705ab3c956928ae30602424e3f38fef57f45194844",
+    "distribution/skills/riff/references/planning/tests/scenarios.md": "03c578979576d254d530cd2e667a19081dcda46ad86b972cbf2e932aba51996a",
+    "distribution/tests/test_cli.py": "5e507ec677ffecdc16a9ee34f0f44f9fbe0b98a0808e484023655849ff731afd",
+    "docs/features.md": "17a1e6881167185f5afcf71567ebbe5f277e6919fba1e0a17cdfef787243b5d0",
+    "planning/DESIGN.md": "91d7c8a1db77bdb1fbe62bce1f62aa70c7a92b52988fd13dd307665c494b18ae",
+    "planning/WORKFLOW.md": "48cf58e83bcc3edbe4d902b65a71c5a8033d50fc390046996862fb7a47158d00",
+    "planning/templates/plan.md": "2fe9a77079454193899b83705ab3c956928ae30602424e3f38fef57f45194844",
+    "planning/tests/scenarios.md": "03c578979576d254d530cd2e667a19081dcda46ad86b972cbf2e932aba51996a"
+  },
+  "checks": [
+    {
+      "command": "python -m unittest discover -s planning/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 24.73,
+      "evidence": "build/planning-clarification-checks/planning.log",
+      "summary": "Ran 38 tests in 23.788s\n\nOK",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "python -m unittest discover -s execution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 0.57,
+      "evidence": "build/planning-clarification-checks/execution.log",
+      "summary": "Ran 12 tests in 0.006s\n\nOK",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "python -m unittest discover -s distribution/tests -v",
+      "exit_code": 0,
+      "elapsed_seconds": 87.25,
+      "evidence": "build/planning-clarification-checks/distribution.log",
+      "summary": "Ran 42 tests in 86.511s\n\nOK (skipped=1)",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "python tools/sync_references.py --check",
+      "exit_code": 0,
+      "evidence": "Canonical/bundled parity verified",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "quick_validate.py distribution/skills/riff (isolated PyYAML path)",
+      "exit_code": 0,
+      "evidence": "Skill is valid!; validation dependency installed only in ignored build/planning-clarification-checks/deps",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "Isolated four-host CLI prompt probe",
+      "exit_code": 0,
+      "evidence": "build/planning-clarification-checks/prompt-contracts.json; 16 prompts, common guidance, saved/legacy equivalence, replan, no project mutations",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "No whitespace errors; Git emitted its existing LF/CRLF normalization warning for docs/features.md",
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "regression"
+      ]
+    },
+    {
+      "command": "Python assertions over all four actual installed-skill trial outcomes and original fixture source contents",
+      "exit_code": 0,
+      "revision": "sha256:a050c8290d140d4abc083c716d8a1b5cc7763e42c74d99964c8401bf27a3e83b",
+      "obligations": [
+        "acceptance"
+      ],
+      "evidence": "verification.json behavioral_trials and referenced actual artifact snapshots: clear, ambiguous, skipped, answered; source/configuration unchanged"
+    }
+  ],
+  "validation_setup": "Initial skill quick validator lacked yaml; isolated PyYAML 6.0.4 was installed in ignored build/, then the actual validator passed. No project/runtime dependency changed.",
+  "behavioral_trials": [
+    {
+      "trial": "clear",
+      "reviewer": "/root/clarification_clear_trial",
+      "request": "Exact static label correction",
+      "outcome": "No manufactured questions; READY small plan with self-review",
+      "status": "READY",
+      "route": "small",
+      "questions": [],
+      "evidence": "build\\planning-clarification-checks\\trial-clear-initial"
+    },
+    {
+      "trial": "ambiguous",
+      "reviewer": "/root/clarification_trial",
+      "request": "Plan a feature that lets staff export customer data",
+      "outcome": "Three focused questions; BLOCKED; no implementation tasks or fabricated answers",
+      "status": "BLOCKED",
+      "route": "critical",
+      "questions": [
+        "Q-1 (product owner): may admin and support both export, is it admin-only, or is a separate export permission required? Blocks R-1/C-1 and authorization work.",
+        "Q-2 (product owner): for status=active, export current filtered rows or all customers, and include internal_notes or only id/name/email/status? Blocks R-2/C-2 and the data contract.",
+        "Q-3 (product owner): immediate CSV, another format, or background retrieval; what is the largest expected customer set? Blocks R-3/C-3 and the delivery contract."
+      ],
+      "evidence": "build\\planning-clarification-checks\\trial-ambiguous-initial"
+    },
+    {
+      "trial": "ambiguous-skipped",
+      "reviewer": "/root/clarification_trial",
+      "request": "Skip questions; make reasonable assumptions; custom filename setting explicitly out of scope",
+      "status": "BLOCKED",
+      "route": "critical",
+      "outcome": "Material questions remain unresolved/blocking; reversible assumptions disclosed; optional filename idea excluded from blocking list",
+      "evidence": "build\\planning-clarification-checks\\trial-ambiguous-skipped"
+    },
+    {
+      "trial": "ambiguous-answered",
+      "reviewer": "/root/clarification_trial",
+      "request": "Fixture user supplies access, fields, CSV, limits, error, spreadsheet and interruption answers",
+      "status": "BLOCKED",
+      "outcome": "Q-1..Q-3 answered and mapped to R-1..R-3/C-1..C-3/T-1; new material field-validity gap Q-4 surfaced without repeating answered questions; independent critical fixture review remains outstanding honestly",
+      "evidence": "build\\planning-clarification-checks\\trial-ambiguous-answered"
+    }
+  ],
+  "behavioral_scope": "Actual isolated installed-skill runs, including two continuation turns. These are focused examples, not multi-host model benchmarking or proof of all possible conversation behavior. Fixture plans deliberately stop before independent critical review and implementation.",
+  "process_cleanup": "All started regression, prompt-probe, installer/validator and dependency-install processes exited. No Riff-owned test processes matched the cleanup inventory. Trial agents report no persistent processes.",
+  "completion": "T-1 integrated locally at the unchanged content fingerprint; independent specification/quality/integration reviews passed; all required obligations covered; no source publication or installed-user-project update performed."
+}

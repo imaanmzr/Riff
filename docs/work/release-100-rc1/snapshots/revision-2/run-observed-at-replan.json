@@ -1,0 +1,43 @@
+{
+  "workflow_version": "0.2",
+  "authorized": true,
+  "plan_revision": 2,
+  "base_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+  "head_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+  "integration_owner": "/root",
+  "status": "blocked",
+  "blockers": [
+    "Revision 3 tag-triggered publication contract awaiting independent plan review"
+  ],
+  "tasks": {
+    "T-1": {
+      "state": "running",
+      "author": "/root"
+    },
+    "T-2": {
+      "state": "pending",
+      "author": "/root"
+    },
+    "T-3": {
+      "state": "pending",
+      "author": "/root"
+    },
+    "T-4": {
+      "state": "pending",
+      "author": "/root"
+    }
+  },
+  "final": {
+    "requirements": [],
+    "checks": [],
+    "reviews": []
+  },
+  "authorization": "User requested release 1.0.0-rc.1 and GitHub documentation/requirements check",
+  "replan_history": [
+    {
+      "plan_revision": 2,
+      "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+      "reason": "Release API authentication unavailable; explicit RC tag publication workflow added; packaging cache defect fixed"
+    }
+  ]
+}

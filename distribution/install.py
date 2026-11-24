@@ -10,8 +10,10 @@ import tempfile
 
 if __package__:
     from .core import config as project_config
+    from .version import VERSION
 else:
     from core import config as project_config
+    from version import VERSION
 
 NAME = 'riff'
 LEGACY_NAME = 'engineering-workflow'
@@ -46,7 +48,7 @@ def inspect_installation(root):
         data = {p.relative_to(root).as_posix(): p.read_bytes() for p in files
                 if p.is_file() and p != root / '.installation.json'}
         skill = data.get('SKILL.md', b'').decode('utf-8')
-        version = re.search(r'^Version\s+([0-9]+(?:\.[0-9]+)+)', skill, re.MULTILINE)
+        version = re.search(r'^Version\s+([0-9]+(?:\.[0-9]+)+(?:-[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)*)?)', skill, re.MULTILINE)
         if version:
             result['version'] = version[1]
         canonical = {name: hashlib.sha256((_text_variants(Path(name), value) or [value])[0]).hexdigest()
@@ -150,7 +152,7 @@ def install(project, update=False, host="codex"):
     with tempfile.TemporaryDirectory(dir=parent,prefix='.engineering-stage-') as temp:
         stage=Path(temp)/NAME
         shutil.copytree(source,stage)
-        (stage/'.installation.json').write_text(json.dumps({'version':'0.8.0','host':host,'hashes':hashes(stage)},indent=2)+'\n')
+        (stage/'.installation.json').write_text(json.dumps({'version':VERSION,'host':host,'hashes':hashes(stage)},indent=2)+'\n')
         backup=Path(temp)/'previous'
         if installed.exists(): installed.rename(backup)
         try: stage.rename(destination)

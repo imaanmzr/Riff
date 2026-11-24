@@ -9,6 +9,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from distribution.install import hashes, inspect_installation, install
+from distribution.version import VERSION
 
 
 class UpgradeTests(unittest.TestCase):
@@ -44,6 +45,13 @@ class UpgradeTests(unittest.TestCase):
         install(self.project, update=True)
         self.assertEqual('unchanged', inspect_installation(path)['integrity'])
         self.assertEqual('{"custom":true}', (self.project / '.riff/project.json').read_text())
+
+    def test_inspection_preserves_prerelease_identity(self):
+        for index, version in enumerate(('0.8.0', '1.0.0-rc.1', '1.0.0-rc.12')):
+            with self.subTest(version=version):
+                path = self.skill(f'fixture-{index}', version)
+                self.assertEqual(version, inspect_installation(path)['version'])
+                self.assertEqual(version, inspect_installation(path)['installed_version'])
 
     def test_actual_edits_and_binary_newline_changes_are_protected(self):
         path = self.skill('.agents')
@@ -96,7 +104,8 @@ class UpgradeTests(unittest.TestCase):
         before = hashes(native)
         result = self.cli('update', '--host', 'cursor', answers='\n' * 6 + 'no\n')
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertEqual('0.8.0', inspect_installation(cursor)['version'])
+        self.assertEqual(VERSION, inspect_installation(cursor)['version'])
+        self.assertEqual(VERSION, inspect_installation(cursor)['installed_version'])
         self.assertEqual(before, hashes(native))
         self.assertEqual('{"custom":true}', (self.project / '.riff/project.json').read_text())
 

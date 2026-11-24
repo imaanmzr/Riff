@@ -1,0 +1,532 @@
+{
+  "status": "awaiting-remote-qualification",
+  "checks": [
+    {
+      "name": "planning",
+      "command": "python -m unittest discover -s planning/tests",
+      "exit_code": 0,
+      "result": "Ran 53 tests in 68.939s",
+      "skips": 0,
+      "evidence": "build/release-100-rc1-checks/planning-final.log",
+      "sha256": "9cd74006f0e5aa7cf53cb807a887ad36b868c19748e8de34b73f49d05ddad3f1"
+    },
+    {
+      "name": "execution",
+      "command": "python -m unittest discover -s execution/tests",
+      "exit_code": 0,
+      "result": "Ran 12 tests in 0.003s",
+      "skips": 0,
+      "evidence": "build/release-100-rc1-checks/execution-final.log",
+      "sha256": "df6daeb630aa6b774a8fd51e96a5364be51f48ef7602ba3526cda9c55869eb6f"
+    },
+    {
+      "name": "recovery",
+      "command": "python -m unittest discover -s recovery/tests",
+      "exit_code": 0,
+      "result": "Ran 13 tests in 0.104s",
+      "skips": 1,
+      "evidence": "build/release-100-rc1-checks/recovery-final.log",
+      "sha256": "474213e261923c52c8d24d6798860d2a7a54728e99c9153c29ac3520fa092aee"
+    },
+    {
+      "name": "routing",
+      "command": "python -m unittest discover -s routing/tests",
+      "exit_code": 0,
+      "result": "Ran 28 tests in 0.016s",
+      "skips": 0,
+      "evidence": "build/release-100-rc1-checks/routing-final.log",
+      "sha256": "4c90619d3aa64d4686358735476a480ac8f81cbe4914d8b1de6a7457194b1f5e"
+    },
+    {
+      "name": "distribution",
+      "command": "python -m unittest discover -s distribution/tests",
+      "exit_code": 0,
+      "result": "Ran 62 tests in 110.093s",
+      "skips": 3,
+      "evidence": "build/release-100-rc1-checks/distribution-final.log",
+      "sha256": "1544782986fb1c9d48bcbfdd9b433fd1e8c4de07f8e0086cd4f5bbddf07b0a14"
+    }
+  ],
+  "discovered_tests": 168,
+  "windows_symlink_skips": 4,
+  "browser": "Unmodified offline browser/security test passed in both full planning suite runs",
+  "additional_checks": [
+    "Reference parity passed",
+    "git diff --check passed",
+    "CI and issue template YAML parsed; pinned actions and read-only permissions checked",
+    "Edited document local file links checked",
+    "Skill quick validator passed"
+  ],
+  "packages": {
+    "version": "1.0.0-rc.1",
+    "package_version": "1.0.0rc1",
+    "wheel": "riff_workflow-1.0.0rc1-py3-none-any.whl",
+    "sdist": "riff_workflow-1.0.0rc1.tar.gz",
+    "required_members": [
+      "distribution/version.py",
+      "distribution/status_view.py",
+      "distribution/task_commands.py",
+      "distribution/LICENSE",
+      "distribution/skills/riff/SKILL.md",
+      "distribution/skills/riff/LICENSE",
+      "distribution/skills/riff/references/planning/riff_core/records.py",
+      "distribution/skills/riff/references/planning/riff_core/progress.py",
+      "distribution/skills/riff/references/planning/riff_core/storage.py",
+      "distribution/skills/riff/references/routing/adapters.py",
+      "distribution/assets/mermaid.min.js",
+      "distribution/assets/mermaid.LICENSE",
+      "distribution/assets/markdown-it.min.js",
+      "distribution/assets/markdown-it.LICENSE"
+    ],
+    "sha256": {
+      "riff_workflow-1.0.0rc1-py3-none-any.whl": "4171559599879823850a31280ca2cc5ccfa01bd34a72d948a3013e8d39308ab5",
+      "riff_workflow-1.0.0rc1.tar.gz": "c2b27e638baf69f26c8fd616a7a12d9395044c7f914ede62473fcddf36f32178"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "--disable-pip-version-check",
+          "--no-deps",
+          "--no-compile",
+          "--no-build-isolation",
+          "--target",
+          "<temporary>\\wheel",
+          "<checkout>\\dist\\1.0.0-rc.1\\riff_workflow-1.0.0rc1-py3-none-any.whl"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "--version"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from importlib.metadata import version; print(version(\"riff-workflow\"))"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "new",
+          "wheel-task",
+          "--project",
+          "<temporary>\\wheel-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "show",
+          "wheel-task",
+          "--json",
+          "--project",
+          "<temporary>\\wheel-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "status",
+          "wheel-task",
+          "--json",
+          "--project",
+          "<temporary>\\wheel-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "research",
+          "Inspect the installed workflow",
+          "--project",
+          "<temporary>\\wheel-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "render",
+          "wheel-task",
+          "--format",
+          "html",
+          "--output",
+          "<temporary>\\wheel.html",
+          "--project",
+          "<temporary>\\wheel-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "--disable-pip-version-check",
+          "--no-deps",
+          "--no-compile",
+          "--no-build-isolation",
+          "--target",
+          "<temporary>\\sdist",
+          "<checkout>\\dist\\1.0.0-rc.1\\riff_workflow-1.0.0rc1.tar.gz"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "--version"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from importlib.metadata import version; print(version(\"riff-workflow\"))"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "new",
+          "sdist-task",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "show",
+          "sdist-task",
+          "--json",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "status",
+          "sdist-task",
+          "--json",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "research",
+          "Inspect the installed workflow",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from distribution.riff import cli; cli()",
+          "render",
+          "sdist-task",
+          "--format",
+          "html",
+          "--output",
+          "<temporary>\\sdist.html",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<checkout>\\install_cli.py",
+          "--prefix",
+          "<temporary>\\standalone"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "--version"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "new",
+          "standalone-task",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-codex",
+          "--host",
+          "codex"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "doctor",
+          "--project",
+          "<temporary>\\host-codex",
+          "--host",
+          "codex"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-codex",
+          "--host",
+          "codex",
+          "--update"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\host-codex\\.agents\\skills\\riff\\references\\planning\\validate.py",
+          "<temporary>\\sdist-project\\docs\\work\\standalone-task\\plan.json",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-cursor",
+          "--host",
+          "cursor"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "doctor",
+          "--project",
+          "<temporary>\\host-cursor",
+          "--host",
+          "cursor"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-cursor",
+          "--host",
+          "cursor",
+          "--update"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\host-cursor\\.cursor\\skills\\riff\\references\\planning\\validate.py",
+          "<temporary>\\sdist-project\\docs\\work\\standalone-task\\plan.json",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-vscode",
+          "--host",
+          "vscode"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "doctor",
+          "--project",
+          "<temporary>\\host-vscode",
+          "--host",
+          "vscode"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-vscode",
+          "--host",
+          "vscode",
+          "--update"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\host-vscode\\.github\\skills\\riff\\references\\planning\\validate.py",
+          "<temporary>\\sdist-project\\docs\\work\\standalone-task\\plan.json",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-claude",
+          "--host",
+          "claude"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "doctor",
+          "--project",
+          "<temporary>\\host-claude",
+          "--host",
+          "claude"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\install.py",
+          "<temporary>\\host-claude",
+          "--host",
+          "claude",
+          "--update"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\host-claude\\.claude\\skills\\riff\\references\\planning\\validate.py",
+          "<temporary>\\sdist-project\\docs\\work\\standalone-task\\plan.json",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "status",
+          "standalone-task",
+          "--details",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "python",
+          "<temporary>\\standalone\\lib\\riff-workflow\\distribution\\riff.py",
+          "render",
+          "standalone-task",
+          "--format",
+          "html",
+          "--output",
+          "<temporary>\\standalone.html",
+          "--project",
+          "<temporary>\\sdist-project"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "status": "passed",
+    "scope": "fresh wheel, sdist, standalone CLI and four host skill installations; no live host dispatch",
+    "log": "build/release-100-rc1-checks/packages-qualified.log"
+  },
+  "publication": {
+    "status": "not-created",
+    "next_action": "Finish exact-candidate qualification and tag-driven publishing workflow review; require remote CI before tag"
+  },
+  "candidate_revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+  "release_preflight": {
+    "status": "passed",
+    "scope": "actual embedded Python executed with isolated files and mocked read-only git observations; no remote release calls",
+    "cases": [
+      "valid annotated tag and qualified archives accepted",
+      "version/tag mismatch rejected",
+      "checkout/commit mismatch rejected",
+      "moved remote tag rejected",
+      "tampered archive rejected"
+    ]
+  }
+}

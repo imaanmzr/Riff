@@ -3,6 +3,11 @@
 [MIT license](LICENSE) · [Installation](docs/installation.md) ·
 [Commands](docs/commands.md) · [Contributing](CONTRIBUTING.md)
 
+**1.0.0-rc.1 is a release candidate for evaluation before stable 1.0.0.**
+See the [release notes](docs/releases/1.0.0-rc.1.md) for changes, upgrades and
+known limits. [CI](https://github.com/imaanmzr/Riff/actions/workflows/ci.yml)
+checks the source and packaged installations.
+
 Riff is a local workflow and CLI for planning, implementing, reviewing, and
 resuming software changes with coding agents. It supports project skills for
 Codex, Cursor, VS Code with GitHub Copilot, and Claude Code.
@@ -16,7 +21,7 @@ another supported host.
 You need Python 3.10 or newer, Git, and a supported coding agent. Clone Riff:
 
 ```bash
-git clone https://github.com/imaanmzr/Riff.git
+git clone --branch v1.0.0-rc.1 --depth 1 https://github.com/imaanmzr/Riff.git
 cd Riff
 ```
 
@@ -134,7 +139,7 @@ riff update --project /path/to/your/project --host codex
 
 The skill is updated before the configuration wizard opens. Answer `no` at
 `Save configuration?` to retain existing settings. Updates refuse to overwrite
-locally edited skill files. See the [upgrade guide](docs/installation.md#upgrade-to-080)
+locally edited skill files. See the [upgrade guide](docs/installation.md#upgrade-to-100-rc1)
 for platform commands and optional task-record migration.
 
 ## Scope and limitations
@@ -147,10 +152,11 @@ Validators check record structure, source fingerprints, and review bindings.
 They cannot establish that a review was independent or that a change is correct.
 The coordinator must inspect the underlying code and evidence.
 
-Installer and regression tests cover the supported host paths. Live workflow
-sessions in Cursor and Claude Code have not been verified. The bundled host
-adapter is a simulation for contract testing. Token savings, cost reductions,
-and quality improvements have not been measured.
+Installer and regression tests cover all four host paths. Live workflow evidence
+is limited to Codex development and reported Cursor project use; this RC has no
+live VS Code Copilot or Claude Code qualification. The bundled host adapter is a
+simulation for contract testing. Token savings, cost reductions, and quality
+improvements have not been measured.
 
 ## Documentation and development
 
@@ -160,6 +166,7 @@ and quality improvements have not been measured.
 - [Architecture](docs/architecture.md): source layout, records, and phase boundaries.
 - [Contributing](CONTRIBUTING.md): development checks and release verification.
 - [Changelog](CHANGELOG.md): release history.
+- [Release checklist](docs/releasing.md): qualification, GitHub settings and assets.
 
 ## License
 

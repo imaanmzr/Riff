@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "riff-workflow"
-version = "0.8.0"
+version = "1.0.0rc1"
 description = "Plan, execute, review and resume engineering work across agent hosts"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -25,3 +25,6 @@ license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
 distribution = ["LICENSE", "skills/**/*", "assets/*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["**/__pycache__/*", "**/*.pyc", "**/*.pyo"]

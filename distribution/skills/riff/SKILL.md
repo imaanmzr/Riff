@@ -4,7 +4,7 @@ description: Research, design, debug, document, plan, execute, review, and resum
 ---
 # Riff
 
-Version 0.8.0. Read references for the requested operation and current uncertainty.
+Version 1.0.0-rc.1. Read references for the requested operation and current uncertainty.
 
 ## Resolve paths
 The directory containing this file is SKILL_ROOT. The target repository is

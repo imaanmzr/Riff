@@ -1,0 +1,141 @@
+{
+  "workflow_version": "0.2",
+  "authorized": true,
+  "plan_revision": 3,
+  "base_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+  "head_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+  "integration_owner": "/root",
+  "status": "running",
+  "blockers": [],
+  "tasks": {
+    "T-1": {
+      "state": "integrated",
+      "agent": "/root",
+      "candidate_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+      "integration_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+      "checks": [
+        {
+          "command": "python -m unittest discover -s distribution/tests",
+          "exit_code": 0,
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "evidence": "build/release-100-rc1-checks/distribution-final.log"
+        },
+        {
+          "command": "python tools/verify_release.py --output-dir dist/1.0.0-rc.1",
+          "exit_code": 0,
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "evidence": "build/release-100-rc1-checks/packages-qualified.log; dist/1.0.0-rc.1/package-verification.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "verdict": "pass",
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "evidence": "Independent current baseline spec/quality review; 191 bindings, current archives/no-bytecode, 37 installed checks and actual cleanup failure probe verified"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "verdict": "pass",
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "evidence": "Independent current baseline spec/quality review; 191 bindings, current archives/no-bytecode, 37 installed checks and actual cleanup failure probe verified"
+        }
+      ],
+      "blockers": [],
+      "adoption": "Prior implementation adopted after refreshed checks and current independent review; no earlier approval relabeled"
+    },
+    "T-2": {
+      "state": "integrated",
+      "agent": "/root",
+      "candidate_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+      "integration_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+      "checks": [
+        {
+          "command": "python -m unittest discover -s distribution/tests",
+          "exit_code": 0,
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "evidence": "build/release-100-rc1-checks/distribution-final.log"
+        },
+        {
+          "command": "python tools/verify_release.py --output-dir dist/1.0.0-rc.1",
+          "exit_code": 0,
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "evidence": "build/release-100-rc1-checks/packages-qualified.log; dist/1.0.0-rc.1/package-verification.json"
+        }
+      ],
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "verdict": "pass",
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "evidence": "Independent current baseline spec/quality review; 191 bindings, current archives/no-bytecode, 37 installed checks and actual cleanup failure probe verified"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+          "verdict": "pass",
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "evidence": "Independent current baseline spec/quality review; 191 bindings, current archives/no-bytecode, 37 installed checks and actual cleanup failure probe verified"
+        }
+      ],
+      "blockers": [],
+      "adoption": "Prior implementation adopted after refreshed checks and current independent review; no earlier approval relabeled"
+    },
+    "T-3": {
+      "state": "review",
+      "agent": "/root",
+      "candidate_revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+      "reviews": [
+        {
+          "kind": "spec",
+          "revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "verdict": "pass",
+          "evidence": "Independent T3 workflow/docs spec and quality review; 191 live hashes, preflight cases, parity and whitespace verified; remote CI still required"
+        },
+        {
+          "kind": "quality",
+          "revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+          "reviewer": "/root/clarification_review",
+          "independent": true,
+          "verdict": "pass",
+          "evidence": "Independent T3 workflow/docs spec and quality review; 191 live hashes, preflight cases, parity and whitespace verified; remote CI still required"
+        }
+      ],
+      "checks": [
+        {
+          "command": "Parse workflows/compile embedded Python; execute isolated release preflight cases; parity/whitespace/link checks",
+          "exit_code": 0,
+          "revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+          "evidence": "build/release-100-rc1-checks/release-preflight.json"
+        }
+      ],
+      "remaining_verification": "GitHub CI on exact pushed commit before integration"
+    },
+    "T-4": {
+      "state": "pending",
+      "author": "/root"
+    }
+  },
+  "final": {
+    "requirements": [],
+    "checks": [],
+    "reviews": []
+  },
+  "authorization": "User requested release 1.0.0-rc.1 and GitHub documentation/requirements check",
+  "replan_history": [
+    {
+      "plan_revision": 2,
+      "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+      "reason": "Release API authentication unavailable; explicit RC tag publication workflow added; packaging cache defect fixed"
+    }
+  ]
+}

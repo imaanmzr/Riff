@@ -1,0 +1,93 @@
+name: Release candidate
+
+on:
+  push:
+    tags: ['v*-rc.*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    name: Publish qualified prerelease
+    needs: qualify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-packages
+          path: dist/release
+      - name: Validate candidate tag and qualified artifacts
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, re, subprocess
+          from pathlib import Path
+          from distribution.version import VERSION
+          assert re.fullmatch(r'\d+\.\d+\.\d+-rc\.\d+', VERSION), 'Only release candidates may publish here'
+          assert os.environ['GITHUB_REF_NAME'] == 'v' + VERSION, 'Tag and source version disagree'
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == os.environ['GITHUB_SHA']
+          ref = 'refs/tags/' + os.environ['GITHUB_REF_NAME']
+          refs = dict(line.split()[::-1] for line in subprocess.check_output(
+              ['git', 'ls-remote', 'origin', ref, ref + '^{}'], text=True).splitlines())
+          assert refs.get(ref + '^{}', refs.get(ref)) == os.environ['GITHUB_SHA'], 'Remote tag moved'
+          folder = Path('dist/release')
+          evidence = json.loads((folder / 'package-verification.json').read_text())
+          assert evidence['status'] == 'passed' and evidence['version'] == VERSION
+          assert evidence['commands'] and all(c['exit_code'] == 0 for c in evidence['commands'])
+          expected = {evidence['wheel'], evidence['sdist'], 'SHA256SUMS', 'package-verification.json'}
+          assert {p.name for p in folder.iterdir()} == expected, 'Unexpected release files'
+          for name, expected_hash in evidence['sha256'].items():
+              assert (folder / name).parent == folder, 'Unsafe artifact name'
+              assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == expected_hash
+          assert Path('docs/releases', VERSION + '.md').is_file()
+          PY
+          (cd dist/release && sha256sum -c SHA256SUMS)
+      - name: Draft, upload and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo 'A release already exists for this tag; inspect it without overwriting it.' >&2
+            exit 1
+          fi
+          version="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" dist/release/* \
+            --verify-tag --target "$GITHUB_SHA" --draft --prerelease --latest=false \
+            --title "Riff $version" --notes-file "docs/releases/$version.md"
+          gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease --latest=false
+          gh api "repos/$GH_REPO/releases/tags/$GITHUB_REF_NAME" > release-result.json
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          release = json.loads(Path('release-result.json').read_text())
+          expected = {p.name for p in Path('dist/release').iterdir()}
+          assert release['tag_name'] == os.environ['GITHUB_REF_NAME']
+          assert release['prerelease'] is True and release['draft'] is False
+          assert {a['name'] for a in release['assets']} == expected
+          ref = 'refs/tags/' + os.environ['GITHUB_REF_NAME']
+          refs = dict(line.split()[::-1] for line in subprocess.check_output(
+              ['git', 'ls-remote', 'origin', ref, ref + '^{}'], text=True).splitlines())
+          assert refs.get(ref + '^{}', refs.get(ref)) == os.environ['GITHUB_SHA'], 'Remote tag moved'
+          print(release['html_url'])
+          PY
+          gh release download "$GITHUB_REF_NAME" --dir downloaded
+          cmp dist/release/SHA256SUMS downloaded/SHA256SUMS
+          cmp dist/release/package-verification.json downloaded/package-verification.json
+          (cd downloaded && sha256sum -c SHA256SUMS)

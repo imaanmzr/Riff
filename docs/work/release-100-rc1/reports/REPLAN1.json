@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "REPLAN1",
+  "kind": "replan",
+  "status": "complete",
+  "reason": "Release client authentication unavailable; explicit RC tag uses GitHub Actions token after full qualification",
+  "baseline_revision": 2,
+  "target_revision": 3,
+  "source_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+  "snapshot": "snapshots/revision-2",
+  "requirements": [
+    "R-2",
+    "R-3",
+    "R-4"
+  ],
+  "decisions": [
+    "D-4"
+  ],
+  "superseded_decisions": [
+    "D-2"
+  ],
+  "affected_tasks": [
+    "T-1",
+    "T-2",
+    "T-3",
+    "T-4"
+  ],
+  "invalidated_reviews": [
+    "revision-2 plan review and pre-integration candidate review"
+  ],
+  "changes": [
+    "Fresh sdist wheel build and cache exclusions after observed packaging defect",
+    "Read-only reusable CI and separate explicit-tag publishing job with narrow contents:write",
+    "Freeze actual current source baseline and qualify exact release commit again"
+  ],
+  "reconciliation": "reconciliation.json",
+  "next_action": "Independent rev3 review; restore reviewed execution binding; checkpoint observed generation 1"
+}

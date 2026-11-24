@@ -11,12 +11,18 @@ Claude Code. An agent without skill discovery can read `SKILL.md` by path.
 Clone the public repository before running the installation commands below:
 
 ```bash
-git clone https://github.com/imaanmzr/Riff.git
+git clone --branch v1.0.0-rc.1 --depth 1 https://github.com/imaanmzr/Riff.git
 cd Riff
 ```
 
 If you downloaded a source archive instead, extract it and open a terminal in
 the directory containing `install_cli.py`.
+
+Use the [GitHub prerelease](https://github.com/imaanmzr/Riff/releases/tag/v1.0.0-rc.1)
+for this exact candidate. Its wheel/source archive uses Python's normalized
+version `1.0.0rc1`; the CLI and skill display `1.0.0-rc.1`. Install a downloaded
+wheel with `pipx install /path/to/riff_workflow-1.0.0rc1-py3-none-any.whl`.
+No package-index publication is assumed by these instructions.
 
 ## Install the terminal utility
 
@@ -141,7 +147,17 @@ index.
 
 ## Configure and update
 
-### Upgrade to 0.8.0
+<a id="upgrade-to-080"></a>
+
+### Upgrade to 1.0.0-rc.1
+
+In your Riff source checkout, first select the candidate. Commit or preserve any
+local changes before switching revisions; do not force a checkout.
+
+```bash
+git fetch origin tag v1.0.0-rc.1
+git switch --detach v1.0.0-rc.1
+```
 
 Update the terminal utility from your latest Riff checkout, then update the skill
 in each target project. On Windows, run the following in PowerShell from the Riff
@@ -164,7 +180,7 @@ riff update --project /path/to/my-app --host codex
 ```
 
 Use your original `--prefix` if you installed the utility in a custom location.
-The version should report `Riff 0.8.0`. The skill update completes before the
+The version should report `Riff 1.0.0-rc.1`. The skill update completes before the
 configuration wizard opens. Answer `no` at `Save configuration?` to retain your
 saved settings. Reconcile any locally edited skill files before updating them.
 

@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.13']
+    env:
+      PYTHONUTF8: '1'
+      RIFF_BROWSER: ${{ matrix.os == 'windows-latest' && 'C:\Program Files\Google\Chrome\Application\chrome.exe' || '/usr/bin/google-chrome' }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Require browser test prerequisites
+        shell: bash
+        run: |
+          python -c "import os, pathlib, shutil; assert pathlib.Path(os.environ['RIFF_BROWSER']).is_file(); assert shutil.which('node')"
+          node --version
+      - name: Reference parity
+        run: python tools/sync_references.py --check
+      - name: Planning (including offline browser safety)
+        run: python -m unittest discover -s planning/tests
+      - name: Execution
+        run: python -m unittest discover -s execution/tests
+      - name: Recovery
+        run: python -m unittest discover -s recovery/tests
+      - name: Routing
+        run: python -m unittest discover -s routing/tests
+      - name: Distribution
+        run: python -m unittest discover -s distribution/tests
+
+  packages:
+    name: Build and install release archives
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Build dependencies
+        run: python -m pip install 'setuptools>=68' wheel
+      - name: Fresh wheel, sdist, standalone and host skill installs
+        run: python tools/verify_release.py --output-dir dist/release
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-packages
+          path: dist/release/*
+          if-no-files-found: error

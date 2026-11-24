@@ -1,0 +1,1055 @@
+{
+  "generation": 1,
+  "plan": {
+    "schema_version": 2,
+    "requirement_details": [
+      {
+        "id": "R-1",
+        "description": "Consistent RC identity",
+        "acceptance_checks": [
+          "C-1"
+        ]
+      },
+      {
+        "id": "R-2",
+        "description": "Verified release archives and all regression suites",
+        "acceptance_checks": [
+          "C-2"
+        ]
+      },
+      {
+        "id": "R-3",
+        "description": "Clear docs and read-only CI",
+        "acceptance_checks": [
+          "C-3"
+        ]
+      },
+      {
+        "id": "R-4",
+        "description": "Publish and verify the qualified GitHub prerelease",
+        "acceptance_checks": [
+          "C-4"
+        ]
+      }
+    ],
+    "acceptance_checks": [
+      {
+        "id": "C-1",
+        "requirements": [
+          "R-1"
+        ],
+        "procedure": "Compare versions through installed entrypoints and metadata",
+        "expected": "Checks pass with actual evidence and no invented publication or host certification"
+      },
+      {
+        "id": "C-2",
+        "requirements": [
+          "R-2"
+        ],
+        "procedure": "Build/install wheel and sdist; run five suites, browser and reference parity",
+        "expected": "Checks pass with actual evidence and no invented publication or host certification"
+      },
+      {
+        "id": "C-3",
+        "requirements": [
+          "R-3"
+        ],
+        "procedure": "Inspect exact RC installation guidance and parse templates/CI",
+        "expected": "Checks pass with actual evidence and no invented publication or host certification"
+      },
+      {
+        "id": "C-4",
+        "requirements": [
+          "R-4"
+        ],
+        "procedure": "Verify remote CI on exact reviewed commit; tag target; GitHub prerelease state; attached wheel/sdist/checksums and downloaded hashes",
+        "expected": "Published v1.0.0-rc.1 targets reviewed CI-qualified commit; prerelease true, not latest stable, downloaded hashes match"
+      }
+    ],
+    "decisions": [
+      {
+        "id": "D-1",
+        "choice": "Display 1.0.0-rc.1; package 1.0.0rc1",
+        "alternatives": [
+          "Use stable 1.0.0",
+          "Use normalized version everywhere"
+        ],
+        "criteria": [
+          "Consistent, verifiable release without overstated support"
+        ],
+        "consequences": [
+          "Python prerelease metadata remains normalized; UI retains requested name"
+        ],
+        "owner": "/root",
+        "reopen_if": "Verification contradicts the decision",
+        "requirements": [
+          "R-1"
+        ],
+        "evidence": [
+          "E-1",
+          "E-3"
+        ]
+      },
+      {
+        "id": "D-2",
+        "choice": "Read-only CI plus real browser and archive installation qualification",
+        "alternatives": [
+          "Document local-only checks"
+        ],
+        "criteria": [
+          "Consistent, verifiable release without overstated support"
+        ],
+        "consequences": [
+          "Remote checks must pass on released commit"
+        ],
+        "owner": "/root",
+        "reopen_if": "Verification contradicts the decision",
+        "requirements": [
+          "R-2",
+          "R-4"
+        ],
+        "evidence": [
+          "E-1",
+          "E-4"
+        ]
+      },
+      {
+        "id": "D-3",
+        "choice": "RC guidance/templates and explicit verified GitHub prerelease publication",
+        "alternatives": [
+          "Preparation only",
+          "Add a marketplace submission"
+        ],
+        "criteria": [
+          "Consistent, verifiable release without overstated support"
+        ],
+        "consequences": [
+          "No PyPI or marketplace upload; preserve existing tags and releases"
+        ],
+        "owner": "/root",
+        "reopen_if": "Verification contradicts the decision",
+        "requirements": [
+          "R-3",
+          "R-4"
+        ],
+        "evidence": [
+          "E-2",
+          "E-3"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "E-1",
+        "kind": "source",
+        "source": "Release metadata, version inspection regex and release verifier at baseline",
+        "classification": "observed",
+        "accessed": "2026-11-24"
+      },
+      {
+        "id": "E-2",
+        "kind": "repository",
+        "source": "https://api.github.com/repos/imaanmzr/Riff (releases, community/profile, actions/workflows)",
+        "classification": "observed",
+        "accessed": "2026-11-24"
+      },
+      {
+        "id": "E-3",
+        "kind": "documentation",
+        "source": "https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository ; https://packaging.python.org/en/latest/specifications/version-specifiers/ ; https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/about-community-profiles-for-public-repositories",
+        "classification": "observed",
+        "accessed": "2026-11-24"
+      },
+      {
+        "id": "E-4",
+        "kind": "verification",
+        "source": "docs/work/status-and-upgrades/verification.json: prior browser timeout; current unmodified browser suite passed 7 tests",
+        "classification": "observed",
+        "accessed": "2026-11-24"
+      }
+    ],
+    "reports": [],
+    "reviewed_artifacts": [
+      "plan.md"
+    ],
+    "source_manifest": {
+      "pyproject.toml": "5213431e4419c124ce320d9fecf28e34671d2b3fd47a537728c489e5f17b5e01",
+      "distribution/install.py": "0816d1cea3d3d20af65e81d5edb6149a7b4892b7773383cd06b9f068f59e3647",
+      "distribution/riff.py": "bcf32a65a41b403321277c2c830a83598c0987c2cb888a2ff0d0972bb959e92b",
+      "tools/verify_release.py": "74d92650ef1a3f67a9c6e3dd5b7d11df509899dd99313d5ef5a4d1ebd0011ad6",
+      "planning/tests/test_presentation.py": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d",
+      "README.md": "c539f3447fbf8ee39495919dde64a4b816b5f2d4171bc983f1a26b21a351209a",
+      "CONTRIBUTING.md": "5e1c288e8dbe47f92d5a1e59bf2cc325603741ff9cea2a4759b52e183a27600f",
+      "CITATION.cff": "79f6409f3008b8528d4f9770dff1f1a906aca03e27228ce1a57a09ac44ff6f8b",
+      "CHANGELOG.md": "b82de5e70171900ae61852dc220df05464ff25dd865416e9349f8fc782218bf7",
+      "docs/installation.md": "ca2fbf39edfaea73fb22c28ab81194813b5f2af464a476999348a43751a5ffc1",
+      "docs/commands.md": "973ff1ec7c1b365d4f67c04f698772f8a15ee8bdb8a710d13b6dda0ab56b6786",
+      "distribution/skills/riff/SKILL.md": "a2263f3cc4dc8cd0d23fee34ae58a838cd340a79daaec73ca54a77ddbab31ac7"
+    },
+    "behavior_config": {
+      "build_command": null,
+      "test_command": null,
+      "architecture_constraints": [],
+      "domain_invariants": [],
+      "sections": [
+        "problem",
+        "behavior",
+        "contracts"
+      ],
+      "required_checks": [
+        "acceptance",
+        "regression"
+      ],
+      "debug_command_timeout": 60,
+      "debug_total_timeout": 300
+    },
+    "behavior_provenance": {
+      "build_command": "built-in",
+      "test_command": "built-in",
+      "architecture_constraints": "built-in",
+      "domain_invariants": "built-in",
+      "sections": "profile:feature",
+      "required_checks": "profile:feature",
+      "debug_command_timeout": "built-in",
+      "debug_total_timeout": "built-in",
+      "detail": "built-in",
+      "diagrams": "built-in",
+      "profile": "built-in"
+    },
+    "route": "standard",
+    "status": "READY",
+    "revision": 2,
+    "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+    "requirements": [
+      "R-1",
+      "R-2",
+      "R-3",
+      "R-4"
+    ],
+    "tasks": [
+      {
+        "id": "T-1",
+        "objective": "Consistent RC versions",
+        "inputs": [
+          "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+          "plan.md"
+        ],
+        "dependencies": [],
+        "scope": [
+          "distribution/install.py",
+          "distribution/riff.py",
+          "distribution/version.py",
+          "distribution/tests",
+          "pyproject.toml",
+          "CITATION.cff",
+          "distribution/skills/riff/SKILL.md"
+        ],
+        "outputs": [
+          "Consistent RC versions"
+        ],
+        "owner": "/root",
+        "capability": "coding",
+        "reviewer": "/root/clarification_review",
+        "requirements": [
+          "R-1"
+        ],
+        "verification": [
+          "C-1"
+        ],
+        "integration_order": 1
+      },
+      {
+        "id": "T-2",
+        "objective": "Reproducible release verification",
+        "inputs": [
+          "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+          "plan.md"
+        ],
+        "dependencies": [
+          "T-1"
+        ],
+        "scope": [
+          "tools/verify_release.py",
+          "planning/tests/test_presentation.py",
+          "distribution/tests"
+        ],
+        "outputs": [
+          "Reproducible release verification"
+        ],
+        "owner": "/root",
+        "capability": "coding",
+        "reviewer": "/root/clarification_review",
+        "requirements": [
+          "R-2"
+        ],
+        "verification": [
+          "C-2"
+        ],
+        "integration_order": 2
+      },
+      {
+        "id": "T-3",
+        "objective": "Release documentation and CI",
+        "inputs": [
+          "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+          "plan.md"
+        ],
+        "dependencies": [
+          "T-2"
+        ],
+        "scope": [
+          "README.md",
+          "CONTRIBUTING.md",
+          "CHANGELOG.md",
+          "docs/installation.md",
+          "docs/commands.md",
+          "docs/releases",
+          ".github"
+        ],
+        "outputs": [
+          "Release documentation and CI"
+        ],
+        "owner": "/root",
+        "capability": "coding",
+        "reviewer": "/root/clarification_review",
+        "requirements": [
+          "R-3"
+        ],
+        "verification": [
+          "C-3"
+        ],
+        "integration_order": 3
+      },
+      {
+        "id": "T-4",
+        "objective": "Publish and verify GitHub prerelease",
+        "inputs": [
+          "Accepted exact candidate review",
+          "Remote CI and qualified packages"
+        ],
+        "dependencies": [
+          "T-3"
+        ],
+        "scope": [
+          "GitHub repository imaanmzr/Riff: release branch, v1.0.0-rc.1 tag and prerelease assets"
+        ],
+        "outputs": [
+          "Verified published GitHub prerelease and matching asset hashes"
+        ],
+        "owner": "/root",
+        "capability": "coding",
+        "reviewer": "/root/clarification_review",
+        "requirements": [
+          "R-4"
+        ],
+        "verification": [
+          "C-4"
+        ],
+        "integration_order": 4
+      }
+    ],
+    "reviews": [
+      {
+        "reviewer": "/root/clarification_review",
+        "independent": true,
+        "verdict": "pass",
+        "revision": 2,
+        "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+        "authored_digest": "f4eb8458a0ae3e7c6f73e320e7af7e2a0b911e92a2540f89a4e7d1930287112a",
+        "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+        "plan_digest": "8fde4775f8178628f314616851699a7a06b0b1da2795a79cd2d1157816ff3846",
+        "evidence": "Independent revision 2 review; F-1/F-2 and capability correction resolved; no outstanding findings"
+      }
+    ],
+    "unresolved_questions": [],
+    "task_id": "release-100-rc1",
+    "title": "Release Riff 1.0.0-rc.1",
+    "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+    "authored_digest": "f4eb8458a0ae3e7c6f73e320e7af7e2a0b911e92a2540f89a4e7d1930287112a"
+  },
+  "run": {
+    "workflow_version": "0.2",
+    "authorized": true,
+    "plan_revision": 2,
+    "base_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+    "head_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+    "integration_owner": "/root",
+    "status": "blocked",
+    "blockers": [
+      "Revision 3 tag-triggered publication contract awaiting independent plan review",
+      "Recovery reconciliation required; inspect report before resuming"
+    ],
+    "tasks": {
+      "T-1": {
+        "state": "blocked",
+        "author": "/root",
+        "reason": "Plan content changed; replan and review affected work",
+        "checks": [],
+        "reviews": []
+      },
+      "T-2": {
+        "state": "blocked",
+        "author": "/root",
+        "reason": "Plan content changed; replan and review affected work",
+        "checks": [],
+        "reviews": []
+      },
+      "T-3": {
+        "state": "blocked",
+        "author": "/root",
+        "reason": "Plan content changed; replan and review affected work",
+        "checks": [],
+        "reviews": []
+      },
+      "T-4": {
+        "state": "blocked",
+        "author": "/root",
+        "reason": "Plan content changed; replan and review affected work",
+        "checks": [],
+        "reviews": []
+      }
+    },
+    "final": {
+      "requirements": [],
+      "checks": [],
+      "reviews": []
+    },
+    "authorization": "User requested release 1.0.0-rc.1 and GitHub documentation/requirements check",
+    "replan_history": [
+      {
+        "plan_revision": 2,
+        "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+        "reason": "Release API authentication unavailable; explicit RC tag publication workflow added; packaging cache defect fixed"
+      }
+    ]
+  },
+  "manifest": {
+    "pyproject.toml": "5213431e4419c124ce320d9fecf28e34671d2b3fd47a537728c489e5f17b5e01",
+    "distribution/install.py": "0816d1cea3d3d20af65e81d5edb6149a7b4892b7773383cd06b9f068f59e3647",
+    "distribution/riff.py": "bcf32a65a41b403321277c2c830a83598c0987c2cb888a2ff0d0972bb959e92b",
+    "tools/verify_release.py": "74d92650ef1a3f67a9c6e3dd5b7d11df509899dd99313d5ef5a4d1ebd0011ad6",
+    "planning/tests/test_presentation.py": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d",
+    "README.md": "c539f3447fbf8ee39495919dde64a4b816b5f2d4171bc983f1a26b21a351209a",
+    "CONTRIBUTING.md": "5e1c288e8dbe47f92d5a1e59bf2cc325603741ff9cea2a4759b52e183a27600f",
+    "CITATION.cff": "79f6409f3008b8528d4f9770dff1f1a906aca03e27228ce1a57a09ac44ff6f8b",
+    "CHANGELOG.md": "b82de5e70171900ae61852dc220df05464ff25dd865416e9349f8fc782218bf7",
+    "docs/installation.md": "ca2fbf39edfaea73fb22c28ab81194813b5f2af464a476999348a43751a5ffc1",
+    "docs/commands.md": "973ff1ec7c1b365d4f67c04f698772f8a15ee8bdb8a710d13b6dda0ab56b6786",
+    "distribution/skills/riff/SKILL.md": "a2263f3cc4dc8cd0d23fee34ae58a838cd340a79daaec73ca54a77ddbab31ac7"
+  },
+  "history": [
+    {
+      "task": "T-1",
+      "reason": "Plan content changed; replan and review affected work",
+      "previous": {
+        "state": "running",
+        "author": "/root"
+      }
+    },
+    {
+      "task": "T-2",
+      "reason": "Plan content changed; replan and review affected work",
+      "previous": {
+        "state": "pending",
+        "author": "/root"
+      }
+    },
+    {
+      "task": "T-3",
+      "reason": "Plan content changed; replan and review affected work",
+      "previous": {
+        "state": "pending",
+        "author": "/root"
+      }
+    },
+    {
+      "task": "T-4",
+      "reason": "Plan content changed; replan and review affected work",
+      "previous": {
+        "state": "pending",
+        "author": "/root"
+      }
+    },
+    {
+      "final": {
+        "requirements": [],
+        "checks": [],
+        "reviews": []
+      },
+      "previous_plan": {
+        "schema_version": 2,
+        "requirement_details": [
+          {
+            "id": "R-1",
+            "description": "Consistent RC identity",
+            "acceptance_checks": [
+              "C-1"
+            ]
+          },
+          {
+            "id": "R-2",
+            "description": "Verified release archives and all regression suites",
+            "acceptance_checks": [
+              "C-2"
+            ]
+          },
+          {
+            "id": "R-3",
+            "description": "Clear docs and read-only CI",
+            "acceptance_checks": [
+              "C-3"
+            ]
+          },
+          {
+            "id": "R-4",
+            "description": "Publish and verify the qualified GitHub prerelease",
+            "acceptance_checks": [
+              "C-4"
+            ]
+          }
+        ],
+        "acceptance_checks": [
+          {
+            "id": "C-1",
+            "requirements": [
+              "R-1"
+            ],
+            "procedure": "Compare versions through installed entrypoints and metadata",
+            "expected": "Checks pass with actual evidence and no invented publication or host certification"
+          },
+          {
+            "id": "C-2",
+            "requirements": [
+              "R-2"
+            ],
+            "procedure": "Build/install wheel and sdist; run five suites, browser and reference parity",
+            "expected": "Checks pass with actual evidence and no invented publication or host certification"
+          },
+          {
+            "id": "C-3",
+            "requirements": [
+              "R-3"
+            ],
+            "procedure": "Inspect exact RC installation guidance and parse templates/CI",
+            "expected": "Checks pass with actual evidence and no invented publication or host certification"
+          },
+          {
+            "id": "C-4",
+            "requirements": [
+              "R-4"
+            ],
+            "procedure": "Verify remote CI on exact reviewed commit; tag target; GitHub prerelease state; attached wheel/sdist/checksums and downloaded hashes",
+            "expected": "Published v1.0.0-rc.1 targets reviewed CI-qualified commit; prerelease true, not latest stable, downloaded hashes match"
+          }
+        ],
+        "decisions": [
+          {
+            "id": "D-1",
+            "choice": "Display 1.0.0-rc.1; package 1.0.0rc1",
+            "alternatives": [
+              "Use stable 1.0.0",
+              "Use normalized version everywhere"
+            ],
+            "criteria": [
+              "Consistent, verifiable release without overstated support"
+            ],
+            "consequences": [
+              "Python prerelease metadata remains normalized; UI retains requested name"
+            ],
+            "owner": "/root",
+            "reopen_if": "Verification contradicts the decision",
+            "requirements": [
+              "R-1"
+            ],
+            "evidence": [
+              "E-1",
+              "E-3"
+            ]
+          },
+          {
+            "id": "D-2",
+            "choice": "Read-only CI plus real browser and archive installation qualification",
+            "alternatives": [
+              "Document local-only checks"
+            ],
+            "criteria": [
+              "Consistent, verifiable release without overstated support"
+            ],
+            "consequences": [
+              "Remote checks must pass on released commit"
+            ],
+            "owner": "/root",
+            "reopen_if": "Verification contradicts the decision",
+            "requirements": [
+              "R-2",
+              "R-4"
+            ],
+            "evidence": [
+              "E-1",
+              "E-4"
+            ]
+          },
+          {
+            "id": "D-3",
+            "choice": "RC guidance/templates and explicit verified GitHub prerelease publication",
+            "alternatives": [
+              "Preparation only",
+              "Add a marketplace submission"
+            ],
+            "criteria": [
+              "Consistent, verifiable release without overstated support"
+            ],
+            "consequences": [
+              "No PyPI or marketplace upload; preserve existing tags and releases"
+            ],
+            "owner": "/root",
+            "reopen_if": "Verification contradicts the decision",
+            "requirements": [
+              "R-3",
+              "R-4"
+            ],
+            "evidence": [
+              "E-2",
+              "E-3"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "E-1",
+            "kind": "source",
+            "source": "Release metadata, version inspection regex and release verifier at baseline",
+            "classification": "observed",
+            "accessed": "2026-11-24"
+          },
+          {
+            "id": "E-2",
+            "kind": "repository",
+            "source": "https://api.github.com/repos/imaanmzr/Riff (releases, community/profile, actions/workflows)",
+            "classification": "observed",
+            "accessed": "2026-11-24"
+          },
+          {
+            "id": "E-3",
+            "kind": "documentation",
+            "source": "https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository ; https://packaging.python.org/en/latest/specifications/version-specifiers/ ; https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/about-community-profiles-for-public-repositories",
+            "classification": "observed",
+            "accessed": "2026-11-24"
+          },
+          {
+            "id": "E-4",
+            "kind": "verification",
+            "source": "docs/work/status-and-upgrades/verification.json: prior browser timeout; current unmodified browser suite passed 7 tests",
+            "classification": "observed",
+            "accessed": "2026-11-24"
+          }
+        ],
+        "reports": [],
+        "reviewed_artifacts": [
+          "plan.md"
+        ],
+        "source_manifest": {
+          "pyproject.toml": "5213431e4419c124ce320d9fecf28e34671d2b3fd47a537728c489e5f17b5e01",
+          "distribution/install.py": "0816d1cea3d3d20af65e81d5edb6149a7b4892b7773383cd06b9f068f59e3647",
+          "distribution/riff.py": "bcf32a65a41b403321277c2c830a83598c0987c2cb888a2ff0d0972bb959e92b",
+          "tools/verify_release.py": "74d92650ef1a3f67a9c6e3dd5b7d11df509899dd99313d5ef5a4d1ebd0011ad6",
+          "planning/tests/test_presentation.py": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d",
+          "README.md": "c539f3447fbf8ee39495919dde64a4b816b5f2d4171bc983f1a26b21a351209a",
+          "CONTRIBUTING.md": "5e1c288e8dbe47f92d5a1e59bf2cc325603741ff9cea2a4759b52e183a27600f",
+          "CITATION.cff": "79f6409f3008b8528d4f9770dff1f1a906aca03e27228ce1a57a09ac44ff6f8b",
+          "CHANGELOG.md": "b82de5e70171900ae61852dc220df05464ff25dd865416e9349f8fc782218bf7",
+          "docs/installation.md": "ca2fbf39edfaea73fb22c28ab81194813b5f2af464a476999348a43751a5ffc1",
+          "docs/commands.md": "973ff1ec7c1b365d4f67c04f698772f8a15ee8bdb8a710d13b6dda0ab56b6786",
+          "distribution/skills/riff/SKILL.md": "a2263f3cc4dc8cd0d23fee34ae58a838cd340a79daaec73ca54a77ddbab31ac7"
+        },
+        "behavior_config": {
+          "build_command": null,
+          "test_command": null,
+          "architecture_constraints": [],
+          "domain_invariants": [],
+          "sections": [
+            "problem",
+            "behavior",
+            "contracts"
+          ],
+          "required_checks": [
+            "acceptance",
+            "regression"
+          ],
+          "debug_command_timeout": 60,
+          "debug_total_timeout": 300
+        },
+        "behavior_provenance": {
+          "build_command": "built-in",
+          "test_command": "built-in",
+          "architecture_constraints": "built-in",
+          "domain_invariants": "built-in",
+          "sections": "profile:feature",
+          "required_checks": "profile:feature",
+          "debug_command_timeout": "built-in",
+          "debug_total_timeout": "built-in",
+          "detail": "built-in",
+          "diagrams": "built-in",
+          "profile": "built-in"
+        },
+        "route": "standard",
+        "status": "READY",
+        "revision": 2,
+        "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+        "requirements": [
+          "R-1",
+          "R-2",
+          "R-3",
+          "R-4"
+        ],
+        "tasks": [
+          {
+            "id": "T-1",
+            "objective": "Consistent RC versions",
+            "inputs": [
+              "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+              "plan.md"
+            ],
+            "dependencies": [],
+            "scope": [
+              "distribution/install.py",
+              "distribution/riff.py",
+              "distribution/version.py",
+              "distribution/tests",
+              "pyproject.toml",
+              "CITATION.cff",
+              "distribution/skills/riff/SKILL.md"
+            ],
+            "outputs": [
+              "Consistent RC versions"
+            ],
+            "owner": "/root",
+            "capability": "coding",
+            "reviewer": "/root/clarification_review",
+            "requirements": [
+              "R-1"
+            ],
+            "verification": [
+              "C-1"
+            ],
+            "integration_order": 1
+          },
+          {
+            "id": "T-2",
+            "objective": "Reproducible release verification",
+            "inputs": [
+              "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+              "plan.md"
+            ],
+            "dependencies": [
+              "T-1"
+            ],
+            "scope": [
+              "tools/verify_release.py",
+              "planning/tests/test_presentation.py",
+              "distribution/tests"
+            ],
+            "outputs": [
+              "Reproducible release verification"
+            ],
+            "owner": "/root",
+            "capability": "coding",
+            "reviewer": "/root/clarification_review",
+            "requirements": [
+              "R-2"
+            ],
+            "verification": [
+              "C-2"
+            ],
+            "integration_order": 2
+          },
+          {
+            "id": "T-3",
+            "objective": "Release documentation and CI",
+            "inputs": [
+              "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+              "plan.md"
+            ],
+            "dependencies": [
+              "T-2"
+            ],
+            "scope": [
+              "README.md",
+              "CONTRIBUTING.md",
+              "CHANGELOG.md",
+              "docs/installation.md",
+              "docs/commands.md",
+              "docs/releases",
+              ".github"
+            ],
+            "outputs": [
+              "Release documentation and CI"
+            ],
+            "owner": "/root",
+            "capability": "coding",
+            "reviewer": "/root/clarification_review",
+            "requirements": [
+              "R-3"
+            ],
+            "verification": [
+              "C-3"
+            ],
+            "integration_order": 3
+          },
+          {
+            "id": "T-4",
+            "objective": "Publish and verify GitHub prerelease",
+            "inputs": [
+              "Accepted exact candidate review",
+              "Remote CI and qualified packages"
+            ],
+            "dependencies": [
+              "T-3"
+            ],
+            "scope": [
+              "GitHub repository imaanmzr/Riff: release branch, v1.0.0-rc.1 tag and prerelease assets"
+            ],
+            "outputs": [
+              "Verified published GitHub prerelease and matching asset hashes"
+            ],
+            "owner": "/root",
+            "capability": "coding",
+            "reviewer": "/root/clarification_review",
+            "requirements": [
+              "R-4"
+            ],
+            "verification": [
+              "C-4"
+            ],
+            "integration_order": 4
+          }
+        ],
+        "reviews": [
+          {
+            "reviewer": "/root/clarification_review",
+            "independent": true,
+            "verdict": "pass",
+            "revision": 2,
+            "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+            "authored_digest": "f4eb8458a0ae3e7c6f73e320e7af7e2a0b911e92a2540f89a4e7d1930287112a",
+            "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+            "plan_digest": "8fde4775f8178628f314616851699a7a06b0b1da2795a79cd2d1157816ff3846",
+            "evidence": "Independent revision 2 review; F-1/F-2 and capability correction resolved; no outstanding findings"
+          }
+        ],
+        "unresolved_questions": [],
+        "task_id": "release-100-rc1",
+        "title": "Release Riff 1.0.0-rc.1",
+        "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+        "authored_digest": "f4eb8458a0ae3e7c6f73e320e7af7e2a0b911e92a2540f89a4e7d1930287112a"
+      }
+    }
+  ],
+  "recovery": {
+    "changed_files": [
+      ".gitattributes",
+      ".github/ISSUE_TEMPLATE/bug_report.md",
+      ".github/ISSUE_TEMPLATE/feature_request.md",
+      ".github/pull_request_template.md",
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yml",
+      ".gitignore",
+      "AGENTS.md",
+      "CHANGELOG.md",
+      "CITATION.cff",
+      "CONTRIBUTING.md",
+      "LICENSE",
+      "MANIFEST.in",
+      "README.md",
+      "distribution/INSTALL.md",
+      "distribution/LICENSE",
+      "distribution/RIFF.md",
+      "distribution/__init__.py",
+      "distribution/assets/README.md",
+      "distribution/assets/manifest.json",
+      "distribution/assets/markdown-it.LICENSE",
+      "distribution/assets/markdown-it.min.js",
+      "distribution/assets/mermaid.LICENSE",
+      "distribution/assets/mermaid.min.js",
+      "distribution/commands.py",
+      "distribution/core.py",
+      "distribution/git_visibility.py",
+      "distribution/install.py",
+      "distribution/riff",
+      "distribution/riff.py",
+      "distribution/skills/riff/LICENSE",
+      "distribution/skills/riff/SKILL.md",
+      "distribution/skills/riff/agents/openai.yaml",
+      "distribution/skills/riff/references/execution/IMPLEMENTATION.md",
+      "distribution/skills/riff/references/execution/README.md",
+      "distribution/skills/riff/references/execution/REVIEW.md",
+      "distribution/skills/riff/references/execution/WORKFLOW.md",
+      "distribution/skills/riff/references/execution/gates.py",
+      "distribution/skills/riff/references/execution/template.json",
+      "distribution/skills/riff/references/execution/tests/test_gates.py",
+      "distribution/skills/riff/references/hosts.md",
+      "distribution/skills/riff/references/planning/DEBUG.md",
+      "distribution/skills/riff/references/planning/DESIGN.md",
+      "distribution/skills/riff/references/planning/DOCUMENTATION.md",
+      "distribution/skills/riff/references/planning/README.md",
+      "distribution/skills/riff/references/planning/RECORDS.md",
+      "distribution/skills/riff/references/planning/REPLAN.md",
+      "distribution/skills/riff/references/planning/RESEARCH.md",
+      "distribution/skills/riff/references/planning/WORKFLOW.md",
+      "distribution/skills/riff/references/planning/riff_core/__init__.py",
+      "distribution/skills/riff/references/planning/riff_core/config.py",
+      "distribution/skills/riff/references/planning/riff_core/diagnostic_runner.py",
+      "distribution/skills/riff/references/planning/riff_core/diagnostics.py",
+      "distribution/skills/riff/references/planning/riff_core/presentation.py",
+      "distribution/skills/riff/references/planning/riff_core/progress.py",
+      "distribution/skills/riff/references/planning/riff_core/records.py",
+      "distribution/skills/riff/references/planning/riff_core/reports.py",
+      "distribution/skills/riff/references/planning/riff_core/storage.py",
+      "distribution/skills/riff/references/planning/templates/debug.json",
+      "distribution/skills/riff/references/planning/templates/debug.md",
+      "distribution/skills/riff/references/planning/templates/plan.json",
+      "distribution/skills/riff/references/planning/templates/plan.md",
+      "distribution/skills/riff/references/planning/templates/project.json",
+      "distribution/skills/riff/references/planning/templates/replan.json",
+      "distribution/skills/riff/references/planning/templates/replan.md",
+      "distribution/skills/riff/references/planning/templates/research.json",
+      "distribution/skills/riff/references/planning/templates/research.md",
+      "distribution/skills/riff/references/planning/tests/scenarios.md",
+      "distribution/skills/riff/references/planning/tests/test_presentation.py",
+      "distribution/skills/riff/references/planning/tests/test_progress.py",
+      "distribution/skills/riff/references/planning/tests/test_records.py",
+      "distribution/skills/riff/references/planning/tests/test_reports.py",
+      "distribution/skills/riff/references/planning/tests/test_validate.py",
+      "distribution/skills/riff/references/planning/validate.py",
+      "distribution/skills/riff/references/recovery/README.md",
+      "distribution/skills/riff/references/recovery/WORKFLOW.md",
+      "distribution/skills/riff/references/recovery/state.py",
+      "distribution/skills/riff/references/recovery/tests/test_state.py",
+      "distribution/skills/riff/references/routing/ADAPTERS.md",
+      "distribution/skills/riff/references/routing/README.md",
+      "distribution/skills/riff/references/routing/WORKFLOW.md",
+      "distribution/skills/riff/references/routing/adapters.py",
+      "distribution/skills/riff/references/routing/config.json",
+      "distribution/skills/riff/references/routing/evaluation-template.json",
+      "distribution/skills/riff/references/routing/host.example.json",
+      "distribution/skills/riff/references/routing/router.py",
+      "distribution/skills/riff/references/routing/tests/test_adapters.py",
+      "distribution/skills/riff/references/routing/tests/test_router.py",
+      "distribution/status_view.py",
+      "distribution/task_commands.py",
+      "distribution/tests/test_cli.py",
+      "distribution/tests/test_features.py",
+      "distribution/tests/test_install.py",
+      "distribution/tests/test_status.py",
+      "distribution/tests/test_upgrades.py",
+      "distribution/version.py",
+      "docs/architecture.md",
+      "docs/commands.md",
+      "docs/features.md",
+      "docs/installation.md",
+      "docs/releases/1.0.0-rc.1.md",
+      "docs/releasing.md",
+      "docs/work/guidance-depth/evaluation.json",
+      "docs/work/guidance-depth/instruction-sizes.json",
+      "docs/work/guidance-depth/plan.md",
+      "docs/work/guidance-depth/review.json",
+      "docs/work/planning-clarification/plan.json",
+      "docs/work/planning-clarification/plan.md",
+      "docs/work/planning-clarification/review.json",
+      "docs/work/planning-clarification/run.json",
+      "docs/work/planning-clarification/verification.json",
+      "docs/work/riff-expansion/candidate-manifest.json",
+      "docs/work/riff-expansion/evidence/offline-render.png",
+      "docs/work/riff-expansion/execution-log.md",
+      "docs/work/riff-expansion/package-verification.json",
+      "docs/work/riff-expansion/pilots.json",
+      "docs/work/riff-expansion/plan.json",
+      "docs/work/riff-expansion/plan.md",
+      "docs/work/riff-expansion/regression-results.json",
+      "docs/work/riff-expansion/run.json",
+      "docs/work/riff-settings-directory/plan.json",
+      "docs/work/riff-settings-directory/plan.md",
+      "docs/work/riff-settings-directory/review.json",
+      "docs/work/riff-settings-directory/run.json",
+      "docs/work/riff-settings-directory/verification.json",
+      "docs/work/status-and-upgrades/plan.json",
+      "docs/work/status-and-upgrades/plan.md",
+      "docs/work/status-and-upgrades/review.json",
+      "docs/work/status-and-upgrades/run.json",
+      "docs/work/status-and-upgrades/verification.json",
+      "execution/IMPLEMENTATION.md",
+      "execution/README.md",
+      "execution/REVIEW.md",
+      "execution/WORKFLOW.md",
+      "execution/gates.py",
+      "execution/template.json",
+      "execution/tests/test_gates.py",
+      "install_cli.py",
+      "planning/DEBUG.md",
+      "planning/DESIGN.md",
+      "planning/DOCUMENTATION.md",
+      "planning/README.md",
+      "planning/RECORDS.md",
+      "planning/REPLAN.md",
+      "planning/RESEARCH.md",
+      "planning/WORKFLOW.md",
+      "planning/riff_core/__init__.py",
+      "planning/riff_core/config.py",
+      "planning/riff_core/diagnostic_runner.py",
+      "planning/riff_core/diagnostics.py",
+      "planning/riff_core/presentation.py",
+      "planning/riff_core/progress.py",
+      "planning/riff_core/records.py",
+      "planning/riff_core/reports.py",
+      "planning/riff_core/storage.py",
+      "planning/templates/debug.json",
+      "planning/templates/debug.md",
+      "planning/templates/plan.json",
+      "planning/templates/plan.md",
+      "planning/templates/project.json",
+      "planning/templates/replan.json",
+      "planning/templates/replan.md",
+      "planning/templates/research.json",
+      "planning/templates/research.md",
+      "planning/tests/scenarios.md",
+      "planning/tests/test_progress.py",
+      "planning/tests/test_records.py",
+      "planning/tests/test_reports.py",
+      "planning/tests/test_validate.py",
+      "planning/validate.py",
+      "pyproject.toml",
+      "recovery/README.md",
+      "recovery/WORKFLOW.md",
+      "recovery/state.py",
+      "recovery/tests/test_state.py",
+      "riff",
+      "riff.py",
+      "routing/ADAPTERS.md",
+      "routing/README.md",
+      "routing/WORKFLOW.md",
+      "routing/adapters.py",
+      "routing/config.json",
+      "routing/evaluation-template.json",
+      "routing/host.example.json",
+      "routing/router.py",
+      "routing/tests/test_adapters.py",
+      "routing/tests/test_router.py",
+      "tools/pilot_features.py",
+      "tools/sync_references.py",
+      "tools/verify_release.py"
+    ],
+    "plan_changed": true,
+    "binding_errors": [
+      "Live authored/configuration inputs unavailable"
+    ],
+    "blocked_tasks": [
+      "T-1",
+      "T-2",
+      "T-3",
+      "T-4"
+    ],
+    "added_tasks": [],
+    "removed_tasks": [],
+    "next_action": "Inspect changes, reconcile side effects and revalidate before clearing blockers"
+  }
+}

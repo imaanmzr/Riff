@@ -1,0 +1,5 @@
+{
+  "review": "../../review.json",
+  "checks": "build/release-100-rc1-checks/*",
+  "note": "Plan JSON preserved before rev3. Markdown reconstructed from known edits and verified against original reviewed authored digest; no original raw-newline claim. Run captured after execution stopped."
+}

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.0.0-rc.1 — 2026-11-24
+
+First release candidate for stable 1.0.0. See
+[release notes](docs/releases/1.0.0-rc.1.md) for installation and compatibility.
+
 - Show live readiness, task progress, current/historical reviews, dependency waits
   and next continuation actions in `riff status`; share current handoffs with exports.
 - Detect conflicting host skill copies, target direct Cursor updates correctly,
@@ -14,6 +19,10 @@
 - Revise setup, contributor, architecture, and workflow documentation for the
   public repository; remove obsolete installation status and test counts.
 - Update package links and citation metadata.
+- Preserve prerelease versions in installation diagnostics.
+- Add GitHub CI, issue/PR templates, and release qualification instructions.
+- Verify fresh wheel, source archive, standalone CLI and four host skill
+  installations; generate release checksums without replacing historical evidence.
 
 ## 0.8.0 — 2026-11-16
 

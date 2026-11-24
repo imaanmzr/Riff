@@ -1,0 +1,612 @@
+{
+  "schema_version": 2,
+  "requirement_details": [
+    {
+      "id": "R-1",
+      "description": "Consistent RC identity",
+      "acceptance_checks": [
+        "C-1"
+      ]
+    },
+    {
+      "id": "R-2",
+      "description": "Verified release archives and all regression suites",
+      "acceptance_checks": [
+        "C-2"
+      ]
+    },
+    {
+      "id": "R-3",
+      "description": "Clear docs and read-only CI",
+      "acceptance_checks": [
+        "C-3"
+      ]
+    },
+    {
+      "id": "R-4",
+      "description": "Publish and verify the qualified GitHub prerelease",
+      "acceptance_checks": [
+        "C-4"
+      ]
+    }
+  ],
+  "acceptance_checks": [
+    {
+      "id": "C-1",
+      "requirements": [
+        "R-1"
+      ],
+      "procedure": "Compare versions through installed entrypoints and metadata",
+      "expected": "Checks pass with actual evidence and no invented publication or host certification"
+    },
+    {
+      "id": "C-2",
+      "requirements": [
+        "R-2"
+      ],
+      "procedure": "Build/install wheel and sdist; run five suites, browser and reference parity",
+      "expected": "Checks pass with actual evidence and no invented publication or host certification"
+    },
+    {
+      "id": "C-3",
+      "requirements": [
+        "R-3"
+      ],
+      "procedure": "Inspect exact RC installation guidance and parse templates/CI",
+      "expected": "Checks pass with actual evidence and no invented publication or host certification"
+    },
+    {
+      "id": "C-4",
+      "requirements": [
+        "R-4"
+      ],
+      "procedure": "Verify remote CI on exact reviewed commit; tag target; GitHub prerelease state; attached wheel/sdist/checksums and downloaded hashes",
+      "expected": "Published v1.0.0-rc.1 targets reviewed CI-qualified commit; prerelease true, not latest stable, downloaded hashes match"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-1",
+      "choice": "Display 1.0.0-rc.1; package 1.0.0rc1",
+      "alternatives": [
+        "Use stable 1.0.0",
+        "Use normalized version everywhere"
+      ],
+      "criteria": [
+        "Consistent, verifiable release without overstated support"
+      ],
+      "consequences": [
+        "Python prerelease metadata remains normalized; UI retains requested name"
+      ],
+      "owner": "/root",
+      "reopen_if": "Verification contradicts the decision",
+      "requirements": [
+        "R-1"
+      ],
+      "evidence": [
+        "E-1",
+        "E-3"
+      ]
+    },
+    {
+      "id": "D-2",
+      "choice": "Read-only CI plus real browser and archive installation qualification",
+      "alternatives": [
+        "Document local-only checks"
+      ],
+      "criteria": [
+        "Consistent, verifiable release without overstated support"
+      ],
+      "consequences": [
+        "Remote checks must pass on released commit"
+      ],
+      "owner": "/root",
+      "reopen_if": "Verification contradicts the decision",
+      "requirements": [
+        "R-2",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1",
+        "E-4"
+      ],
+      "status": "superseded",
+      "replaced_by": "D-4"
+    },
+    {
+      "id": "D-3",
+      "choice": "RC guidance/templates and explicit verified GitHub prerelease publication",
+      "alternatives": [
+        "Preparation only",
+        "Add a marketplace submission"
+      ],
+      "criteria": [
+        "Consistent, verifiable release without overstated support"
+      ],
+      "consequences": [
+        "No PyPI or marketplace upload; preserve existing tags and releases"
+      ],
+      "owner": "/root",
+      "reopen_if": "Verification contradicts the decision",
+      "requirements": [
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-2",
+        "E-3"
+      ]
+    },
+    {
+      "id": "D-4",
+      "choice": "Read-only reusable CI; explicit RC tag triggers qualification then a narrowly scoped release-writing job",
+      "alternatives": [
+        "Require manual browser sign-in for publication",
+        "Give all CI jobs release access"
+      ],
+      "criteria": [
+        "Consistent, verifiable release without overstated support"
+      ],
+      "consequences": [
+        "Only an explicit RC tag can publish; all checks and package verification precede the publishing job; drafts get assets before publishing; no stable releases or PyPI upload"
+      ],
+      "owner": "/root",
+      "reopen_if": "Verification contradicts the decision",
+      "requirements": [
+        "R-2",
+        "R-4"
+      ],
+      "evidence": [
+        "E-1",
+        "E-4"
+      ],
+      "supersedes": [
+        "D-2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-1",
+      "kind": "source",
+      "source": "Release metadata, version inspection regex and release verifier at baseline",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    },
+    {
+      "id": "E-2",
+      "kind": "repository",
+      "source": "https://api.github.com/repos/imaanmzr/Riff (releases, community/profile, actions/workflows)",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    },
+    {
+      "id": "E-3",
+      "kind": "documentation",
+      "source": "https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository ; https://packaging.python.org/en/latest/specifications/version-specifiers/ ; https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/about-community-profiles-for-public-repositories",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    },
+    {
+      "id": "E-4",
+      "kind": "verification",
+      "source": "docs/work/status-and-upgrades/verification.json: prior browser timeout; current unmodified browser suite passed 7 tests",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    },
+    {
+      "id": "E-5",
+      "kind": "verification",
+      "source": "Local Git HTTPS credential unavailable and in-app GitHub browser signed out; SSH Git access available; GitHub Actions repository token can publish authorized explicit-tag prereleases",
+      "classification": "observed",
+      "accessed": "2026-11-24"
+    }
+  ],
+  "reports": [
+    {
+      "id": "REPLAN1",
+      "kind": "replan",
+      "path": "reports/REPLAN1.json",
+      "requirements": [
+        "R-2",
+        "R-3",
+        "R-4"
+      ],
+      "evidence": [
+        "E-5"
+      ]
+    }
+  ],
+  "reviewed_artifacts": [
+    "plan.md",
+    "reports/REPLAN1.json",
+    "reports/REPLAN1.md"
+  ],
+  "source_manifest": {
+    ".gitattributes": "e4ac889842deb5273482000c5f79e73616a32c716a97312ebe864ec0b69681b9",
+    ".github/ISSUE_TEMPLATE/bug_report.md": "0f0ac3d9d57f47c7f8e7ec8bba0a229308f9d3fe812c076be4cb0b622d00e43c",
+    ".github/ISSUE_TEMPLATE/feature_request.md": "180b09d1b8e8dec7377c9e1d54b20cc5c0d20f3484848e83f6dfc42ad77e53dc",
+    ".github/pull_request_template.md": "dea44851b2ae7f98e15017b4ecd5676b721d2bb0aadf6beddca63466a1eddf67",
+    ".github/workflows/ci.yml": "0538a18acc02aeaf642a1e51f5c2e61fd15fe863ffa0bdd0ad5d2839f308905c",
+    ".gitignore": "71c06ec524b230957f58faf05079d01f89edd3e696ab0363d41d26c840cf571b",
+    "AGENTS.md": "42d7d7badadadcd96b6aed250d6b482e9243797c3a30cdaadbfa6fb28f421007",
+    "CHANGELOG.md": "5d6034a43649ac8172b6536e8356dbadc98e0f07c10d4b6863695be106c4db95",
+    "CITATION.cff": "c498a2e2d9f9647945f0cdc546b6c3ee363278ae884ba5b2e735f282a6917d71",
+    "CONTRIBUTING.md": "15461c65f1542f7ac6083a9b41276f57a7a99ae7a824106ab3115f2dd900b8ab",
+    "LICENSE": "381ae0f10658f4c43a01586bc2c6939826a93a27db4b4096ac4aad3a1a9854fc",
+    "MANIFEST.in": "166b84de978be3fd65ccfe6be9cfe4840a6a35639e2f8cad5d22c471b1c3672f",
+    "README.md": "16e741e86d54c5ad1cdf5a2622a4818ec0c493ffbb2382ddc8149ccbfba4fb60",
+    "distribution/INSTALL.md": "0a07ea05b26651918cd7e53ff7e59e7a87249f6d9b17be335f9162280da1dd1e",
+    "distribution/LICENSE": "381ae0f10658f4c43a01586bc2c6939826a93a27db4b4096ac4aad3a1a9854fc",
+    "distribution/RIFF.md": "e09c5fda93ba23bd20d59470e5f110a608a04d13ba9cf7178775e55a9ac808ac",
+    "distribution/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "distribution/assets/README.md": "9087c4451139ab8fe03ed0ace084bae9b58646fdcaf6a1cd1e02d498b76679c6",
+    "distribution/assets/manifest.json": "ddc00f6e8ab7967b3e96c2238b3264178867dd13586277b772bd58025c019bb8",
+    "distribution/assets/markdown-it.LICENSE": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+    "distribution/assets/markdown-it.min.js": "38c70a1e7ca91ab40e2d9e6e60129851a717ed1c7d4acbbdd41bf9503791cf68",
+    "distribution/assets/mermaid.LICENSE": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80",
+    "distribution/assets/mermaid.min.js": "07e37dfa97b337ccc85365d57eddf99b9706f09db3b59b260d0333b23b343c4b",
+    "distribution/commands.py": "f75f995b31d9f9d7629e52fcfe16a26126869b4387a1b9cf05ef3d2d3e047385",
+    "distribution/core.py": "ccafb3bfc2b5bce17f8c0c072eb4ee7fc0908144fa7cc25d3a1786ded743f8c4",
+    "distribution/git_visibility.py": "24068cf890bbc689422b8a75d0df93f0742178e522edadc9738eb10e94133d48",
+    "distribution/install.py": "f057afa5f317e8be5b0181c1c57990c53873e12d47ad7c405ea35f5ba8b8effd",
+    "distribution/riff": "e55e59b82cb9a55cdacef828574c20bcd9671b9e39df6d9c3da5fb749302a8e4",
+    "distribution/riff.py": "b63ff8e2df95b3b0f12600b4773c49401fe05ca3c08043be48bda4ca278f68b3",
+    "distribution/skills/riff/LICENSE": "381ae0f10658f4c43a01586bc2c6939826a93a27db4b4096ac4aad3a1a9854fc",
+    "distribution/skills/riff/SKILL.md": "2c77c5d0ee0103b732523ab4e8165ba71a891119c097d330ffbf6bd3c2ba5011",
+    "distribution/skills/riff/agents/openai.yaml": "9d191d9662422c435e3e7067704ff5cf3bb4de21e3d52639a896e9b4753263be",
+    "distribution/skills/riff/references/execution/IMPLEMENTATION.md": "191d085094d5995ec8183fc2fa70597bbba7402f0e8d38eaa104e67b63c4f444",
+    "distribution/skills/riff/references/execution/README.md": "aa5fccc4314ff9d39b02fa66fe8ce446906194440fc8583990c8eb67771f52ac",
+    "distribution/skills/riff/references/execution/REVIEW.md": "27fd6462ecd43974930080b6edf6953bbd1118c03f5ed7a7fdc9da5e75f262f7",
+    "distribution/skills/riff/references/execution/WORKFLOW.md": "3ccca20abef4cedf7fcfe0a66696f5cafde19a1dbdb1d89bfddc9c73c9436120",
+    "distribution/skills/riff/references/execution/gates.py": "ebfe401a20d33f9a6feace9e880776130f4a1e3734def7cbef710e25576a0796",
+    "distribution/skills/riff/references/execution/template.json": "02e506c6a9d0b312b67635cfeeb2bd06ae8b11b85eb6a7e53f09bfd4ec4c4573",
+    "distribution/skills/riff/references/execution/tests/test_gates.py": "db8b0309466e16d81cd6ec99fccb63b9cd9552775c1c396eae342f9e30a4761a",
+    "distribution/skills/riff/references/hosts.md": "618c1298b66d444042fb18eff247bd0a14b08eac8107df5097f843272c42cdd6",
+    "distribution/skills/riff/references/planning/DEBUG.md": "e0b37349ea75d7761ee0a649276785d9ed96cfb8b3b95945bba0acabff0d64e9",
+    "distribution/skills/riff/references/planning/DESIGN.md": "91d7c8a1db77bdb1fbe62bce1f62aa70c7a92b52988fd13dd307665c494b18ae",
+    "distribution/skills/riff/references/planning/DOCUMENTATION.md": "26b9e102c4eb5ab6e6658a677e9a53135a89b4eac459065014944cfd902a4861",
+    "distribution/skills/riff/references/planning/README.md": "36c0875db67a11caa1242ab2873b85a28b3a18bd55757a271a8d11430af327ca",
+    "distribution/skills/riff/references/planning/RECORDS.md": "ee0b3651f67f36f0afef9dd8454dacbb742c3f87c7972028436ce2fe49974785",
+    "distribution/skills/riff/references/planning/REPLAN.md": "ba02fb686f6da39c0a24cce98dea3ee6a5972d58ad0101fba00921901fdec1bd",
+    "distribution/skills/riff/references/planning/RESEARCH.md": "77a7f8b29b0c6d791aeb1e401e5f5628743ae27f4dbe013f9af0f7794994eb16",
+    "distribution/skills/riff/references/planning/WORKFLOW.md": "9f40640a7f032ef202e1fb4c9d101a89840fcae5d8bdeb861925628a51f6958d",
+    "distribution/skills/riff/references/planning/riff_core/__init__.py": "698509132d0b5b011c0c1e0e991ad6d26c2626a254a8c13b22388653f3cba3e3",
+    "distribution/skills/riff/references/planning/riff_core/config.py": "31a6fe276d00c5ef9a67e552a3ac6d8131bb2c4e88145d526a0cbf68711f8ef8",
+    "distribution/skills/riff/references/planning/riff_core/diagnostic_runner.py": "a4a2bdd868a4030173b69b322327888e3f39e7dc28cf1075ec440c5ab9b7ad9b",
+    "distribution/skills/riff/references/planning/riff_core/diagnostics.py": "95c5a820f35ffbd129ae59e8f0bd673896067ab9150fc7b54b23f6e068ed5ea1",
+    "distribution/skills/riff/references/planning/riff_core/presentation.py": "c5140ee23e7740fdf9ff9c108f511524ef822722fb8b3742f1582b3c05354ecd",
+    "distribution/skills/riff/references/planning/riff_core/progress.py": "6c4e975d2b9a0ade2fcd858f05ab73d469ee7bd380350f33a7cb9622610234bc",
+    "distribution/skills/riff/references/planning/riff_core/records.py": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c",
+    "distribution/skills/riff/references/planning/riff_core/reports.py": "ec452add91140c7595263c9fff66a0e538eedf301806a390eff48504cd785eb3",
+    "distribution/skills/riff/references/planning/riff_core/storage.py": "bf74faa43785fe034b3c072f847887c0d788cefbc1c50d3b2f708347d14fde92",
+    "distribution/skills/riff/references/planning/templates/debug.json": "e7bf238cd0b722fa1107cecbc8b277f83a785f9a94df12a3511a39ba0d177124",
+    "distribution/skills/riff/references/planning/templates/debug.md": "e85370b1141a90490ede2ab89b27b2daed6bc0ee0a19534a6319c55959c5abfb",
+    "distribution/skills/riff/references/planning/templates/plan.json": "d08e22ad2696a03ca0aff6198c7dfae0a9f2f3aa7d30ceaab1ad19c5f994b4ce",
+    "distribution/skills/riff/references/planning/templates/plan.md": "2fe9a77079454193899b83705ab3c956928ae30602424e3f38fef57f45194844",
+    "distribution/skills/riff/references/planning/templates/project.json": "ab6d5aecd429ce4a4e35306d361003db22544ab30239749d014224f5a2087864",
+    "distribution/skills/riff/references/planning/templates/replan.json": "03e27716e25eecd7da88c93678c4ade1d3db8de75590fcd623d7005725cc7d09",
+    "distribution/skills/riff/references/planning/templates/replan.md": "11d7623a8ff99ee25a291ea824193d349fb3539a5a0e295532a68383e21f2a2e",
+    "distribution/skills/riff/references/planning/templates/research.json": "e7b2f09f27913e0cdc170d7e5dbe5b3460ac41b762094f71e2bb9109107af151",
+    "distribution/skills/riff/references/planning/templates/research.md": "2945cab56d6acda510f391562ca19e4fb3ef2d5b33d6dddca68d44dde1ec2b10",
+    "distribution/skills/riff/references/planning/tests/scenarios.md": "03c578979576d254d530cd2e667a19081dcda46ad86b972cbf2e932aba51996a",
+    "distribution/skills/riff/references/planning/tests/test_presentation.py": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d",
+    "distribution/skills/riff/references/planning/tests/test_progress.py": "a1d49482097cf30ba026ecddb094ff16f92f7630b3310972df726ee7422068cb",
+    "distribution/skills/riff/references/planning/tests/test_records.py": "9878582c037918c0b88c78807185e72035b53474db34ee09fcc794eb4dd4b521",
+    "distribution/skills/riff/references/planning/tests/test_reports.py": "f5e684a4e76451007e07d228d1bea2027cb66a4d72801f74a522b063828b55df",
+    "distribution/skills/riff/references/planning/tests/test_validate.py": "2d1046dc326fcff9cd0b0e9fc0712f6ff5893a2df594165e025534f94ba70006",
+    "distribution/skills/riff/references/planning/validate.py": "31d50ff3c14829404006926ee6c143ab4e03c205288f0043460c78b74d87d145",
+    "distribution/skills/riff/references/recovery/README.md": "774d88358d3fc43e63e7e84870b0377ebbfb68348a1710999ed040c605284e90",
+    "distribution/skills/riff/references/recovery/WORKFLOW.md": "1bbc6aa3fa3c165c8118ba75db5c70fadade1b4cc5e389bd16e365a41aed0759",
+    "distribution/skills/riff/references/recovery/state.py": "bd33b1bbceaa578fb5c696485cb04c47dd2f458e97e015e22079f516ccbce873",
+    "distribution/skills/riff/references/recovery/tests/test_state.py": "09585198850e946f44365e890e2ceb255fb91d64d030d71b280d05b20195b6df",
+    "distribution/skills/riff/references/routing/ADAPTERS.md": "5c8daa118fdbe5485dfe942389b15ad7660db17884e00c7b2520d209b97165b8",
+    "distribution/skills/riff/references/routing/README.md": "ac5a18aa57980bc1272e57f93f16a150e9adf2bcb1efd4186f5f706acec24e61",
+    "distribution/skills/riff/references/routing/WORKFLOW.md": "9336f78303f6b6b920919cf3633fdfb8a54df39fed4f2df6febde1aaacef8d90",
+    "distribution/skills/riff/references/routing/adapters.py": "f31170631e4853655811e85a73e57a78b170e9bf76c66ae726dcbecdf02c81a7",
+    "distribution/skills/riff/references/routing/config.json": "52fde26b137bc2691b9d3952afb146e41f9ccdd4189caa23c398e83a4bb1937b",
+    "distribution/skills/riff/references/routing/evaluation-template.json": "995f260151fff9ae5bdc4d698a6f56391c1ad87aa216b8352481749e2171c91a",
+    "distribution/skills/riff/references/routing/host.example.json": "aca2250e7d1875d2d9655fd3a6a9e73c15bd242372f02e21a4aa694304e776ff",
+    "distribution/skills/riff/references/routing/router.py": "68236ca3cc0758b2c484760756e04233f513996b669645ef5426a31d3af247d8",
+    "distribution/skills/riff/references/routing/tests/test_adapters.py": "d06bb3d284c0884dfe1138e906eca93c7155a35054e702e0d6a9c98cd529c6be",
+    "distribution/skills/riff/references/routing/tests/test_router.py": "859bb3f03c7ef241adabefe5efa257cb8127b9d253322542289578b5495dc829",
+    "distribution/status_view.py": "144737183fce336eb0045ca5faddbc60607790fe0ba2cf0c9e0b01f3e26b1a60",
+    "distribution/task_commands.py": "9512976aa7f4c255c021849147f4ebcf87c3ce75cc53f3f102c821d39017db7b",
+    "distribution/tests/test_cli.py": "d18d2d352939f265170e72302915799273250563844be9f1d46a8c99e9c155d1",
+    "distribution/tests/test_features.py": "adfe18b3fa2faa053a1d52685e20b1b6c6f2275ba10024cbb6cf13fb845d35af",
+    "distribution/tests/test_install.py": "0e7ea1cca9a15a5c26005cac06851551acbf9ba45038731e46e9b0a46e13154c",
+    "distribution/tests/test_status.py": "85c669c5bde3a31f8b0b194a205eac353d588ecd29a328b843a52e113c7e08a8",
+    "distribution/tests/test_upgrades.py": "c4194c763f942d8087b5bec7f6e1c8fb0e3e1a39e00c1aded354134c195f5759",
+    "distribution/version.py": "cae03cfcdb89fd58682c9ccdb61e660cf0163280ef14f5b71038facb36a50ca7",
+    "docs/architecture.md": "4e4e3e18de26202709bab3c518c95357db4f0bc6009510eab59486d6ebb0424c",
+    "docs/commands.md": "7c8742fa312452dc92c529d15afceb25f66013e3a4c672b798a66cdf79386d2d",
+    "docs/features.md": "3ff731c2fd2428c04e9520a90f4d970e976ec5405d8d0532964c27d76931e5b8",
+    "docs/installation.md": "3196002c865fc9ad706d4d6ab5264a624d92f76f4aa4e4b4933be3d29a48fbec",
+    "docs/releases/1.0.0-rc.1.md": "799082ac90ec27f0cfd15e26a9e4ec96c6b139eaa032a997f853787f0ab385cd",
+    "docs/releasing.md": "69d9f6c242f4b11e8d2f91ca8464ac15309e43520237f94c646b5d88ec7d8ac6",
+    "docs/work/guidance-depth/evaluation.json": "00c4a45d11cc07d8582c2d92e4388d6ec2fd590cd7f56d1e6982e2f5848966c6",
+    "docs/work/guidance-depth/instruction-sizes.json": "528739d5e726d022cc27a45f58470bfff6544fff29d7af04717cb8f524ba790d",
+    "docs/work/guidance-depth/plan.md": "f0bdcb998dc6a5a6718afc8e1a57be55321a4a27e4327b6deb0a4476517b2f69",
+    "docs/work/guidance-depth/review.json": "164dc88aae6ee95e846310832273f02ecc59a850cd62eef21235423be442b9bf",
+    "docs/work/planning-clarification/plan.json": "cb05b9566ae58d136fe53fcb022fb41a7df8ae3256dcc3bce01cf02df9ea3278",
+    "docs/work/planning-clarification/plan.md": "c57e834db1676d2d70bffaea9aac0940e361f37e8d1ef93d6b921fcf9824ffe1",
+    "docs/work/planning-clarification/review.json": "6240a2cfb220452b1dd3cc6d6b8817bc0cbfff2dca793d95c8e72b4ac6f26a18",
+    "docs/work/planning-clarification/run.json": "ca88d346c954206f698badf258cfabaf861cf2b434d4826c9af515948f5defa4",
+    "docs/work/planning-clarification/verification.json": "0dad7706c36b0e35b94782bfd7b23d00c23e075f6f1c5f75303dd34715a413e9",
+    "docs/work/riff-expansion/candidate-manifest.json": "0e69d72cece12e741a5dbdcaa165ff8196e2f68049c6e88632d33c8fcb35f711",
+    "docs/work/riff-expansion/evidence/offline-render.png": "00836fd8ad79dce8d9a690caa54e2af0a4a194553fc3a2b1b7fda5c08edf6afc",
+    "docs/work/riff-expansion/execution-log.md": "8ccf3cd75a70c17eb09b3c567c1092c6294c45eec7f472874cc15ac9d6270fa3",
+    "docs/work/riff-expansion/package-verification.json": "82356fbc7443db91e7f29341722429297a660b6a394012f1edd049b067b6c976",
+    "docs/work/riff-expansion/pilots.json": "6f128ed2ebe9d80fc26e880f286ed4fd68dbdc2ac70fcb3a9554f21984012952",
+    "docs/work/riff-expansion/plan.json": "72c2607efc453e33d81ddfb2310e2e489cb385a35a39a5b6dea1f7175e551882",
+    "docs/work/riff-expansion/plan.md": "1aac17ecf13b6899e5611890e20398c267cd9be19f538a7b6d3a6dfbd8afea9b",
+    "docs/work/riff-expansion/regression-results.json": "782a4a4513f613d5a5f8145ec0bc3f9dac1808f26e677683133ec31adde571f5",
+    "docs/work/riff-expansion/run.json": "f589efdfe673046c66350950c8a3e019059d46f24b8d613e89991eea2d43f253",
+    "docs/work/riff-settings-directory/plan.json": "fa0748f545c76fed17c36193edf5506ee48f8e06cc0d90bd679b7e53bffb850f",
+    "docs/work/riff-settings-directory/plan.md": "d842e62a5cf947c0ff800fec6d9e6e3bea3a2075bff8e72e07da4f5832f015c9",
+    "docs/work/riff-settings-directory/review.json": "d226f84efbc4a675517e30394612f48e5112e54a304b063f3eb5c3e8cc703637",
+    "docs/work/riff-settings-directory/run.json": "d90c4d4d6cbdb6c4f306ccb7d9664c681cf976f08fb5d29998942b965dfba504",
+    "docs/work/riff-settings-directory/verification.json": "2949e465f27ae02820a521d02178cac20d9d0adbe1fd7bfec320bda1e9736b68",
+    "docs/work/status-and-upgrades/plan.json": "860707f1e3d41fb619e181d051a11af3bf571a7ee5002fe337189fb951a8d755",
+    "docs/work/status-and-upgrades/plan.md": "2fd2b9b9f32cd088adc999840a86410d58188af81680fd9b32aaeb9adb016cd4",
+    "docs/work/status-and-upgrades/review.json": "9abf23ac4c26f3302b6efdd038c957a37c56fd91f15ce765c533bc280bde6c19",
+    "docs/work/status-and-upgrades/run.json": "428b83c76e007e5e3ad6f3b339bd5023577ad2c738462ca920ea41e86c2ea4aa",
+    "docs/work/status-and-upgrades/verification.json": "fa88c0cfd33c2f3b0888cfdba9fc2f71db51a6925ba41f7afd2e80ecd6decd8d",
+    "execution/IMPLEMENTATION.md": "191d085094d5995ec8183fc2fa70597bbba7402f0e8d38eaa104e67b63c4f444",
+    "execution/README.md": "aa5fccc4314ff9d39b02fa66fe8ce446906194440fc8583990c8eb67771f52ac",
+    "execution/REVIEW.md": "27fd6462ecd43974930080b6edf6953bbd1118c03f5ed7a7fdc9da5e75f262f7",
+    "execution/WORKFLOW.md": "3ccca20abef4cedf7fcfe0a66696f5cafde19a1dbdb1d89bfddc9c73c9436120",
+    "execution/gates.py": "ebfe401a20d33f9a6feace9e880776130f4a1e3734def7cbef710e25576a0796",
+    "execution/template.json": "02e506c6a9d0b312b67635cfeeb2bd06ae8b11b85eb6a7e53f09bfd4ec4c4573",
+    "execution/tests/test_gates.py": "db8b0309466e16d81cd6ec99fccb63b9cd9552775c1c396eae342f9e30a4761a",
+    "install_cli.py": "32a377a9833b09c11cf2a668c23cdcc411988145dc0c27dcf3c49b8829572577",
+    "planning/DEBUG.md": "e0b37349ea75d7761ee0a649276785d9ed96cfb8b3b95945bba0acabff0d64e9",
+    "planning/DESIGN.md": "91d7c8a1db77bdb1fbe62bce1f62aa70c7a92b52988fd13dd307665c494b18ae",
+    "planning/DOCUMENTATION.md": "26b9e102c4eb5ab6e6658a677e9a53135a89b4eac459065014944cfd902a4861",
+    "planning/README.md": "36c0875db67a11caa1242ab2873b85a28b3a18bd55757a271a8d11430af327ca",
+    "planning/RECORDS.md": "ee0b3651f67f36f0afef9dd8454dacbb742c3f87c7972028436ce2fe49974785",
+    "planning/REPLAN.md": "ba02fb686f6da39c0a24cce98dea3ee6a5972d58ad0101fba00921901fdec1bd",
+    "planning/RESEARCH.md": "77a7f8b29b0c6d791aeb1e401e5f5628743ae27f4dbe013f9af0f7794994eb16",
+    "planning/WORKFLOW.md": "9f40640a7f032ef202e1fb4c9d101a89840fcae5d8bdeb861925628a51f6958d",
+    "planning/riff_core/__init__.py": "698509132d0b5b011c0c1e0e991ad6d26c2626a254a8c13b22388653f3cba3e3",
+    "planning/riff_core/config.py": "31a6fe276d00c5ef9a67e552a3ac6d8131bb2c4e88145d526a0cbf68711f8ef8",
+    "planning/riff_core/diagnostic_runner.py": "a4a2bdd868a4030173b69b322327888e3f39e7dc28cf1075ec440c5ab9b7ad9b",
+    "planning/riff_core/diagnostics.py": "95c5a820f35ffbd129ae59e8f0bd673896067ab9150fc7b54b23f6e068ed5ea1",
+    "planning/riff_core/presentation.py": "c5140ee23e7740fdf9ff9c108f511524ef822722fb8b3742f1582b3c05354ecd",
+    "planning/riff_core/progress.py": "6c4e975d2b9a0ade2fcd858f05ab73d469ee7bd380350f33a7cb9622610234bc",
+    "planning/riff_core/records.py": "9572a0fda66549a8c1c8c3f351a3d5e9bbcbc3b114af5107738486720e45422c",
+    "planning/riff_core/reports.py": "ec452add91140c7595263c9fff66a0e538eedf301806a390eff48504cd785eb3",
+    "planning/riff_core/storage.py": "bf74faa43785fe034b3c072f847887c0d788cefbc1c50d3b2f708347d14fde92",
+    "planning/templates/debug.json": "e7bf238cd0b722fa1107cecbc8b277f83a785f9a94df12a3511a39ba0d177124",
+    "planning/templates/debug.md": "e85370b1141a90490ede2ab89b27b2daed6bc0ee0a19534a6319c55959c5abfb",
+    "planning/templates/plan.json": "d08e22ad2696a03ca0aff6198c7dfae0a9f2f3aa7d30ceaab1ad19c5f994b4ce",
+    "planning/templates/plan.md": "2fe9a77079454193899b83705ab3c956928ae30602424e3f38fef57f45194844",
+    "planning/templates/project.json": "ab6d5aecd429ce4a4e35306d361003db22544ab30239749d014224f5a2087864",
+    "planning/templates/replan.json": "03e27716e25eecd7da88c93678c4ade1d3db8de75590fcd623d7005725cc7d09",
+    "planning/templates/replan.md": "11d7623a8ff99ee25a291ea824193d349fb3539a5a0e295532a68383e21f2a2e",
+    "planning/templates/research.json": "e7b2f09f27913e0cdc170d7e5dbe5b3460ac41b762094f71e2bb9109107af151",
+    "planning/templates/research.md": "2945cab56d6acda510f391562ca19e4fb3ef2d5b33d6dddca68d44dde1ec2b10",
+    "planning/tests/scenarios.md": "03c578979576d254d530cd2e667a19081dcda46ad86b972cbf2e932aba51996a",
+    "planning/tests/test_presentation.py": "6c8d133c785b08ca4635872cd5e434792872b5754049dcccc1aaaf242649e17d",
+    "planning/tests/test_progress.py": "a1d49482097cf30ba026ecddb094ff16f92f7630b3310972df726ee7422068cb",
+    "planning/tests/test_records.py": "9878582c037918c0b88c78807185e72035b53474db34ee09fcc794eb4dd4b521",
+    "planning/tests/test_reports.py": "f5e684a4e76451007e07d228d1bea2027cb66a4d72801f74a522b063828b55df",
+    "planning/tests/test_validate.py": "2d1046dc326fcff9cd0b0e9fc0712f6ff5893a2df594165e025534f94ba70006",
+    "planning/validate.py": "31d50ff3c14829404006926ee6c143ab4e03c205288f0043460c78b74d87d145",
+    "pyproject.toml": "67379a1573d4373d493169ef8ae222e553e1d8a14f3449e068a57cec59f04fde",
+    "recovery/README.md": "774d88358d3fc43e63e7e84870b0377ebbfb68348a1710999ed040c605284e90",
+    "recovery/WORKFLOW.md": "1bbc6aa3fa3c165c8118ba75db5c70fadade1b4cc5e389bd16e365a41aed0759",
+    "recovery/state.py": "bd33b1bbceaa578fb5c696485cb04c47dd2f458e97e015e22079f516ccbce873",
+    "recovery/tests/test_state.py": "09585198850e946f44365e890e2ceb255fb91d64d030d71b280d05b20195b6df",
+    "riff": "e55e59b82cb9a55cdacef828574c20bcd9671b9e39df6d9c3da5fb749302a8e4",
+    "riff.py": "16b415ecdd99a358863447246159cfe917a51d80744f4ef789eb52cc09c2bc30",
+    "routing/ADAPTERS.md": "5c8daa118fdbe5485dfe942389b15ad7660db17884e00c7b2520d209b97165b8",
+    "routing/README.md": "ac5a18aa57980bc1272e57f93f16a150e9adf2bcb1efd4186f5f706acec24e61",
+    "routing/WORKFLOW.md": "9336f78303f6b6b920919cf3633fdfb8a54df39fed4f2df6febde1aaacef8d90",
+    "routing/adapters.py": "f31170631e4853655811e85a73e57a78b170e9bf76c66ae726dcbecdf02c81a7",
+    "routing/config.json": "52fde26b137bc2691b9d3952afb146e41f9ccdd4189caa23c398e83a4bb1937b",
+    "routing/evaluation-template.json": "995f260151fff9ae5bdc4d698a6f56391c1ad87aa216b8352481749e2171c91a",
+    "routing/host.example.json": "aca2250e7d1875d2d9655fd3a6a9e73c15bd242372f02e21a4aa694304e776ff",
+    "routing/router.py": "68236ca3cc0758b2c484760756e04233f513996b669645ef5426a31d3af247d8",
+    "routing/tests/test_adapters.py": "d06bb3d284c0884dfe1138e906eca93c7155a35054e702e0d6a9c98cd529c6be",
+    "routing/tests/test_router.py": "859bb3f03c7ef241adabefe5efa257cb8127b9d253322542289578b5495dc829",
+    "tools/pilot_features.py": "2a0b60d12c3e17457adf7fa0eae1d96ed03452692bbf8ba05977440f0eb529f4",
+    "tools/sync_references.py": "01e82fa68dd1f3bc933004ed0c8ba9537aab96212424bf4cc4541a660f9e31e6",
+    "tools/verify_release.py": "b54e11f1fdd2f65fdd11c4e74dd28f0469dea86f073d1ac1333de5d9466b2eb6",
+    ".github/workflows/release.yml": null
+  },
+  "behavior_config": {
+    "build_command": null,
+    "test_command": null,
+    "architecture_constraints": [],
+    "domain_invariants": [],
+    "sections": [
+      "problem",
+      "behavior",
+      "contracts"
+    ],
+    "required_checks": [
+      "acceptance",
+      "regression"
+    ],
+    "debug_command_timeout": 60,
+    "debug_total_timeout": 300
+  },
+  "behavior_provenance": {
+    "build_command": "built-in",
+    "test_command": "built-in",
+    "architecture_constraints": "built-in",
+    "domain_invariants": "built-in",
+    "sections": "profile:feature",
+    "required_checks": "profile:feature",
+    "debug_command_timeout": "built-in",
+    "debug_total_timeout": "built-in",
+    "detail": "built-in",
+    "diagrams": "built-in",
+    "profile": "built-in"
+  },
+  "route": "standard",
+  "status": "READY",
+  "revision": 3,
+  "source_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+  "requirements": [
+    "R-1",
+    "R-2",
+    "R-3",
+    "R-4"
+  ],
+  "tasks": [
+    {
+      "id": "T-1",
+      "objective": "Consistent RC versions",
+      "inputs": [
+        "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+        "plan.md"
+      ],
+      "dependencies": [],
+      "scope": [
+        "distribution/install.py",
+        "distribution/riff.py",
+        "distribution/version.py",
+        "distribution/tests",
+        "pyproject.toml",
+        "CITATION.cff",
+        "distribution/skills/riff/SKILL.md"
+      ],
+      "outputs": [
+        "Consistent RC versions"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-1"
+      ],
+      "verification": [
+        "C-1"
+      ],
+      "integration_order": 1
+    },
+    {
+      "id": "T-2",
+      "objective": "Reproducible release verification",
+      "inputs": [
+        "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+        "plan.md"
+      ],
+      "dependencies": [
+        "T-1"
+      ],
+      "scope": [
+        "tools/verify_release.py",
+        "planning/tests/test_presentation.py",
+        "distribution/tests"
+      ],
+      "outputs": [
+        "Reproducible release verification"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-2"
+      ],
+      "verification": [
+        "C-2"
+      ],
+      "integration_order": 2
+    },
+    {
+      "id": "T-3",
+      "objective": "Release documentation and CI",
+      "inputs": [
+        "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+        "plan.md"
+      ],
+      "dependencies": [
+        "T-2"
+      ],
+      "scope": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "CHANGELOG.md",
+        "docs/installation.md",
+        "docs/commands.md",
+        "docs/releases",
+        ".github",
+        ".github/workflows/release.yml"
+      ],
+      "outputs": [
+        "Release documentation and CI"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-3"
+      ],
+      "verification": [
+        "C-3"
+      ],
+      "integration_order": 3
+    },
+    {
+      "id": "T-4",
+      "objective": "Publish and verify GitHub prerelease",
+      "inputs": [
+        "Accepted exact candidate review",
+        "Remote CI and qualified packages"
+      ],
+      "dependencies": [
+        "T-3"
+      ],
+      "scope": [
+        "GitHub repository imaanmzr/Riff: release branch, v1.0.0-rc.1 tag and prerelease assets"
+      ],
+      "outputs": [
+        "Verified published GitHub prerelease and matching asset hashes"
+      ],
+      "owner": "/root",
+      "capability": "coding",
+      "reviewer": "/root/clarification_review",
+      "requirements": [
+        "R-4"
+      ],
+      "verification": [
+        "C-4"
+      ],
+      "integration_order": 4
+    }
+  ],
+  "unresolved_questions": [],
+  "task_id": "release-100-rc1",
+  "title": "Release Riff 1.0.0-rc.1",
+  "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+  "authored_digest": "d6a7d0ea53ed2b06f8b2f2142e935f5c1f14c2f68f29ab9d2c46aeb14ee43c8c",
+  "review_history": [
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 2,
+      "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+      "authored_digest": "f4eb8458a0ae3e7c6f73e320e7af7e2a0b911e92a2540f89a4e7d1930287112a",
+      "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+      "plan_digest": "8fde4775f8178628f314616851699a7a06b0b1da2795a79cd2d1157816ff3846",
+      "evidence": "Independent revision 2 review; F-1/F-2 and capability correction resolved; no outstanding findings"
+    }
+  ],
+  "reviews": [
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 3,
+      "source_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+      "authored_digest": "d6a7d0ea53ed2b06f8b2f2142e935f5c1f14c2f68f29ab9d2c46aeb14ee43c8c",
+      "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+      "plan_digest": "9ce4addd5fb3c5dde90c129964be2c026af505c6aca7d39faa5b6aaf6d814657",
+      "evidence": "Independent revision-3 plan review; registered replan report, conservative recovery, snapshot hashes and 191 live bindings validated; no outstanding findings"
+    }
+  ]
+}

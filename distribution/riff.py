@@ -7,10 +7,12 @@ if __package__:
     from . import commands, task_commands, core
     from .git_visibility import GitVisibility
     from .install import HOSTS, LEGACY_NAME, NAME, install, installation_host
+    from .version import VERSION
 else:
     import commands, task_commands, core
     from git_visibility import GitVisibility
     from install import HOSTS, LEGACY_NAME, NAME, install, installation_host
+    from version import VERSION
 
 
 def ask(label, default='', choices=None):
@@ -87,7 +89,7 @@ def build_parser():
         epilog='Examples:\n  riff init --host cursor\n  riff plan "Add partial refunds" --host cursor\n  riff design "Compare retry interfaces"\n  riff review --task refunds\n  riff status\n\nRun riff COMMAND --help for command options.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument('--version', action='version', version='Riff 0.8.0')
+    parser.add_argument('--version', action='version', version='Riff ' + VERSION)
     subparsers = parser.add_subparsers(dest='action', title='commands', metavar='COMMAND')
     descriptions = {
         'init': 'Install the project skill and open the setup wizard',

@@ -1,0 +1,48 @@
+{
+  "prior_findings": [
+    "F-1 machine traceability/configuration: resolved",
+    "F-2 publication task: resolved"
+  ],
+  "plan_review_history": [
+    {
+      "reviewer": "/root/clarification_review",
+      "independent": true,
+      "verdict": "pass",
+      "revision": 2,
+      "source_revision": "8eb04114b9526fc8b4061db0cf0ee1b24daaf9ae",
+      "authored_digest": "f4eb8458a0ae3e7c6f73e320e7af7e2a0b911e92a2540f89a4e7d1930287112a",
+      "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+      "plan_digest": "8fde4775f8178628f314616851699a7a06b0b1da2795a79cd2d1157816ff3846",
+      "evidence": "Independent revision 2 review; F-1/F-2 and capability correction resolved; no outstanding findings"
+    }
+  ],
+  "plan_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "verdict": "pass",
+    "revision": 3,
+    "source_revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+    "authored_digest": "d6a7d0ea53ed2b06f8b2f2142e935f5c1f14c2f68f29ab9d2c46aeb14ee43c8c",
+    "config_digest": "14fec9b3c440c53323d1a1159aae19381acfe0605dda41f058d60ca28f8fbaa8",
+    "plan_digest": "9ce4addd5fb3c5dde90c129964be2c026af505c6aca7d39faa5b6aaf6d814657",
+    "evidence": "Independent revision-3 plan review; registered replan report, conservative recovery, snapshot hashes and 191 live bindings validated; no outstanding findings"
+  },
+  "T1_T2_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "sha256:857962a199125e528251209e5279634c9ca8b749e0cfb43b935b8c7aa16ee876",
+    "spec": "pass",
+    "quality": "pass",
+    "evidence": "Independent current baseline spec/quality review; 191 bindings, current archives/no-bytecode, 37 installed checks and actual cleanup failure probe verified",
+    "findings": []
+  },
+  "T3_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+    "spec": "pass",
+    "quality": "pass",
+    "findings": [],
+    "evidence": "Independent T3 workflow/docs spec and quality review; 191 live hashes, preflight cases, parity and whitespace verified; remote CI still required"
+  }
+}

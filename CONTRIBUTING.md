@@ -33,17 +33,11 @@ also requires Node.js 22 or newer and a Chromium-based browser.
 Run these suites from the repository root:
 
 ```bash
-python3 planning/tests/test_validate.py
-python3 planning/tests/test_records.py
-python3 planning/tests/test_reports.py
-python3 planning/tests/test_presentation.py
-python3 execution/tests/test_gates.py
-python3 recovery/tests/test_state.py
-python3 routing/tests/test_router.py
-python3 routing/tests/test_adapters.py
-python3 distribution/tests/test_install.py
-python3 distribution/tests/test_cli.py
-python3 distribution/tests/test_features.py
+python3 -m unittest discover -s planning/tests
+python3 -m unittest discover -s execution/tests
+python3 -m unittest discover -s recovery/tests
+python3 -m unittest discover -s routing/tests
+python3 -m unittest discover -s distribution/tests
 python3 tools/sync_references.py --check
 ```
 
@@ -84,12 +78,17 @@ were skipped and why.
 3. Verify the hashes and license notices for bundled browser assets.
 4. Build the wheel and source archive with `python3 tools/verify_release.py`.
    This also exercises isolated wheel, standalone CLI, and skill installations;
-   it writes build outputs and updates
-   `docs/work/riff-expansion/package-verification.json`.
+   it writes archives, `SHA256SUMS` and `package-verification.json` under `dist/`.
+   Use `--output-dir dist/release` for an isolated release directory. It also
+   installs the source archive and verifies all four host skill paths.
 5. Inspect both archives for the core utilities, rendering assets, and MIT license
    notices. Record any checks or host sessions that were not run.
 6. Update the version in package metadata, the CLI, skill, and citation metadata.
    Describe the release in [CHANGELOG.md](CHANGELOG.md).
+
+Follow [the release checklist](docs/releasing.md) before tagging or publishing.
+GitHub CI runs all five directories, reference parity, browser verification and
+fresh package installations. A local pass does not establish a remote CI pass.
 
 ## License
 

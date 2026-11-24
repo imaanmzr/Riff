@@ -1,6 +1,6 @@
 # Riff commands
 
-This reference covers Riff 0.8.0. See [Readable plans and investigation
+This reference covers Riff 1.0.0-rc.1. See [Readable plans and investigation
 workflows](features.md) for detailed examples of exports, profiles, and reports.
 
 Run `riff --help` for the command list and examples. Every command has its own

@@ -1,0 +1,12 @@
+{
+  "status": "adopted-reviewed-baseline",
+  "observed_generation": 1,
+  "proposal": "reconciliation-proposal.json",
+  "external_effects": "No remote changes, tags or releases; tests/local builds only",
+  "retained_authorization": "User requested release 1.0.0-rc.1 and GitHub documentation/requirements check",
+  "retained_evidence": "No prior task approvals relabeled; all suites refreshed and remote qualification required",
+  "next_action": "Accept independently reviewed rev3; rebind run baseline and checkpoint observed generation 1",
+  "reviewed_plan_revision": 3,
+  "checkpoint_generation": 2,
+  "evidence": "Independent rev3 review accepted; live plan/execution gates passed on 191-file baseline; no prior task approval relabeled"
+}

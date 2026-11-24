@@ -3,10 +3,10 @@ message: "If you use Riff, please cite it as software."
 title: "Riff"
 abstract: "A model-independent agent skill and CLI for planning, executing, reviewing, and resuming software engineering work."
 type: software
-version: 0.8.0
-date-released: 2026-11-16
+version: 1.0.0-rc.1
+date-released: 2026-11-24
 repository-code: "https://github.com/imaanmzr/Riff"
 license: MIT
 authors:
   - family-names: "Mazreati"
-    given-names: "Iman"
+    given-names: "Imaan"

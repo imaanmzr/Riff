@@ -1,0 +1,45 @@
+{
+  "status": "published-and-verified",
+  "version": "1.0.0-rc.1",
+  "tag": "v1.0.0-rc.1",
+  "commit": "d1f2e54b638c25671a4a2ee0d7c1cb3d814b0d2c",
+  "prerelease": true,
+  "draft": false,
+  "url": "https://github.com/imaanmzr/Riff/releases/tag/v1.0.0-rc.1",
+  "published_at": "2026-11-24T12:19:47Z",
+  "run_id": 45392153474,
+  "workflow_url": "https://github.com/imaanmzr/Riff/actions/runs/45392153474",
+  "workflow_conclusion": "success",
+  "assets": [
+    {
+      "name": "package-verification.json",
+      "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/package-verification.json",
+      "size": 10603,
+      "digest": "sha256:ff5c68427f70a63e15571dbcee197b9baee43b7dd7f440258fe3b35d6221a9ea"
+    },
+    {
+      "name": "riff_workflow-1.0.0rc1-py3-none-any.whl",
+      "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/riff_workflow-1.0.0rc1-py3-none-any.whl",
+      "size": 973155,
+      "digest": "sha256:2d4bb4a8462b3093c610192fa00e7805a0244a3d60602754e15c26503b715dd6"
+    },
+    {
+      "name": "riff_workflow-1.0.0rc1.tar.gz",
+      "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/riff_workflow-1.0.0rc1.tar.gz",
+      "size": 1144650,
+      "digest": "sha256:5954983503767cce9fc4fb5344bec6c2e3e3871a30fb039066267a214173e44c"
+    },
+    {
+      "name": "SHA256SUMS",
+      "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/SHA256SUMS",
+      "size": 202,
+      "digest": "sha256:77bf5d34f89c68aee893f7b3978dabd64dfbd10cad4a3b9206e7f2361faf24c4"
+    }
+  ],
+  "verified_checksums": {
+    "riff_workflow-1.0.0rc1-py3-none-any.whl": "2d4bb4a8462b3093c610192fa00e7805a0244a3d60602754e15c26503b715dd6",
+    "riff_workflow-1.0.0rc1.tar.gz": "5954983503767cce9fc4fb5344bec6c2e3e3871a30fb039066267a214173e44c"
+  },
+  "verification": "Downloaded all four public assets; API asset digests, checksum file and package evidence agree; 37 install checks passed; remote annotated tag points to qualified commit",
+  "latest_stable_verification": "No latest stable release; RC remains a prerelease"
+}

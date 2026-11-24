@@ -44,5 +44,29 @@
     "quality": "pass",
     "findings": [],
     "evidence": "Independent T3 workflow/docs spec and quality review; 191 live hashes, preflight cases, parity and whitespace verified; remote CI still required"
+  },
+  "candidate_integration_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "kind": "integration",
+    "verdict": "pass",
+    "revision": "d1f2e54b638c25671a4a2ee0d7c1cb3d814b0d2c",
+    "manifest_digest": "2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+    "evidence": "Independent exact-commit integration review: all five CI jobs passed; 191 source/commit bindings, raw artifact digest, package hashes, 37 install checks and exact sdist release source verified",
+    "findings": []
+  },
+  "final_review": {
+    "reviewer": "/root/clarification_review",
+    "independent": true,
+    "revision": "d1f2e54b638c25671a4a2ee0d7c1cb3d814b0d2c",
+    "manifest_digest": "2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
+    "tasks": [
+      "T-4"
+    ],
+    "spec": "pass",
+    "quality": "pass",
+    "integration": "pass",
+    "findings": [],
+    "evidence": "Independent final T4 spec/quality and overall integration review; live release/API/jobs/tag; all 191 source bindings unchanged; four asset digests/checksums and release-source contents match; 37 installed commands; no bytecode; prerelease true, draft false, not latest stable"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "status": "awaiting-remote-qualification",
+  "status": "complete",
   "checks": [
     {
       "name": "planning",
@@ -514,8 +514,49 @@
     "log": "build/release-100-rc1-checks/packages-qualified.log"
   },
   "publication": {
-    "status": "not-created",
-    "next_action": "Finish exact-candidate qualification and tag-driven publishing workflow review; require remote CI before tag"
+    "status": "published-and-verified",
+    "version": "1.0.0-rc.1",
+    "tag": "v1.0.0-rc.1",
+    "commit": "d1f2e54b638c25671a4a2ee0d7c1cb3d814b0d2c",
+    "prerelease": true,
+    "draft": false,
+    "url": "https://github.com/imaanmzr/Riff/releases/tag/v1.0.0-rc.1",
+    "published_at": "2026-11-24T12:19:47Z",
+    "run_id": 45392153474,
+    "workflow_url": "https://github.com/imaanmzr/Riff/actions/runs/45392153474",
+    "workflow_conclusion": "success",
+    "assets": [
+      {
+        "name": "package-verification.json",
+        "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/package-verification.json",
+        "size": 10603,
+        "digest": "sha256:ff5c68427f70a63e15571dbcee197b9baee43b7dd7f440258fe3b35d6221a9ea"
+      },
+      {
+        "name": "riff_workflow-1.0.0rc1-py3-none-any.whl",
+        "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/riff_workflow-1.0.0rc1-py3-none-any.whl",
+        "size": 973155,
+        "digest": "sha256:2d4bb4a8462b3093c610192fa00e7805a0244a3d60602754e15c26503b715dd6"
+      },
+      {
+        "name": "riff_workflow-1.0.0rc1.tar.gz",
+        "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/riff_workflow-1.0.0rc1.tar.gz",
+        "size": 1144650,
+        "digest": "sha256:5954983503767cce9fc4fb5344bec6c2e3e3871a30fb039066267a214173e44c"
+      },
+      {
+        "name": "SHA256SUMS",
+        "url": "https://github.com/imaanmzr/Riff/releases/download/v1.0.0-rc.1/SHA256SUMS",
+        "size": 202,
+        "digest": "sha256:77bf5d34f89c68aee893f7b3978dabd64dfbd10cad4a3b9206e7f2361faf24c4"
+      }
+    ],
+    "verified_checksums": {
+      "riff_workflow-1.0.0rc1-py3-none-any.whl": "2d4bb4a8462b3093c610192fa00e7805a0244a3d60602754e15c26503b715dd6",
+      "riff_workflow-1.0.0rc1.tar.gz": "5954983503767cce9fc4fb5344bec6c2e3e3871a30fb039066267a214173e44c"
+    },
+    "verification": "Downloaded all four public assets; API asset digests, checksum file and package evidence agree; 37 install checks passed; remote annotated tag points to qualified commit",
+    "latest_stable_verification": "No latest stable release; RC remains a prerelease"
   },
   "candidate_revision": "sha256:2529823397c03f1bc8b5286a5a767018a4c06bae4c09e6d6e79a31aaf5a35984",
   "release_preflight": {
@@ -528,5 +569,59 @@
       "moved remote tag rejected",
       "tampered archive rejected"
     ]
+  },
+  "remote_ci": {
+    "commit": "d1f2e54b638c25671a4a2ee0d7c1cb3d814b0d2c",
+    "run_id": 45391294149,
+    "url": "https://github.com/imaanmzr/Riff/actions/runs/45391294149",
+    "jobs": [
+      {
+        "id": 138435392310,
+        "name": "Build and install release archives",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 138435392698,
+        "name": "windows-latest / Python 3.10",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 138435392725,
+        "name": "ubuntu-latest / Python 3.10",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 138435392829,
+        "name": "ubuntu-latest / Python 3.13",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 138435392830,
+        "name": "windows-latest / Python 3.13",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "artifact": {
+      "id": 14918213999,
+      "digest": "sha256:7222aca8fc50dc050a5f6937fb2ded4f9dbb739e961f7f4d4efb429002a1f331",
+      "local": "build/release-100-rc1-checks/ci-packages.zip",
+      "inspection": "digest, member hashes and release-source members match exact Git commit"
+    },
+    "status": "completed",
+    "conclusion": "success",
+    "remote_confirmed_head_sha": "d1f2e54b638c25671a4a2ee0d7c1cb3d814b0d2c"
+  },
+  "final_live_gates": "passed",
+  "cleanup": "All local test, build and browser processes started for this release exited; no application/server left running",
+  "evidence_commit": "Post-release records only; no runtime/source changes; published tag remains d1f2e54; redundant branch CI skipped for the evidence commit",
+  "additional_smoke": {
+    "command": "python riff.py status release-100-rc1 --project .",
+    "exit_code": 1,
+    "result": "Riff source checkout has no .riff/project.json; project CLI requires initialization. Recorded honestly as an extra check, not a pass. Status in fresh configured wheel/sdist/standalone projects passed in required local and CI qualification. No source-project settings created during release."
   }
 }

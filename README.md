@@ -111,6 +111,11 @@ $riff Resume the task at docs/work/retry-fix/.
 
 ## What Riff provides
 
+To switch machines, use `riff handoff TASK` in the current agent, commit and push
+the saved context with your code, then pull and use `riff resume TASK` in a fresh
+session. See [the two-machine walkthrough](docs/continuity.md). Both commands
+print prompts; the agent saves or reads the context.
+
 - **Planning:** code investigation, requirements, design decisions, acceptance
   checks, task dependencies, and review before implementation.
 - **Implementation and review:** task records tied to source revisions, checks,

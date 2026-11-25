@@ -62,6 +62,7 @@ def main():
         'distribution/skills/riff/references/planning/riff_core/progress.py',
         'distribution/skills/riff/references/planning/riff_core/storage.py',
         'distribution/skills/riff/references/routing/adapters.py',
+        'distribution/skills/riff/references/recovery/templates/handoff.md',
     ]
     assets = ROOT / 'distribution/assets'
     for item in json.loads((assets / 'manifest.json').read_text()):
@@ -123,6 +124,7 @@ def main():
             for args in [('new', kind + '-task'), ('show', kind + '-task', '--json'),
                          ('status', kind + '-task', '--json'),
                          ('research', 'Inspect the installed workflow'),
+                         ('handoff', kind + '-task'), ('resume', kind + '-task'),
                          ('render', kind + '-task', '--format', 'html', '--output', str(folder / (kind + '.html')))]:
                 run([*entry, *args, '--project', str(project)], project, env)
 
@@ -132,6 +134,7 @@ def main():
         if run([sys.executable, str(cli), '--version']).stdout.strip() != 'Riff ' + VERSION:
             raise RuntimeError('Standalone version mismatch')
         run([sys.executable, str(cli), 'new', 'standalone-task', '--project', str(project)])
+        run([sys.executable, str(cli), 'handoff', 'standalone-task', '--project', str(project)])
         installer = prefix / 'lib/riff-workflow/distribution/install.py'
         # Separate projects prevent Cursor discovery from masking its own path.
         for host in ('codex', 'cursor', 'vscode', 'claude'):

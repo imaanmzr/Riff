@@ -76,6 +76,11 @@ status. Save records after every meaningful transition. Full crash-safe scheduli
 and automatic retries are not provided by 0.2.
 
 ## Completion
+After meaningful task transitions and decisions, update task-local `handoff.md`
+using [Recovery's portable context rules](../recovery/WORKFLOW.md#portable-task-context).
+Preserve earlier constraints and open questions; link current records and evidence
+instead of duplicating status tables. A handoff save does not commit or transfer work.
+
 All tasks must be integrated. Run the complete required validation on the exact
 integrated revision and obtain a final independent integration review (small route
 may self-review). Cover every requirement with verification. No unresolved

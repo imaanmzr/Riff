@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -26,7 +27,8 @@ class Features(unittest.TestCase):
 
     def cli(self, *args):
         return subprocess.run([sys.executable, str(ROOT / 'riff.py'), *args, '--project', str(self.root)],
-                              capture_output=True, text=True, encoding='utf-8', timeout=30)
+                              capture_output=True, text=True, encoding='utf-8', timeout=30,
+                              env=dict(os.environ, PYTHONUTF8='1'))
 
     def save(self, plan):
         (self.task / 'plan.json').write_text(json.dumps(plan), encoding='utf-8')
@@ -97,6 +99,56 @@ class Features(unittest.TestCase):
         self.assertIn('12 seconds per command', self.cli('debug', 'Symptom').stdout)
         self.assertIn('4 seconds per command', self.cli('debug', 'Symptom', '--command-timeout', '4').stdout)
         self.assertEqual(2, self.cli('debug', 'Symptom', '--total-timeout', '0').returncode)
+
+    def test_handoff_and_resume_are_read_only_for_every_host(self):
+        # Deliberately use a custom records directory and a space in the path.
+        (self.root / '.riff/project.json').write_text('{"artifacts_directory":"work records"}')
+        self.assertEqual(0, self.cli('new', 'portable').returncode)
+        task = self.root / 'work records/portable'
+        for saved_context in (False, True):
+            if saved_context:
+                (task / 'handoff.md').write_text('Keep offline operation.\n', encoding='utf-8')
+            before = {p.relative_to(self.root): p.read_bytes()
+                      for p in self.root.rglob('*') if p.is_file()}
+            for host in ('codex', 'cursor', 'vscode', 'claude'):
+                for arguments in (('handoff', 'portable'), ('resume', 'portable'),
+                                  ('prompt', 'portable', '--action', 'resume')):
+                    result = self.cli(*arguments, '--host', host)
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    invocation = '$riff' if host == 'codex' else '/riff'
+                    self.assertIn(invocation, result.stdout)
+                    self.assertIn(json.dumps(str(task.resolve())), result.stdout)
+                    self.assertIn('handoff.md', result.stdout)
+                    if arguments[0] == 'handoff':
+                        self.assertIn('preserve still-applicable constraints', result.stdout)
+                    else:
+                        self.assertIn('pause dependent work', result.stdout)
+            self.assertEqual(before, {p.relative_to(self.root): p.read_bytes()
+                                     for p in self.root.rglob('*') if p.is_file()})
+        for task_id in ('unknown', '../portable'):
+            result = self.cli('handoff', task_id)
+            self.assertNotEqual(0, result.returncode)
+        self.assertNotEqual(0, self.cli('handoff', 'portable', '--host', 'unknown').returncode)
+
+    def test_handoff_freshness_respects_explicit_bindings(self):
+        self.ready()
+        self.assertEqual(0, self.cli('check', 'demo').returncode)
+        handoff = self.task / 'handoff.md'
+        archive = self.task / 'conversations/chat.md'
+        archive.parent.mkdir()
+        handoff.write_text('Offline operation is required.\n', encoding='utf-8')
+        archive.write_text('Original exported conversation.\n', encoding='utf-8')
+        handoff.write_text('Offline operation is required. Progress updated.\n', encoding='utf-8')
+        self.assertEqual(0, self.cli('check', 'demo').returncode)
+        plan = core.records.load(self.task / 'plan.json')
+        plan['source_manifest']['docs/work/demo/conversations/chat.md'] = hashlib.sha256(archive.read_bytes()).hexdigest()
+        self.save(plan)
+        # Explicit user entries still participate in normal freshness checks.
+        context = dict(project=self.root, task_dir=self.task,
+                       effective_behavior=plan['behavior_config'])
+        self.assertEqual([], core.records.live_errors(plan, context))
+        archive.write_text('Changed evidence.\n', encoding='utf-8')
+        self.assertTrue(core.records.live_errors(plan, context))
 
     def test_migration_preview_backup_and_legacy_validation(self):
         legacy = dict(route='small', status='DRAFT', revision=1, requirements=[], tasks=[], reviews=[], custom={'preserve': True})

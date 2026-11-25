@@ -42,6 +42,10 @@ records default to `docs/work/<task-id>/`:
   reviews, and integrated revisions.
 - `checkpoint.json`: a checksummed snapshot with a generation number, file
   fingerprints, and reconciliation history.
+- `handoff.md`: optional mutable context for the next session, with relative
+  evidence links; optional user-provided chat exports live in `conversations/`.
+  These do not enter automatic review bindings or source inventories. Explicit
+  user bindings retain normal freshness checks. See [continuity](continuity.md).
 
 Schema v2 binds plan reviews to authored documents, behavioral configuration,
 and source fingerprints. A recorded READY status can become stale when those

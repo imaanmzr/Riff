@@ -61,6 +61,14 @@ within the user's authorization; label speculative conclusions explicitly.
 12. Stop at planning completion. Report artifacts, route, decisions, remaining
     blockers, and next executable task. Do not begin implementation.
 
+For existing task records, preserve portable context in task-local `handoff.md`
+after meaningful decisions and task transitions, following
+[Recovery's portable context rules](../recovery/WORKFLOW.md#portable-task-context).
+Read and preserve earlier context before updating; keep new requirements and
+consequential decisions in the plan as well. Exclude handoffs and conversation
+archives from automatically authored source inventories and review bindings,
+while preserving explicit user entries.
+
 ## Clarify intended behavior
 
 Assess every request after initial discovery, even when it sounds implementable.

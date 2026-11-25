@@ -222,7 +222,7 @@ For `config` and `profile`, put them after the nested command, for example
 | `route TASK` | Required `--host HOST` |
 | `plan`, `design`, `documentation` (`docs`), `architecture`, `review`, `audit`, `research` | Required quoted request **or** `--task TASK`, plus `--host HOST` (default `codex`) |
 | `debug` | Required quoted symptom **or** `--task TASK`, `--host HOST`, `--command-timeout SECONDS`, `--total-timeout SECONDS` |
-| `execute TASK`, `resume TASK` | `--host HOST` (default `codex`) |
+| `execute TASK`, `resume TASK`, `handoff TASK` | `--host HOST` (default `codex`) |
 | `replan TASK` | Required `--reason TEXT`, `--host HOST` (default `codex`) |
 | `show TASK` | `--detail concise\|full`, `--diagrams auto\|none`, `--json` |
 | `explain TASK`, `check TASK` | `--json` |
@@ -295,6 +295,7 @@ target project. They use `$riff` by default. Pass `--host cursor`,
 | `riff audit "TARGET"` | Independently audit a spec, plan, or code change |
 | `riff execute TASK` | Request execution of a reviewed plan for a saved task |
 | `riff resume TASK` | Resume a saved task and reconcile its state |
+| `riff handoff TASK` | Print a prompt for the agent to save portable task context |
 | `riff research "QUESTION"` | Request a bounded investigation with sources and uncertainty |
 | `riff debug "SYMPTOM"` | Request bounded reproduction and diagnosis |
 | `riff replan TASK --reason "CHANGE"` | Revise the plan while preserving history and invalidating stale reviews |

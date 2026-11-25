@@ -33,16 +33,21 @@ Record actual checks and support limits in the release notes.
 ## Publish the GitHub prerelease
 
 The normal path is the [Release candidate workflow](../.github/workflows/release.yml).
-After the reviewed commit passes branch CI, push its annotated RC tag. That
-explicit push reuses all qualification jobs, then grants only the publishing
-job `contents: write`. The job validates the tag/version/commit and artifacts,
-creates a draft, uploads its qualified packages, publishes a prerelease with
-`latest=false`, and downloads the assets to verify their hashes. No personal
-access token or package-index credentials are required.
+After the reviewed commit passes branch CI, push its annotated RC tag only. Do
+not create a GitHub release in the web UI first; the workflow owns release
+creation and uploads the qualified packages. That tag push reuses all
+qualification jobs, then grants only the publishing job `contents: write`. The job
+validates the tag/version/commit and artifacts, creates a draft, uploads its
+qualified packages, publishes a prerelease with `latest=false`, and downloads
+the assets to verify their hashes. No personal access token or package-index
+credentials are required.
 
-The workflow handles `v*-rc.*` tags only and refuses an existing release. If a
-failure leaves a draft, inspect its artifacts and qualification evidence before
-finishing that draft manually; do not overwrite the tag or an existing release.
+The workflow handles `v*-rc.*` tags only and refuses a published release or any
+release that already has assets. It can resume an empty draft that targets the
+same commit. If you created a release manually, delete that release (keep the
+tag) and re-run the failed publish job. If a failure leaves a draft, inspect its
+artifacts and qualification evidence before finishing that draft manually; do not
+overwrite the tag or an existing release with assets.
 The following steps also describe that manual path.
 
 Use the [GitHub release form](https://github.com/imaanmzr/Riff/releases/new) or

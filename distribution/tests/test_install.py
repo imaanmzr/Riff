@@ -22,6 +22,7 @@ class InstallTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d); (root/'AGENTS.md').write_text('keep project rules')
             install(root)
+            self.assertEqual('docs/riff', json.loads((root / '.riff/project.json').read_text())['artifacts_directory'])
             skill=root/'.agents/skills/riff'
             self.assertTrue((skill/'SKILL.md').exists())
             self.assertTrue((skill/'references/routing/router.py').exists())

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Default new task records to `docs/riff/`; preserve explicitly configured paths.
+
 ## 1.0.0-rc.1 — 2026-11-24
 
 First release candidate for stable 1.0.0. See

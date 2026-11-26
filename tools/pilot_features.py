@@ -31,7 +31,7 @@ def main():
             return result
         start = time.monotonic()
         cli('new', 'small', '--route', 'small', '--profile', 'documentation', '--detail', 'concise')
-        task = project / 'docs/work/small'
+        task = project / 'docs/riff/small'
         (task / 'plan.md').write_text('# Improve setup wording\n\nClarify that workflow commands print prompts.\n')
         plan = json.loads((task / 'plan.json').read_text())
         plan['outcome'] = 'The setup guide tells readers where to paste the generated prompt.'
@@ -43,7 +43,7 @@ def main():
                         'seconds': time.monotonic()-start, 'status': 'passed'})
         start = time.monotonic()
         cli('new', 'feature', '--title', 'Explain task readiness')
-        task = project / 'docs/work/feature'
+        task = project / 'docs/riff/feature'
         plan = json.loads((task / 'plan.json').read_text())
         plan['outcome'] = 'Users can see why a task is blocked and what to do next.'
         plan['tasks'] = [dict(id='T1', objective='Collect diagnostic evidence', dependencies=[], requirements=[]),

@@ -60,8 +60,8 @@ Copilot, or Claude Code:
 $riff Design the retry interface.
 $riff Update the setup docs.
 $riff Plan the retry fix. Stop after plan review.
-$riff Execute the reviewed plan at docs/work/retry-fix/.
-$riff Resume the task at docs/work/retry-fix/.
+$riff Execute the reviewed plan at docs/riff/retry-fix/.
+$riff Resume the task at docs/riff/retry-fix/.
 ```
 
 If skill discovery is unavailable, ask the agent to read the installed
@@ -98,7 +98,7 @@ The CLI prefers host-specific routing and capability files and falls back to
 shared `routing.json` and `host.json` when they are absent. Model mappings must
 match the active host. Empty mappings disable routing; planning can still run in
 the current agent. Token budgets guide assignments and do not cap provider bills.
-Task records default to `docs/work/<task-id>/`.
+Task records default to `docs/riff/<task-id>/`.
 
 Use `riff status TASK` for current plan/readiness, task progress, review results
 and the next continuation command. `--details` includes full history and findings;

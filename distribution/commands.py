@@ -43,7 +43,7 @@ def load(path):
 def records_directory(project):
     settings = project_config.settings_directory(project) / 'project.json'
     config = load(settings)
-    return resolve_records_directory(project, config.get('artifacts_directory', 'docs/work'))
+    return resolve_records_directory(project, config.get('artifacts_directory', 'docs/riff'))
 
 
 def resolve_records_directory(project, value):

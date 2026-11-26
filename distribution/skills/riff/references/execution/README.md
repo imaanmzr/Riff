@@ -9,7 +9,7 @@ requirements and task transitions.
 Ask your agent to execute a saved plan:
 
 ```text
-$riff Execute the reviewed plan at docs/work/retry-fix/.
+$riff Execute the reviewed plan at docs/riff/retry-fix/.
 ```
 
 Use `/riff` in Cursor, VS Code Copilot, or Claude Code. Execution requires a READY

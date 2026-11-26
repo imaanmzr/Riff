@@ -23,7 +23,7 @@ class Features(unittest.TestCase):
         (self.root / '.riff/project.json').write_text('{}')
         (self.root / 'source.py').write_text('value = 1\n')
         self.cli('new', 'demo', '--title', 'Demo')
-        self.task = self.root / 'docs/work/demo'
+        self.task = self.root / 'docs/riff/demo'
 
     def cli(self, *args):
         return subprocess.run([sys.executable, str(ROOT / 'riff.py'), *args, '--project', str(self.root)],
@@ -81,7 +81,7 @@ class Features(unittest.TestCase):
         self.assertNotEqual(0, self.cli('render', 'demo', '--output', str(path)).returncode)
         self.assertEqual(0, self.cli('graph', 'demo').returncode)
         self.cli('new', 'other')
-        for protected in (self.task / 'plan.md', self.root / 'docs/work/other/plan.json', self.root / 'source.py'):
+        for protected in (self.task / 'plan.md', self.root / 'docs/riff/other/plan.json', self.root / 'source.py'):
             original = protected.read_bytes()
             self.assertNotEqual(0, self.cli('render', 'demo', '--output', str(protected), '--overwrite').returncode)
             self.assertEqual(original, protected.read_bytes())
@@ -141,7 +141,7 @@ class Features(unittest.TestCase):
         handoff.write_text('Offline operation is required. Progress updated.\n', encoding='utf-8')
         self.assertEqual(0, self.cli('check', 'demo').returncode)
         plan = core.records.load(self.task / 'plan.json')
-        plan['source_manifest']['docs/work/demo/conversations/chat.md'] = hashlib.sha256(archive.read_bytes()).hexdigest()
+        plan['source_manifest']['docs/riff/demo/conversations/chat.md'] = hashlib.sha256(archive.read_bytes()).hexdigest()
         self.save(plan)
         # Explicit user entries still participate in normal freshness checks.
         context = dict(project=self.root, task_dir=self.task,

@@ -17,7 +17,7 @@ class StatusTests(unittest.TestCase):
         self.project = Path(self.temp.name)
         (self.project / '.riff').mkdir()
         (self.project / '.riff/project.json').write_text('{}')
-        self.task = self.project / 'docs/work/storage'
+        self.task = self.project / 'docs/riff/storage'
         self.task.mkdir(parents=True)
 
     def cli(self, *args):
@@ -92,12 +92,12 @@ class StatusTests(unittest.TestCase):
     def test_missing_run_unbound_evidence_parent_and_external_prerequisites_are_visible(self):
         plan, _ = self.running_fixture()
         (self.task / 'run.json').unlink()
-        plan.update(parent='docs/work/v1', next_action='Review the storage contract.',
+        plan.update(parent='docs/riff/v1', next_action='Review the storage contract.',
                     external_prerequisites=[dict(id='REFERENCE', status='unresolved', affects=['T3'], requirement='Reference machine access')])
         self.write('plan.json', plan)
         item = json.loads(self.cli('--json').stdout)[0]
         self.assertEqual('not started', item['execution_status'])
-        self.assertEqual('docs/work/v1', item['parent'])
+        self.assertEqual('docs/riff/v1', item['parent'])
         self.assertEqual('Reference machine access', item['external_prerequisites'][0]['requirement'])
         self.assertEqual(3, item['progress']['not started'])
         self.assertTrue(item['next_action'])

@@ -24,7 +24,7 @@ in Codex or `/riff` in Cursor, VS Code Copilot, or Claude Code.
 
 ```text
 $riff Plan a fix for duplicate retries. Stop after plan review.
-$riff Execute the reviewed plan at docs/work/retry-fix/.
+$riff Execute the reviewed plan at docs/riff/retry-fix/.
 ```
 
 The host supplies model access and agent tools. Terminal workflow commands print

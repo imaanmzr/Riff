@@ -43,7 +43,7 @@ def configure(project, host, git, git_mode=None):
     for key,label in [('build_command','Build command'),('test_command','Test command')]:
         value=ask(label,config.get(key) or '-')
         config[key]=None if value=='-' else value
-    config['artifacts_directory']=ask('Task records directory',config.get('artifacts_directory','docs/work'))
+    config['artifacts_directory']=ask('Task records directory',config.get('artifacts_directory','docs/riff'))
     records = commands.resolve_records_directory(project, config['artifacts_directory'])
     routing_path=settings/f'routing-{host}.json'
     host_path=settings/'hosts'/f'{host}.json'

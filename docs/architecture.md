@@ -33,7 +33,7 @@ Their versions, checksums, and licenses are recorded with the assets.
 Configuration lives in `.riff/` in the target project; legacy-only
 `.engineering-workflow/` projects remain supported through the shared settings
 resolver. Duplicate settings directories are rejected without merging. Task
-records default to `docs/work/<task-id>/`:
+records default to `docs/riff/<task-id>/`:
 
 - `plan.md`: the authored specification and explanation.
 - `plan.json`: requirements, acceptance checks, decisions, dependencies, evidence,

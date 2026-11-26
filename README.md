@@ -68,7 +68,7 @@ riff new retry-fix --title "Fix duplicate retries" --profile bug
 riff plan --task retry-fix --host codex
 ```
 
-`new` creates `docs/work/retry-fix/plan.md` and `plan.json`. `plan` prints a prompt
+`new` creates `docs/riff/retry-fix/plan.md` and `plan.json`. `plan` prints a prompt
 to paste into your coding agent's chat. The agent investigates the request,
 writes the plan, and completes the review required by the task's risk.
 
@@ -105,8 +105,8 @@ in Cursor, VS Code Copilot, or Claude Code:
 
 ```text
 $riff Plan a fix for duplicate retries. Stop after plan review.
-$riff Execute the reviewed plan at docs/work/retry-fix/.
-$riff Resume the task at docs/work/retry-fix/.
+$riff Execute the reviewed plan at docs/riff/retry-fix/.
+$riff Resume the task at docs/riff/retry-fix/.
 ```
 
 ## What Riff provides

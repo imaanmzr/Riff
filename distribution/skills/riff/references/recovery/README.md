@@ -20,7 +20,7 @@ a proposal for inspection without changing task state or replaying work.
 To continue in an agent chat:
 
 ```text
-$riff Resume the task at docs/work/retry-fix/.
+$riff Resume the task at docs/riff/retry-fix/.
 ```
 
 Use `/riff` in Cursor, VS Code Copilot, or Claude Code. The agent must compare

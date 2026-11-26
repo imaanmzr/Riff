@@ -149,7 +149,7 @@ def main():
             if manifest['version'] != VERSION:
                 raise RuntimeError(host + ' skill manifest version mismatch')
             reference = skill / 'references/planning/validate.py'
-            run([sys.executable, str(reference), str(project / 'docs/work/standalone-task/plan.json'),
+            run([sys.executable, str(reference), str(project / 'docs/riff/standalone-task/plan.json'),
                  '--project', str(project)])
         run([sys.executable, str(cli), 'status', 'standalone-task', '--details', '--project', str(project)])
         run([sys.executable, str(cli), 'render', 'standalone-task', '--format', 'html',

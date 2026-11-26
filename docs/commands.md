@@ -64,12 +64,12 @@ your-project/
 `plan.md` contains the readable explanation. `plan.json` contains structured
 records. Execution later uses `run.json` in the same folder. Every saved task
 uses these filenames, with its ID distinguishing its directory. For instance,
-`riff render refunds ...` reads the records in `docs/work/refunds/`. Supplying
+`riff render refunds ...` reads the records in `docs/riff/refunds/`. Supplying
 `plan.md`, its full path, the title, or an internal implementation step such as
 `T1` will not select that task. Internal `T1`/`T2` IDs identify steps inside its plan.
 
 The directory prefix comes from `artifacts_directory` in
-`.riff/project.json`, which setup normally sets to `docs/work`.
+`.riff/project.json`, which setup normally sets to `docs/riff`.
 `riff config show` displays this saved project setting. Run `riff status` to
 list saved task IDs, including records created by an agent. Ask the agent to save
 its work in that configured directory with both `plan.md` and `plan.json` so the

@@ -1,7 +1,7 @@
 # Readable plans and investigation workflows
 
 Examples on this page use saved task IDs. You choose an ID with
-`riff new retry-bug`, which creates `docs/work/retry-bug/plan.md` and `plan.json`
+`riff new retry-bug`, which creates `docs/riff/retry-bug/plan.md` and `plan.json`
 by default. Later commands use `retry-bug` to find that folder. List existing IDs
 with `riff status`. See [command syntax and task IDs](commands.md#command-syntax)
 for a walkthrough and [render options](commands.md#render-options) for exports.
@@ -114,7 +114,7 @@ Existing unknown project settings are preserved. Routing budgets still use
 ## Compare, checkpoint, and migrate
 
 ```bash
-riff diff retry-bug --against docs/work/retry-bug/snapshots/revision-1
+riff diff retry-bug --against docs/riff/retry-bug/snapshots/revision-1
 riff checkpoint retry-bug --manifest source-files.json --expected-generation 0
 riff reconcile retry-bug --manifest source-files.json
 riff migrate old-task

@@ -44,6 +44,20 @@ class CliTests(unittest.TestCase):
         self.assertIn('/riff Plan', prompt.stdout)
         self.assertEqual(0, self.run_cli('validate', 'refunds').returncode)
 
+    def test_default_records_directory_and_existing_configuration(self):
+        settings = self.project / '.riff/project.json'
+        settings.write_text('{}')
+        self.assertEqual(0, self.run_cli('new', 'fresh').returncode)
+        self.assertTrue((self.project / 'docs/riff/fresh/plan.json').is_file())
+        self.assertFalse((self.project / 'docs/work').exists())
+        # Existing explicit paths are neither relocated nor replaced.
+        for directory in ('docs/work', 'notes/tasks'):
+            settings.write_text(json.dumps({'artifacts_directory': directory}))
+            self.assertEqual(0, self.run_cli('new', 'existing').returncode)
+            self.assertTrue((self.project / directory / 'existing/plan.json').is_file())
+            self.assertEqual('existing', json.loads(self.run_cli('status', '--json').stdout)[0]['task'])
+            self.assertEqual(directory, json.loads(settings.read_text())['artifacts_directory'])
+
     def test_workflow_commands_print_host_requests(self):
         operations = {
             'plan': 'Plan this task',

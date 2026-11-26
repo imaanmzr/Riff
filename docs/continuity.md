@@ -14,7 +14,7 @@ riff handoff retry-fix --host codex
 ```
 
 Paste the printed prompt into your agent chat. The agent reads earlier context
-and saves `docs/work/retry-fix/handoff.md` (or your configured task directory).
+and saves `docs/riff/retry-fix/handoff.md` (or your configured task directory).
 The command itself only prints a prompt; it does not save files or call a model.
 Use `cursor`, `vscode`, or `claude` for another supported host.
 
@@ -29,7 +29,7 @@ to keep records local, opt into tracking with the existing command:
 ```bash
 riff configure --git track
 git status --short
-git check-ignore -v docs/work/retry-fix/handoff.md
+git check-ignore -v docs/riff/retry-fix/handoff.md
 ```
 
 Other ignore rules can still apply. Select and stage the code, task records,

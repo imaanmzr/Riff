@@ -124,7 +124,11 @@ riff configure --git track
 
 `local` adds repository-local Git exclusions for the Riff skill folders,
 `.riff/`, and the entire configured task-record folder
-(`docs/work/` by default). Choose a dedicated folder for task records.
+(`docs/riff/` by default). Choose a dedicated folder for task records.
+Existing explicit `artifacts_directory` values, including `docs/work`, remain
+unchanged. No records are moved automatically. Projects with a project.json
+that omits this setting now use `docs/riff`; set it explicitly to `docs/work`
+to continue using records stored there.
 The rules live in Git's `info/exclude` file. They stay in this clone and
 also apply to linked worktrees of the same clone. Changing the task-record
 folder keeps earlier local exclusions so old records stay local.
@@ -254,8 +258,8 @@ $riff Plan the new return flow. Stop after the plan review.
 After reviewing the plan, authorize execution explicitly.
 
 ```text
-$riff Execute the reviewed return-flow plan in docs/work/returns/.
-/riff Execute the reviewed return-flow plan in docs/work/returns/.
+$riff Execute the reviewed return-flow plan in docs/riff/returns/.
+/riff Execute the reviewed return-flow plan in docs/riff/returns/.
 ```
 
 Resume from another app by asking it to resume the task record. Do not run two

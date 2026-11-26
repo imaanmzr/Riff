@@ -39,6 +39,8 @@ array lists task-relative authored files, including plan.md and linked specs.
 Keep mutable task-local handoff.md and conversations/ outside agent-generated
 source inventories and automatic reviewed_artifacts lists. Explicit user-supplied
 entries retain existing binding and freshness behavior; do not silently remove them.
+The project guide at the records root follows the same rule. Capture consequential
+requirements in the task plan rather than relying on mutable guide prose.
 
 Before review, resolve effective settings with riff_core.config.resolve. Store
 behavior_config, behavior_provenance and config_digest. Store authored_digest from

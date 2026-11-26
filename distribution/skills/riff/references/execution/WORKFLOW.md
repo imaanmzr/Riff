@@ -9,6 +9,10 @@ persists; ask only for genuinely missing consequential decisions or permissions.
 Broad implementation authorization does not imply publishing or deployment.
 
 ## Prepare
+Consult relevant project guide sections and verify claims against current source
+using [Onboarding's rules](../planning/ONBOARD.md#use-during-later-work).
+Update only directly affected facts during authorized work; preserve personal notes.
+
 Record plan revision and source baseline in an execution record. Verify reviews
 refer to that baseline. Inspect working changes; preserve user work. Record the
 build/test baseline, including pre-existing failures. Choose one integration

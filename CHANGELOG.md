@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add `riff onboard` to prepare agent discovery and a reusable project guide.
+
 - Default new task records to `docs/riff/`; preserve explicitly configured paths.
 
 ## 1.0.0-rc.1 — 2026-11-24

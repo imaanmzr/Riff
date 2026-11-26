@@ -21,6 +21,10 @@ Do not silently reset generation or discard checkpoints. Local locking and atomi
 replacement protect one checkpoint file; they are not a distributed transaction.
 
 ## Resume
+Consult relevant optional project guide sections using
+[Onboarding's rules](../planning/ONBOARD.md#use-during-later-work). A missing guide
+is supported; reconcile claims with current instructions, records and source.
+
 1. Read current instructions, saved plan, task records and evidence. Inspect live
    agents and worktrees; do not launch duplicate work while an agent may remain
    active. Reconcile any external operation through its actual recorded outcome.
@@ -80,6 +84,7 @@ Exclude task-local `handoff.md` and `conversations/` from agent-generated source
 inventories and automatic reviewed_artifacts lists. Preserve explicit user-supplied
 manifest or review entries: their existing freshness checks still apply. Do not
 change existing bindings just to make a save pass. Neither file grants readiness.
+Apply the same rule to the mutable project guide at the records root.
 
 Transport is normal Git: review and commit the intended code and context, push,
 then pull on the other machine. Check actual tracking, including local exclusions.

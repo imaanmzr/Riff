@@ -7,10 +7,10 @@ import subprocess
 
 if __package__:
     from .install import HOSTS, LEGACY_NAME, NAME
-    from .core import config as project_config
+    from .core import config as project_config, onboarding
 else:
     from install import HOSTS, LEGACY_NAME, NAME
-    from core import config as project_config
+    from core import config as project_config, onboarding
 
 
 class GitVisibility:
@@ -81,6 +81,12 @@ class GitVisibility:
         selected = []
         for path, stages in index.items():
             scope = path.startswith(owned)
+            if path == records + b'project.md':
+                if onboarding.owned_guide(self.project / os.fsdecode(path)):
+                    scope = True
+                else:
+                    print('Skipped project guide: not a regular file with one valid Riff-owned section.')
+                    continue
             if path.startswith(records):
                 task, separator, _ = path[len(records):].partition(b'/')
                 if separator and task not in task_dirs:

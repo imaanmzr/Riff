@@ -6,7 +6,7 @@ REFERENCES = Path(__file__).resolve().parent / 'skills' / 'riff' / 'references'
 for phase in ('planning', 'execution', 'recovery', 'routing'):
     sys.path.insert(0, str(REFERENCES / phase))
 
-from riff_core import records, config, diagnostics, storage, progress
+from riff_core import records, config, diagnostics, storage, progress, onboarding
 import gates
 import state as recovery
 

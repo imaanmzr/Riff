@@ -91,6 +91,10 @@ def build_parser():
     )
     parser.add_argument('--version', action='version', version='Riff ' + VERSION)
     subparsers = parser.add_subparsers(dest='action', title='commands', metavar='COMMAND')
+    onboard = subparsers.add_parser('onboard', help='Understand a project and save its guide (prints an agent prompt)')
+    onboard.add_argument('--project', help='Project directory (default: current directory)')
+    onboard.add_argument('--host', choices=sorted(HOSTS), default='codex', help='Agent app (default: codex)')
+    onboard.set_defaults(handler=commands.onboard)
     descriptions = {
         'init': 'Install the project skill and open the setup wizard',
         'configure': 'Edit project commands, model mappings and budgets',

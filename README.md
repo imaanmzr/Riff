@@ -60,6 +60,10 @@ to keep Riff files local to your Git clone or track them with the project.
 Existing project instruction files are preserved.
 
 ## Plan and implement a change
+For an unfamiliar existing project, start with `riff onboard` and paste its prompt
+into your agent. It saves a concise project guide for later work. See
+[project onboarding](docs/onboarding.md).
+
 
 Run these commands from your target project's root:
 

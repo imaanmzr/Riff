@@ -9,10 +9,10 @@ from pathlib import Path
 
 if __package__:
     from .install import HOSTS, NAME, installations
-    from .core import config as project_config
+    from .core import config as project_config, onboarding
 else:
     from install import HOSTS, NAME, installations
-    from core import config as project_config
+    from core import config as project_config, onboarding
 
 REFERENCES = Path(__file__).resolve().parent / 'skills' / NAME / 'references'
 
@@ -47,11 +47,20 @@ def records_directory(project):
 
 
 def resolve_records_directory(project, value):
-    relative = Path(value)
-    directory = (project / relative).resolve()
-    if relative.is_absolute() or not directory.is_relative_to(project) or directory == project:
-        raise ValueError('Task records directory must be a subdirectory of the project')
-    return directory
+    return onboarding.records_directory(project, value)
+
+
+def onboard(project, args):
+    guide = onboarding.guide_path(project)
+    return print_prompt(args.host,
+        f'Onboard this project at {json.dumps(str(project))}. '
+        f'Create or refresh the project guide at {json.dumps(str(guide))}. '
+        'Read planning/ONBOARD.md and planning/templates/project-guide.md in the Riff skill references. '
+        'Use static investigation; do not run project commands, change product code, install anything or perform Git writes. '
+        'Read the previous guide before refreshing its single riff:onboard section; preserve all bytes outside it. '
+        'Leave unmarked, malformed or symlinked guides untouched and report the collision. '
+        'Distinguish explicit rules, observations, inferences and unknowns; cite relative evidence links. '
+        'Missing Riff configuration is supported; this command does not install the project skill.')
 
 
 def task_directory(project, task):

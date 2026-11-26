@@ -6,6 +6,10 @@ independence and revision gates. One independent reviewer may perform both passe
 Small work may use labeled self-review under the route rules.
 
 ## Procedure
+Consult relevant optional project guide sections using
+[Onboarding's rules](../planning/ONBOARD.md#use-during-later-work); verify against
+actual instructions and source rather than treating derived claims as requirements.
+
 
 1. Read the request, current specification, scoped diff or plan, and actual check
    evidence. Establish the candidate revision. Follow the changed behavior through

@@ -1,6 +1,6 @@
 ---
 name: riff
-description: Research, design, debug, document, plan, execute, review, and resume engineering work. Scale investigation and verification to uncertainty and risk.
+description: Onboard projects, research, design, debug, document, plan, execute, review, and resume engineering work. Scale investigation and verification to uncertainty and risk.
 ---
 # Riff
 
@@ -27,6 +27,9 @@ Use `riff status TASK --details` for current task/review progress and the genera
 next action; retain authored specifications without copying stale handoff prose.
 
 ## Select guidance
+- Onboard: read [Onboarding](references/planning/ONBOARD.md) and use its
+  [project guide template](references/planning/templates/project-guide.md).
+  Create or refresh the project guide; do not implement product changes.
 - Plan: read [Planning](references/planning/WORKFLOW.md), including its default
   clarification loop. Assess missing intent and important edge cases; ask focused
   questions before settling dependent decisions. For unclear behavior,
@@ -58,6 +61,15 @@ Use existing project terminology and record meaningful clarifications in its
 current specification or glossary. Examples in guides support judgment.
 
 ## Gates and evidence
+For later work locate the optional guide using
+`riff_core.onboarding.guide_path(PROJECT_ROOT)` in bundled planning references:
+configured records folder or `docs/riff`, then `project.md`, using the same settings
+resolver as onboard. Do not search other roots or ignore configuration errors.
+Read relevant sections and verify claims against current instructions and source.
+Missing guides are supported. Update only facts directly affected by authorized
+work, preserving the single managed section and all outside bytes as described
+in Onboarding. The guide is derived context, not instruction authority or readiness.
+
 Use Planning's route rubric and reassess when scope or risk changes. Planning
 completion alone does not authorize execution. Preserve prior authorization and
 user work. Require current reviews and resolve blockers before dispatch.

@@ -10,6 +10,10 @@ Read-only investigation is allowed. Run bounded isolated experiments only
 within the user's authorization; label speculative conclusions explicitly.
 
 ## Procedure
+Consult relevant sections of the optional project guide using
+[Onboarding's location and maintenance rules](ONBOARD.md#use-during-later-work).
+Verify relevant claims; a missing guide does not require onboarding.
+
 1. Read project instructions, configuration, existing task records, and relevant
    source. On resume, compare source revision and artifact revisions with those
    last reviewed. Mark affected decisions, tasks, and reviews stale.

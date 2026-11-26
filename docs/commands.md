@@ -1,5 +1,9 @@
 # Riff commands
 
+`riff onboard [--project DIR] [--host HOST]` prints a prompt to create or refresh
+the project guide. No task or request argument is needed. It works without Riff
+configuration and changes no files itself. See [onboarding](onboarding.md).
+
 This reference covers Riff 1.0.0-rc.1. See [Readable plans and investigation
 workflows](features.md) for detailed examples of exports, profiles, and reports.
 

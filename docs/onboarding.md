@@ -13,7 +13,9 @@ Riff records root. Codex is the default host; Cursor, VS Code Copilot and Claude
 Code are also supported. You can ask the Riff skill to onboard directly.
 
 The guide records structure, architecture, conventions, rules, code style, domain
-vocabulary and working commands with relative evidence links. It distinguishes
+vocabulary and working commands with relative evidence links.
+[Shared questioning](questioning.md) helps distinguish intended rules from legacy
+behavior; unanswered questions can remain in a useful partial guide. It distinguishes
 explicit rules, observations, inferences and unknowns. Investigation is static;
 commands found in configuration or docs are not claimed as verified checks.
 Existing documentation is linked rather than rewritten; coverage gaps are reported.

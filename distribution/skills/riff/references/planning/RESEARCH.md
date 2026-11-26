@@ -5,6 +5,10 @@ active agent host. Printing a prompt does not conduct research or create evidenc
 The agent follows this workflow after the user submits that prompt.
 
 ## Start with a decision
+Use [Shared questioning](INTERVIEW.md) for missing decision criteria, investigation
+boundaries or inaccessible evidence. Inspect discoverable facts yourself; retain
+answers and unresolved evidence in the existing report, not a new questionnaire.
+
 
 1. Read project instructions and the [planning workflow](WORKFLOW.md). Inspect
    existing task records and sources before asking discoverable questions.

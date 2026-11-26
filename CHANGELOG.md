@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Share adaptive, dependency-aware questioning across Riff actions; support deeper
+  interviews on explicit chat request without new commands or readiness gates.
+
 - Add `riff onboard` to prepare agent discovery and a reusable project guide.
 
 - Default new task records to `docs/riff/`; preserve explicitly configured paths.

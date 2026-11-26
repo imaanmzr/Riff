@@ -54,6 +54,26 @@ route, observed outcome, and any checks or reviews still outstanding.
 
 ## End-to-end pilot
 
+For shared questioning, define expected consequential decisions before running
+fresh installed-skill sessions; judge missed decisions, unsupported assumptions,
+dependency ordering, answer reuse and redundant questions rather than wording or
+question counts. Record actual outcomes separately from prompt-string checks.
+
+- Ambiguous export: recipient choice precedes dependent field policy. Supply an
+  answer, check follow-ups, then a conflicting answer; expect explicit conflict
+  resolution. Skipping unanswered consequential choices must not establish READY.
+- Explicit deep interview about adding a cache: challenge the underlying outcome
+  and missing bottleneck evidence before settling technology. Follow dependent
+  branches after answers, without installing a cache or expanding scope.
+- Onboard transitional architecture with undocumented domain exceptions: ask
+  about intended rules versus legacy patterns; unavailable answers remain unknown
+  in a useful partial managed guide. Preserve outside notes exactly.
+- Fresh resume with persisted Q-1/Q-2 and pending Q-3: reuse the first two without
+  inherited chat history; ask only the still-relevant pending decision.
+- Review a known rule violation: report a finding instead of asking for a waiver.
+  Save a handoff separately: preserve answers/pending prerequisites without
+  restarting the interview. A fully specified small edit needs no artificial round.
+
 Use a real interface decision in an isolated checkout. Have one session
 capture the rationale and acceptance criteria in the plan and obtain the
 review required by the route. With execution authorized, give a fresh session

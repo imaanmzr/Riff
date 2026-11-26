@@ -63,6 +63,7 @@ def main():
         'distribution/skills/riff/references/planning/riff_core/storage.py',
         'distribution/skills/riff/references/routing/adapters.py',
         'distribution/skills/riff/references/planning/ONBOARD.md',
+        'distribution/skills/riff/references/planning/INTERVIEW.md',
         'distribution/skills/riff/references/planning/templates/project-guide.md',
         'distribution/skills/riff/references/planning/riff_core/onboarding.py',
         'distribution/skills/riff/references/recovery/templates/handoff.md',

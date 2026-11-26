@@ -114,6 +114,10 @@ $riff Resume the task at docs/riff/retry-fix/.
 ```
 
 ## What Riff provides
+Riff asks focused questions when important decisions remain and reuses earlier
+answers. Request "grill me before finalizing" in chat for deeper exploration.
+See [questioning and deep interviews](docs/questioning.md).
+
 
 To switch machines, use `riff handoff TASK` in the current agent, commit and push
 the saved context with your code, then pull and use `riff resume TASK` in a fresh

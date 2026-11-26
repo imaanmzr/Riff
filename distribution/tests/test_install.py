@@ -10,6 +10,7 @@ from install import hashes, install
 REPO = Path(__file__).resolve().parents[2]
 BUNDLE = REPO / 'distribution/skills/riff/references'
 GUIDES = (
+    'planning/INTERVIEW.md',
     'planning/DESIGN.md',
     'planning/DOCUMENTATION.md',
     'execution/IMPLEMENTATION.md',

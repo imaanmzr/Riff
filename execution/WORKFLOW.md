@@ -7,6 +7,8 @@ project configuration. Do not invent READY status. If planning is incomplete,
 complete its reviews first within the requested scope. Existing authorization
 persists; ask only for genuinely missing consequential decisions or permissions.
 Broad implementation authorization does not imply publishing or deployment.
+Use [Shared questioning](../planning/INTERVIEW.md) only for newly consequential
+gaps or contradictions; preserve reviewed decisions and existing authorization.
 
 ## Prepare
 Consult relevant project guide sections and verify claims against current source

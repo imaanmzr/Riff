@@ -14,7 +14,9 @@ Working tree: <unfinished changes and affected paths, or clean; unavailable if n
 <Brief summary with relative links to plan/run records and verification evidence; no duplicate task table.>
 
 ## Unfinished work and questions
-<Interrupted/uncommitted work, unresolved questions, and whether external actions need reconciliation.>
+<Interrupted/uncommitted work, unresolved questions with prerequisites, and whether
+external actions need reconciliation. Preserve settled answers and any unfinished
+deep-interview scope for continuation; do not restart interviewing to save context.>
 
 ## Suggested next action
 <One concrete action to verify against current status, source and authorization on resume.>

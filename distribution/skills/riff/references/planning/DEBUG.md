@@ -7,6 +7,10 @@ Use [planning](WORKFLOW.md) for risk classification. Consult
 `bug` profile (`riff new TASK --profile bug`) before writing durable reports.
 
 ## Establish the failure
+Use [Shared questioning](INTERVIEW.md) for missing expected behavior, inaccessible
+evidence and diagnostic boundaries. Do not interview about facts local inspection
+can resolve. Preserve relevant answers and uncertainty in the existing report.
+
 
 Record a concrete input, expected behavior, actual behavior, environment, source
 revision, and reproduction frequency. Inspect existing logs, tests, code, and

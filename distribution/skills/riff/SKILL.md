@@ -27,12 +27,17 @@ Use `riff status TASK --details` for current task/review progress and the genera
 next action; retain authored specifications without copying stale handoff prose.
 
 ## Select guidance
+For every action read [Shared questioning](references/planning/INTERVIEW.md).
+Investigate facts and reuse answers, then ask focused rounds in decision-dependency
+order where consequential gaps remain. A chat request such as "grill me before
+finalizing" enables deeper interviewing within the current action, not extra
+authority. Keep operation-specific limits, including handoff and review behavior.
+
 - Onboard: read [Onboarding](references/planning/ONBOARD.md) and use its
   [project guide template](references/planning/templates/project-guide.md).
   Create or refresh the project guide; do not implement product changes.
-- Plan: read [Planning](references/planning/WORKFLOW.md), including its default
-  clarification loop. Assess missing intent and important edge cases; ask focused
-  questions before settling dependent decisions. For unclear behavior,
+- Plan: read [Planning](references/planning/WORKFLOW.md) for plan-specific answer
+  records and blockers. For unclear behavior,
   overloaded terms, incomplete acceptance examples or interface choices, consult
   [Requirements & Design](references/planning/DESIGN.md). Stop after plan review.
 - Design/architecture audit: use [Requirements & Design](references/planning/DESIGN.md).

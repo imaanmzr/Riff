@@ -27,6 +27,14 @@ read; on concurrent edits stop and reread rather than overwriting user work.
 Do not follow symlink destinations when writing a guide.
 
 ## Investigate and summarize
+After static discovery use [Shared questioning](INTERVIEW.md) to elicit important
+knowledge only the owner can supply: intended versus current architecture, domain
+rules and exceptions, and legacy patterns new work should avoid. Ask in dependent
+rounds and distinguish attributed answers from inspected facts. Save a partial
+guide when answers are unavailable, keeping relevant questions in the managed
+section; block only later work whose decisions depend on those answers, through
+that task's existing clarification/readiness rules. Do not create a task to interview.
+
 
 1. Read applicable instructions, existing architecture/domain docs, manifests,
    formatter/linter configuration and test configuration. Link canonical sources

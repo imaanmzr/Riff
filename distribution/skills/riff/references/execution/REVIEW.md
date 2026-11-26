@@ -4,6 +4,8 @@ Use at the review stage required by [execution](WORKFLOW.md), or the plan review
 stage in [planning](../planning/WORKFLOW.md). The workflows own authority,
 independence and revision gates. One independent reviewer may perform both passes.
 Small work may use labeled self-review under the route rules.
+Use [Shared questioning](../planning/INTERVIEW.md) for ambiguous intent. An
+established violation is a finding, not a question inviting the user to waive it.
 
 ## Procedure
 Consult relevant optional project guide sections using

@@ -22,5 +22,7 @@ configuration and representative implementations. Include errors and testing pat
 <Build/test/lint commands: discovered versus verified. Prior results need revision/evidence.>
 
 ## Open questions and conflicts
-<Missing evidence, conflicting patterns and attributed user constraints to preserve.>
+<Missing evidence, intended-vs-observed conflicts and attributed user answers or
+constraints to preserve. For material questions note prerequisites and dependent
+work. Partial knowledge is useful; do not turn unknowns into invented rules.>
 <!-- /riff:onboard -->

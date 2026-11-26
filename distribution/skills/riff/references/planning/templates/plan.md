@@ -13,9 +13,11 @@ before/after example. Separate inspected behavior from the proposed design.
 
 ## Clarification and edge cases
 Record material Q-* questions actually asked, their answers or explicit assumptions,
-and the R-* requirements/C-* acceptance examples they inform. Include the important
-boundary and failure outcomes. For unanswered material questions, name the owner
-and dependent decisions/tasks; keep them in plan.json's unresolved_questions and
+and the R-* requirements/C-* acceptance examples they inform. Record question
+prerequisites and dependent decisions; recompute them after each answer.
+Explain any contradiction or concrete reason for reopening a settled answer.
+Include important boundary and failure outcomes. For unanswered material questions,
+name the owner and dependent decisions/tasks; keep them in plan.json's unresolved_questions and
 do not mark READY. Put optional deferred ideas with scope exclusions instead.
 Reuse earlier answers. If no material gaps remain, a brief statement is enough;
 omit the interview detail for a clear small change.

@@ -258,12 +258,9 @@ def workflow_options(args, project, plan=None):
     if operation in ('plan', 'replan'):
         sections = ', '.join(settings['sections']) or 'standard plan sections'
         checks = ', '.join(settings['required_checks']) or 'project-required checks'
-        clarification = (
-            '\nAfter initial discovery, assess missing intent and important edge cases. '
-            'Ask a few focused questions at a time about material gaps before settling dependent decisions; '
-            'wait for answers and reuse earlier answers. Record answers in requirements and acceptance examples, '
-            'disclose assumptions, and keep unanswered material questions blocking READY. '
-            'A clear request needs no manufactured questions.')
+        clarification = ('\nRecord decision prerequisites and answers in the existing plan clarification section, '
+                         'link requirements and acceptance examples, and keep relevant unanswered material '
+                         'questions in unresolved_questions under existing READY gates.')
         return (guidance + clarification + f"\nWorkflow profile: {resolved['profile']}. Emphasize {sections}. "
                 f"Cover these verification obligations: {checks}. Assess risk independently.")
     if operation == 'debug':
@@ -279,4 +276,9 @@ def print_prompt(host, instruction):
     invocation = '$riff' if host == 'codex' else '/riff'
     print('Paste this into your agent chat:')
     print(f'{invocation} {instruction}')
+    print('Read planning/INTERVIEW.md in the Riff skill references: investigate facts first, reuse prior answers, '
+          'and ask focused rounds about consequential gaps in dependency order. Clear requests need no manufactured questions. '
+          'Deep interviewing is available on explicit chat request, within this action\'s scope. '
+          'Operation-specific rules prevail: handoff preserves pending decisions without restarting interviews; '
+          'review reports established violations as findings. Existing authorization and readiness gates still apply.')
     return 0

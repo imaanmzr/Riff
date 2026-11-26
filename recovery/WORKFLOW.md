@@ -3,6 +3,9 @@
 Use for save/checkpoint, handoff, interruption, and resume requests. Read planning
 and execution workflows. Preserve authorization already given; do not mistake a
 checkpoint's boolean for new permission. Never replay external actions on resume.
+Use [Shared questioning](../planning/INTERVIEW.md): resume reuses persisted answers
+and asks only about newly consequential gaps. Handoff preserves settled decisions,
+pending prerequisites and interview scope; it does not restart an interview.
 
 ## Capture
 After each meaningful transition and before handoff, save plan, execution record,

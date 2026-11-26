@@ -7,6 +7,8 @@ instructions and the work needed to verify them.
 
 1. Identify the reader and what they need to do or decide. Find the existing
    canonical page and project conventions before choosing a location.
+   Use [Shared questioning](INTERVIEW.md) only for consequential missing audience,
+   outcome or scope; do not turn a specified documentation edit into an interview.
 2. Verify claims and examples against the source, command help, or other
    authoritative evidence. Run commands when practical and within scope.
    Flag examples that still need live verification. For example, when the

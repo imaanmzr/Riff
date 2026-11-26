@@ -75,25 +75,10 @@ while preserving explicit user entries.
 
 ## Clarify intended behavior
 
-Assess every request after initial discovery, even when it sounds implementable.
-Look for gaps in the user's outcome, scope, business rules and acceptance examples.
-Walk through a successful use and the boundary or failure cases likely to change
-the design. Consider permissions, empty/invalid inputs, repetition, interruption
-or partial completion where relevant; do not turn these into a universal checklist.
-
-Ask the user about remaining gaps that materially change behavior, scope, checks
-or consequential risk. Use a few focused questions per round, normally one to
-three related questions, then follow up if material gaps remain. Ground each in a
-concrete scenario, explain why the answer matters, and offer meaningful choices
-and a recommendation when useful. Allow the user to describe another outcome.
-Do not merely list open questions in a finished plan or ask a vague "anything
-else?". A clear request with no material gaps needs no manufactured questions.
-
-Wait for answers before settling dependent decisions; independent read-only
-investigation may continue. Reuse prior answers on resume/replan, reopening them
-only when changed intent or evidence makes them stale. If the user skips questions,
-disclose reasonable low-consequence assumptions. Keep unresolved material product
-or risk choices explicit and blocking; silence or elapsed time is not an answer.
+Use [Shared questioning](INTERVIEW.md) for adaptive assessment, dependent rounds,
+answer reuse and explicitly requested deep interviews. Investigate facts first;
+ask about material gaps before settling dependent behavior. Walk through concrete
+success/boundary cases and preserve the plan-specific records below.
 
 Record Q-* references, answers or explicit assumptions in the existing authored
 plan and link them to R-* requirements and C-* acceptance examples, including the

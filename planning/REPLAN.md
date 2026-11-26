@@ -9,6 +9,8 @@ invalidate reviews, or resume execution by itself. The invoked agent follows
    manifest, configuration provenance, execution records, checkpoints, active
    agents, and worktrees. Identify actual changes and external side effects.
    Prevent duplicate work; stop dependent dispatch while its contract is changing.
+   Use [Shared questioning](INTERVIEW.md); reuse earlier answers and reopen only
+   decisions affected by changed intent/evidence, explaining the reason.
 2. **Record why.** State the new evidence or changed product intent, requested
    scope, affected requirements, and existing authorization. Do not infer broader
    execution, publication, or deployment authority from a replan request.

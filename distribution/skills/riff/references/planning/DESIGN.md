@@ -7,6 +7,10 @@ Architecture audits use the final section. Scale effort with the
 read-only by default. A clear local change can use its existing contract directly.
 
 ## Understand the requested behavior
+Use [Shared questioning](INTERVIEW.md) to discover the underlying outcome,
+sequence dependent decisions and challenge a proposed mechanism when needed.
+Keep the concrete behavior/contracts below as the design-specific application.
+
 
 1. Follow one concrete input through the existing caller and observable result.
    Inspect relevant tests and project terminology. Distinguish inspected behavior

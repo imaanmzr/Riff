@@ -150,6 +150,56 @@ class Features(unittest.TestCase):
         archive.write_text('Changed evidence.\n', encoding='utf-8')
         self.assertTrue(core.records.live_errors(plan, context))
 
+    def test_shared_questioning_reaches_all_prompt_paths_without_writes(self):
+        requests = [
+            ('plan', 'Consider exports'), ('plan', '--task', 'demo'),
+            ('design', 'Consider exports'), ('architecture', '--task', 'demo'),
+            ('docs', 'Explain exports'), ('documentation', '--task', 'demo'),
+            ('research', 'Compare export choices'), ('debug', '--task', 'demo'),
+            ('execute', 'demo'), ('resume', 'demo'), ('handoff', 'demo'),
+            ('replan', 'demo', '--reason', 'Changed audience'),
+            ('review', '--task', 'demo'), ('audit', '--task', 'demo'), ('onboard',),
+            ('prompt', 'demo', '--action', 'plan'),
+            ('prompt', 'demo', '--action', 'execute'),
+            ('prompt', 'demo', '--action', 'resume'),
+            ('prompt', 'demo', '--action', 'audit'),
+        ]
+        before = {p.relative_to(self.root): p.read_bytes()
+                  for p in self.root.rglob('*') if p.is_file()}
+        for host in ('codex', 'cursor', 'vscode', 'claude'):
+            for request in requests:
+                with self.subTest(host=host, request=request):
+                    result = self.cli(*request, '--host', host)
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    self.assertIn('$riff' if host == 'codex' else '/riff', result.stdout)
+                    self.assertEqual(1, result.stdout.count('Read planning/INTERVIEW.md'))
+                    self.assertIn('within this action', result.stdout)
+                    self.assertIn('Operation-specific rules prevail', result.stdout)
+                    if request[0] == 'handoff':
+                        self.assertIn('do not implement further changes', result.stdout)
+                        self.assertIn('without restarting interviews', result.stdout)
+                    elif request[0] in ('review', 'audit'):
+                        self.assertIn('violations as findings', result.stdout)
+                    elif request[0] == 'onboard':
+                        self.assertIn('do not run project commands', result.stdout)
+                    elif request[0] == 'debug':
+                        self.assertIn('Diagnostic limits', result.stdout)
+        self.assertEqual(before, {p.relative_to(self.root): p.read_bytes()
+                                 for p in self.root.rglob('*') if p.is_file()})
+        self.assertNotEqual(0, self.cli('grill', 'demo').returncode)
+        self.assertNotEqual(0, self.cli('plan', '--task', 'demo', '--grill').returncode)
+
+    def test_interview_blockers_keep_existing_readiness_rules(self):
+        plan = self.ready()
+        self.assertEqual(0, self.cli('check', 'demo').returncode)
+        plan['unresolved_questions'] = ['Q-2: export fields depend on unanswered audience Q-1']
+        self.save(plan)
+        self.assertNotEqual(0, self.cli('check', 'demo').returncode)
+        # Omitting a user answer or calling it deferred cannot make READY pass.
+        plan['unresolved_questions'] = ['Q-2 deferred, but required by in-scope export behavior']
+        self.save(plan)
+        self.assertNotEqual(0, self.cli('check', 'demo').returncode)
+
     def test_migration_preview_backup_and_legacy_validation(self):
         legacy = dict(route='small', status='DRAFT', revision=1, requirements=[], tasks=[], reviews=[], custom={'preserve': True})
         self.save(legacy)

@@ -115,7 +115,8 @@ $riff Resume the task at docs/riff/retry-fix/.
 
 ## What Riff provides
 Riff asks focused questions when important decisions remain and reuses earlier
-answers. Request "grill me before finalizing" in chat for deeper exploration.
+answers. Use `riff elicit "topic"` for an interview, or add `--elicit` and optional
+`--focus "subproblem"` to an agent action. Natural-language deep requests still work.
 See [questioning and deep interviews](docs/questioning.md).
 
 

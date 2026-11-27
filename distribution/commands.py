@@ -17,6 +17,7 @@ else:
 REFERENCES = Path(__file__).resolve().parent / 'skills' / NAME / 'references'
 
 WORKFLOW_COMMANDS = {
+    'elicit': ('Elicit requirements and decisions', 'Elicit requirements and decisions for this topic; interview only, then summarize decisions, unresolved questions and next steps; do not implement or automatically create a task'),
     'plan': ('Plan a change', 'Plan this task and stop after plan review'),
     'design': ('Design an interface or change', 'Design an approach for this task'),
     'documentation': ('Advise on or update project docs', 'Handle this documentation request'),
@@ -60,7 +61,8 @@ def onboard(project, args):
         'Read the previous guide before refreshing its single riff:onboard section; preserve all bytes outside it. '
         'Leave unmarked, malformed or symlinked guides untouched and report the collision. '
         'Distinguish explicit rules, observations, inferences and unknowns; cite relative evidence links. '
-        'Missing Riff configuration is supported; this command does not install the project skill.')
+        'Missing Riff configuration is supported; this command does not install the project skill.',
+        **elicitation_options(args, 'onboard'))
 
 
 def task_directory(project, task):
@@ -215,7 +217,8 @@ def task_prompt(project, args, operation):
     if not (directory / 'plan.json').is_file():
         raise ValueError(f'Unknown task: {args.task}')
     _, instruction = WORKFLOW_COMMANDS[operation]
-    return print_prompt(args.host, f'{instruction} at {json.dumps(str(directory))}.' + workflow_options(args, project, load(directory / 'plan.json')))
+    return print_prompt(args.host, f'{instruction} at {json.dumps(str(directory))}.' + workflow_options(args, project, load(directory / 'plan.json')),
+                        **elicitation_options(args, operation))
 
 
 def workflow_prompt(project, args):
@@ -225,7 +228,13 @@ def workflow_prompt(project, args):
     if not args.subject.strip():
         raise ValueError('Provide a nonempty request')
     location = json.dumps(project.as_posix(), ensure_ascii=False)
-    return print_prompt(args.host, f'{instruction} in {location}.\n\n{args.subject}' + workflow_options(args, project))
+    return print_prompt(args.host, f'{instruction} in {location}.\n\n{args.subject}' + workflow_options(args, project),
+                        **elicitation_options(args, args.operation))
+
+
+def elicitation_options(args, operation):
+    mode = 'standalone' if operation == 'elicit' else 'combined' if getattr(args, 'elicit', False) else None
+    return dict(elicitation=mode, focus=getattr(args, 'focus', None))
 
 
 def workflow_options(args, project, plan=None):
@@ -272,13 +281,27 @@ def workflow_options(args, project, plan=None):
     return ''
 
 
-def print_prompt(host, instruction):
+def print_prompt(host, instruction, *, elicitation=None, focus=None):
     invocation = '$riff' if host == 'codex' else '/riff'
     print('Paste this into your agent chat:')
     print(f'{invocation} {instruction}')
     print('Read planning/INTERVIEW.md in the Riff skill references: investigate facts first, reuse prior answers, '
           'and ask focused rounds about consequential gaps in dependency order. Clear requests need no manufactured questions. '
-          'Deep interviewing is available on explicit chat request, within this action\'s scope. '
+          'Elicitation is available with elicit, --elicit or explicit chat request, within this action\'s scope. '
           'Operation-specific rules prevail: handoff preserves pending decisions without restarting interviews; '
           'review reports established violations as findings. Existing authorization and readiness gates still apply.')
+    if elicitation is not None:
+        print('Elicitation mode: ' + elicitation + '. Read the explicit elicitation and lifecycle rules in planning/INTERVIEW.md. '
+              'This request deeply examines relevant decisions; reuse settled answers and ask before dependent decisions or mutations. '
+              'Focus never excludes required checks or waives blockers. The mode is request-scoped, not a saved default.')
+        if focus is not None:
+            print('Elicitation focus (within this action): ' + json.dumps(focus, ensure_ascii=False))
+        if elicitation == 'standalone':
+            print('Stop after the interview and summary. Keep a free topic in chat; an explicit task target uses existing clarification records '
+                  'and replan/review rules. Do not implement, generate a whole task plan, or create a task/questionnaire automatically.')
+        else:
+            print('After relevant answers, continue the original action only within its existing authorization and gates. '
+                  'Changed intent requires existing replan/review handling; answers alone do not bypass unresolved gates. '
+                  'Handoff clarifies only missing handoff intent and preserves unfinished product elicitation; '
+                  'review reports established violations as findings.')
     return 0

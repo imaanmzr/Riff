@@ -129,6 +129,10 @@ def main():
                          ('status', kind + '-task', '--json'),
                          ('research', 'Inspect the installed workflow'),
                          ('onboard',),
+                         ('elicit', 'Discuss invoice exports'),
+                         ('elicit', '--task', kind + '-task', '--focus', 'retry behavior'),
+                         ('plan', '--task', kind + '-task', '--elicit', '--focus', 'failure behavior'),
+                         ('onboard', '--elicit'),
                          ('handoff', kind + '-task'), ('resume', kind + '-task'),
                          ('render', kind + '-task', '--format', 'html', '--output', str(folder / (kind + '.html')))]:
                 run([*entry, *args, '--project', str(project)], project, env)
@@ -140,6 +144,7 @@ def main():
             raise RuntimeError('Standalone version mismatch')
         run([sys.executable, str(cli), 'new', 'standalone-task', '--project', str(project)])
         run([sys.executable, str(cli), 'onboard', '--project', str(project)])
+        run([sys.executable, str(cli), 'elicit', 'Discuss invoice exports', '--project', str(project)])
         run([sys.executable, str(cli), 'handoff', 'standalone-task', '--project', str(project)])
         installer = prefix / 'lib/riff-workflow/distribution/install.py'
         # Separate projects prevent Cursor discovery from masking its own path.
@@ -148,6 +153,8 @@ def main():
             host_project.mkdir()
             run([sys.executable, str(installer), str(host_project), '--host', host])
             run([sys.executable, str(cli), 'doctor', '--project', str(host_project), '--host', host])
+            run([sys.executable, str(cli), 'onboard', '--elicit', '--focus', 'domain rules',
+                 '--project', str(host_project), '--host', host])
             run([sys.executable, str(installer), str(host_project), '--host', host, '--update'])
             native = {'codex': '.agents', 'cursor': '.cursor', 'vscode': '.github', 'claude': '.claude'}[host]
             skill = host_project / native / 'skills/riff'

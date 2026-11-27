@@ -9,6 +9,9 @@ persists; ask only for genuinely missing consequential decisions or permissions.
 Broad implementation authorization does not imply publishing or deployment.
 Use [Shared questioning](../planning/INTERVIEW.md) only for newly consequential
 gaps or contradictions; preserve reviewed decisions and existing authorization.
+`execute --elicit [--focus TEXT]` deepens relevant decisions before dependent
+mutations, then continues only when existing gates allow. The flag does not
+invalidate evidence by itself or let answers bypass replan/review after changed intent.
 
 ## Prepare
 Consult relevant project guide sections and verify claims against current source

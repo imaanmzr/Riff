@@ -94,6 +94,7 @@ def build_parser():
     onboard = subparsers.add_parser('onboard', help='Understand a project and save its guide (prints an agent prompt)')
     onboard.add_argument('--project', help='Project directory (default: current directory)')
     onboard.add_argument('--host', choices=sorted(HOSTS), default='codex', help='Agent app (default: codex)')
+    add_elicitation_options(onboard)
     onboard.set_defaults(handler=commands.onboard)
     descriptions = {
         'init': 'Install the project skill and open the setup wizard',
@@ -132,7 +133,8 @@ def build_parser():
             command.add_argument('--json', action='store_true', help='Emit machine-readable JSON')
             command.add_argument('--details', action='store_true', help='Show every task, review history, and gate issue (default: progress summary)')
         if action == 'prompt':
-            command.add_argument('--action', dest='operation', choices=['plan', 'execute', 'resume', 'audit'], default='plan')
+            command.add_argument('--action', dest='operation', choices=['plan', 'execute', 'resume', 'audit', 'elicit'], default='plan')
+            add_elicitation_options(command)
         if action == 'validate':
             command.add_argument('--execution', action='store_true', help='Validate plan.json and run.json together')
     for operation, (description, _) in commands.WORKFLOW_COMMANDS.items():
@@ -145,6 +147,7 @@ def build_parser():
         command.add_argument('--project', help='Project directory (default: current directory)')
         command.add_argument('--host', choices=sorted(HOSTS), default='codex',
                              help='Agent app (default: codex)')
+        add_elicitation_options(command, standalone=operation == 'elicit')
         if operation == 'replan':
             command.add_argument('--reason', required=True, help='Reason to revise the saved plan')
         if operation == 'debug':
@@ -204,6 +207,20 @@ def build_parser():
     return parser
 
 
+def add_elicitation_options(parser, standalone=False):
+    if not standalone:
+        parser.add_argument('--elicit', action='store_true',
+                            help='Elicit decisions deeply before dependent work, then continue within this action\'s gates')
+    parser.add_argument('--focus', type=nonempty,
+                        help='Decision or subproblem to examine (requires elicit or --elicit)')
+
+
+def nonempty(value):
+    if not value.strip():
+        raise argparse.ArgumentTypeError('Focus must be nonempty')
+    return value
+
+
 def nonnegative(value):
     try: number = int(value)
     except ValueError: raise argparse.ArgumentTypeError('Expected an integer')
@@ -220,6 +237,10 @@ def positive(value):
 def main():
     parser = build_parser()
     args = parser.parse_args()
+    if (getattr(args, 'focus', None) is not None
+            and getattr(args, 'operation', None) != 'elicit'
+            and not getattr(args, 'elicit', False)):
+        parser.error('--focus requires elicit or --elicit')
     if args.action is None:
         parser.print_help()
         return

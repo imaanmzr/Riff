@@ -1,4 +1,4 @@
-# Shared questioning and deep interviews
+# Shared questioning and elicitation
 
 Use this discipline across Riff actions, including direct skill requests. Apply
 the requested operation's scope and authorization first. This guide changes how
@@ -51,8 +51,9 @@ intent supplies a concrete reason, and explain that reason.
 Default depth is adaptive: clear requests need no manufactured questions or
 question quota. Ask enough to settle material gaps, not to fill a fixed checklist.
 
-If the user says "grill me before finalizing" or otherwise explicitly requests a
-deep interview, systematically challenge framing, alternatives, domain semantics,
+If the user requests `riff elicit`, adds `--elicit` to an agent action, says
+"grill me before finalizing", or otherwise explicitly requests a deep interview,
+systematically challenge framing, alternatives, domain semantics,
 relevant edge cases and consequences within the requested action. Explore the
 decisions that hang off each answer rather than repeating the opening questions.
 Do not broaden the task, reopen settled answers without reason, or demand an
@@ -73,12 +74,47 @@ make a dependent plan READY. Independent work may proceed within its own gates.
 | Debug/research | Missing expected behavior, inaccessible evidence, decision criteria and investigation boundaries. |
 | Execute/resume | Only newly consequential gaps or contradictions; reuse the reviewed contract and prior answers. |
 | Review/audit | Ambiguous intent; an established violation is a finding, not a request for the user to waive it. |
-| Handoff | Preserve decisions and pending questions; do not restart an interview merely to save context. |
+| Handoff | Clarify only genuinely missing handoff intent; preserve product decisions and pending questions without restarting their interview. |
 
 Operation-specific scope wins over the common reminder. A deep interview during
 planning does not authorize implementation. A handoff records an unfinished deep
 interview for continuation rather than conducting it. Research/debug retain their
 own report and task rules; a conversation-only interview creates no task by itself.
+
+## Explicit elicitation and lifecycle
+
+`riff elicit "TOPIC"` or `riff elicit --task TASK` is standalone: stop after the
+scoped interview and summarize decisions, unresolved questions and next steps.
+Do not implement, create a task/questionnaire automatically, or generate a whole
+task plan. A free topic stays in chat; an explicit saved-task target uses its
+existing clarification records and replan/review rules for actual changed intent.
+
+`--elicit` on an existing agent action deepens questioning without replacing that
+action. Ask before decisions or mutations depending on unresolved answers. After
+answers, continue the requested action under its existing authority and gates;
+answers alone cannot bypass missing reviews, invalidated evidence or other blockers.
+Do not add a blanket confirmation step. Changing intent still follows existing
+replan/review rules. The flag alone does not invalidate plans or evidence.
+
+Optional `--focus TEXT` narrows discussion to a decision, task or subproblem within
+the requested action. It is descriptive text, not a new selector or an exemption
+from required checks. Re-examine relevant rationale without needlessly repeating
+settled questions; explain any concrete reason for reopening an answer.
+For handoff, clarify only missing handoff-specific intent and save unfinished
+product elicitation for continuation. For review, established violations remain
+findings. Onboard remains static, ownership-protected and able to save partial
+knowledge; execute/resume preserve their authorization and readiness requirements.
+
+The mode lasts this request, not the project or task forever. When handing off an
+unfinished task-associated interview, preserve whether elicitation is pending,
+its original action/topic/focus, settled answers, prerequisites and remaining
+questions in existing handoff records. Fresh resume continues only that unfinished
+scope under current authorization/gates. When resolved, record completion so later
+requests use adaptive defaults unless explicitly enabled again. Completed interview
+history and old open questions alone are not an active elicitation-mode setting.
+With no task association, standalone elicitation stays in chat unless the user
+separately asks to save it. There is no persistent on/off configuration or new state
+schema. Existing natural-language deep-interview requests remain supported.
 
 ## Preserve answers where they belong
 

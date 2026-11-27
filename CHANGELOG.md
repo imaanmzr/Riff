@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add standalone `elicit` and composable `--elicit`/`--focus` options for agent
+  actions, with request-scoped lifecycle and unchanged readiness gates.
+
 - Share adaptive, dependency-aware questioning across Riff actions; support deeper
   interviews on explicit chat request without new commands or readiness gates.
 

@@ -27,6 +27,10 @@ read; on concurrent edits stop and reread rather than overwriting user work.
 Do not follow symlink destinations when writing a guide.
 
 ## Investigate and summarize
+`onboard --elicit [--focus TEXT]` deepens relevant owner questions, then continues
+the same static onboarding action after answers. Focus never changes ownership
+rules or prevents saving useful partial knowledge when answers are unavailable.
+
 After static discovery use [Shared questioning](INTERVIEW.md) to elicit important
 knowledge only the owner can supply: intended versus current architecture, domain
 rules and exceptions, and legacy patterns new work should avoid. Ask in dependent

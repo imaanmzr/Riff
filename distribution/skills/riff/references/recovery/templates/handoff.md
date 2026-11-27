@@ -16,7 +16,9 @@ Working tree: <unfinished changes and affected paths, or clean; unavailable if n
 ## Unfinished work and questions
 <Interrupted/uncommitted work, unresolved questions with prerequisites, and whether
 external actions need reconciliation. Preserve settled answers and any unfinished
-deep-interview scope for continuation; do not restart interviewing to save context.>
+elicitation action/topic/focus and prerequisites for continuation. State whether
+elicitation is pending or completed; completion does not change future defaults.
+Do not restart product interviewing to save context.>
 
 ## Suggested next action
 <One concrete action to verify against current status, source and authorization on resume.>

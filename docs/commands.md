@@ -1,5 +1,10 @@
 # Riff commands
 
+`riff elicit "TOPIC"` or `riff elicit --task TASK` prints an interview-only prompt.
+Agent workflow commands also accept `--elicit [--focus TEXT]`; standalone `elicit`
+accepts `--focus` directly. Deterministic utilities do not accept these modifiers.
+See [elicitation](questioning.md) for continuation and request-lifetime rules.
+
 `riff onboard [--project DIR] [--host HOST]` prints a prompt to create or refresh
 the project guide. No task or request argument is needed. It works without Riff
 configuration and changes no files itself. See [onboarding](onboarding.md).

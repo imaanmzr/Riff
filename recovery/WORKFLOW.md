@@ -6,6 +6,10 @@ checkpoint's boolean for new permission. Never replay external actions on resume
 Use [Shared questioning](../planning/INTERVIEW.md): resume reuses persisted answers
 and asks only about newly consequential gaps. Handoff preserves settled decisions,
 pending prerequisites and interview scope; it does not restart an interview.
+For explicit elicitation, preserve pending versus completed state and the original
+action/topic/focus in existing handoff prose. Resume only unfinished scope under
+current gates; a completed interview does not enable deeper mode for later work.
+`handoff --elicit` clarifies only missing handoff intent, not settled product choices.
 
 ## Capture
 After each meaningful transition and before handoff, save plan, execution record,
